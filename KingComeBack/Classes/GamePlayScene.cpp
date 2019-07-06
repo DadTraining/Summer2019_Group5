@@ -9,6 +9,7 @@ GamePlayScene::~GamePlayScene()
 
 Scene * GamePlayScene::createScene()
 {
+
 	return GamePlayScene::create();
 }
 
@@ -20,17 +21,42 @@ bool GamePlayScene::init()
 	}
 	auto screenSize = Director::getInstance()->getVisibleSize();
 	//add map
-	auto map = TMXTiledMap::create("map.tmx");
+	map = TMXTiledMap::create("map.tmx");
 
 	map->setAnchorPoint(Vec2(0, 0));
-	map->setVisible(true);
 	map->setPosition(0, 0);
-	map->setScale(1.2);
-	this->addChild(map, 5);
-	//add camera
-	//auto camera = Camera::create();
-	//camera->setPosition(map->getContentSize().;
-	//this->addChild(camera, 1);
+
+	this->addChild(map, 0);
+
+	// add physic for camera
+	// add camera
+	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
+
+	camera = Camera::create();
+	camera->setPosition(map->getContentSize().width / 2, map->getContentSize().height / 2);
+
+	camera->setCameraFlag(CameraFlag::USER1);
+	this->addChild(camera, 1);
+	// move camera
+	auto listener = EventListenerTouchOneByOne::create();
+
+	listener->onTouchBegan = CC_CALLBACK_2(GamePlayScene::OnTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(GamePlayScene::OnTouchMove, this);
+
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	return true;
+}
+
+bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
+{
+
+	return true;
+}
+
+void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
+{
+	touchLocation = touch->getLocation();
+
+	camera->setPosition(touchLocation);
 }

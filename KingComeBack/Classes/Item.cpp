@@ -22,6 +22,7 @@ void Item::Init(int ID)
 		m_itemAttribute = "intelligence";
 		m_dame = 120;
 		break;
+		
 
 	default:
 		break;

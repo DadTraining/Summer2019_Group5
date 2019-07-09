@@ -121,8 +121,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto scene = GamePlayScene::createScene();
 
     // run
-
-	director->runWithScene(scene);
+	director->runWithScene(GamePlayScene::createScene());
     return true;
 }
 

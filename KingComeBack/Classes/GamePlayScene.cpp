@@ -32,22 +32,45 @@ bool GamePlayScene::init()
 	// add camera
 	this->AddCamera();
 
-	//Add move camera
-	this->MoveCamera();
+	//Add listener
+	this->AddListener();
 
 	return true;
 }
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
-	return true;
+	touchLocation[0] = touch->getLocation();
+	if (map->getBoundingBox().containsPoint(touch->getLocation()))
+	{
+		return true;
+	}
+	return false;
 }
 
 void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 {
-	touchLocation = touch->getLocation();
+	Vec2 moveCamera = touch->getLocation() - touch->getPreviousLocation() + camera->getPosition();
+	camera->setPosition(moveCamera);
+}
 
-	camera->setPosition(touchLocation);
+void GamePlayScene::OnTouchEnd(Touch * touch, Event * unused_event)
+{
+
+}
+
+bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
+{
+	auto spriteA = contact.getShapeA()->getBody();
+	auto spriteB = contact.getShapeB()->getBody();
+
+	// camera with map
+	if ((spriteA->getCollisionBitmask() == BITMASK_MAP && spriteB->getCollisionBitmask() == BITMASK_CAMERA)
+		|| (spriteA->getCollisionBitmask() == BITMASK_CAMERA && spriteB->getCollisionBitmask() == BITMASK_MAP))
+	{
+
+	}
+	return true;
 }
 
 void GamePlayScene::AddMap()
@@ -56,23 +79,20 @@ void GamePlayScene::AddMap()
 
 	map->setAnchorPoint(Vec2(0, 0));
 	map->setPosition(0, 0);
-	this->addChild(map);
 
 	// add physic for map
 
 	auto sizeMap = map->getContentSize();
 
 	auto physicBody = PhysicsBody::createEdgeBox(sizeMap,
-		PHYSICSBODY_MATERIAL_DEFAULT, 3);
-	physicBody->setCollisionBitmask(100);
+		PHYSICSBODY_MATERIAL_DEFAULT, 2);
+	physicBody->setDynamic(false);
+	physicBody->setCollisionBitmask(BITMASK_MAP);
 	physicBody->setContactTestBitmask(true);
-	physicBody->getShape(0)->setRestitution(5);
-	physicBody->getShape(0)->setDensity(50.0f);
 
-	auto node = Node::create();
-	node->setPosition(Vec2(sizeMap.width /2, sizeMap.height / 2));
-	node->setPhysicsBody(physicBody);
-	this->addChild(node);
+	map->setPhysicsBody(physicBody);
+
+	this->addChild(map);
 }
 
 void GamePlayScene::AddCamera()
@@ -81,56 +101,37 @@ void GamePlayScene::AddCamera()
 
 	camera = Camera::create();
 	camera->setPosition(map->getContentSize().width / 2, map->getContentSize().height / 2);
-
+	camera->setAnchorPoint(Vec2(0.5, 0.5));
 	camera->setCameraFlag(CameraFlag::USER1);
-
-	auto physicBody = PhysicsBody::createBox(screenSize, 
+	
+	int a = this->getCameras().size();
+	auto physicBody = PhysicsBody::createBox(screenSize,
 		PHYSICSBODY_MATERIAL_DEFAULT);
-	physicBody->setCollisionBitmask(101);
+
+	physicBody->setCollisionBitmask(BITMASK_CAMERA);
 	physicBody->setContactTestBitmask(true);
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
-	physicBody->setMass(50);
+	physicBody->setDynamic(true);
 
 	camera->setPhysicsBody(physicBody);
 
 	this->addChild(camera);
 }
 
-void GamePlayScene::AddPhysicWall(float _positionX, float _positionY,
-	const float &_width, const float &_height)
+void GamePlayScene::AddListener()
 {
-	Size sizeBox = Size(ccp(_width, _height));
-
-	auto spWall = Sprite::create();
-	spWall->setPosition(Vec2(_positionX, _positionY));
-	auto bodyMap = PhysicsBody::createBox(sizeBox, PHYSICSBODY_MATERIAL_DEFAULT);
-	bodyMap->getShape(0)->setRestitution(1.0f);
-	bodyMap->getShape(0)->setFriction(0.0f);
-	bodyMap->getShape(0)->setDensity(1.0f);
-	bodyMap->setGravityEnable(false);
-	bodyMap->setDynamic(false);
-
-	spWall->setPhysicsBody(bodyMap);
-	spWall->addChild(spWall);
-}
-
-void GamePlayScene::AddPhysicCamera()
-{
-	auto bodyCamera = PhysicsBody::createEdgeBox(screenSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
-
-	camera->addComponent(bodyCamera);
-
-	this->addChild(camera, 3);
-
-}
-
-void GamePlayScene::MoveCamera()
-{
+	// add listen touch
 	auto listener = EventListenerTouchOneByOne::create();
-
 	listener->onTouchBegan = CC_CALLBACK_2(GamePlayScene::OnTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(GamePlayScene::OnTouchMove, this);
-
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+	// add listen contact
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
+
+
+

@@ -26,6 +26,7 @@
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
+using namespace CocosDenshion;
 
 Scene* HelloWorld::createScene()
 {
@@ -48,7 +49,7 @@ bool HelloWorld::init()
     {
         return false;
     }
-
+	auto audio = SimpleAudioEngine::getInstance();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -74,7 +75,18 @@ bool HelloWorld::init()
         float y = origin.y + closeItem->getContentSize().height/2;
         closeItem->setPosition(Vec2(x,y));
     }
+	// Add camera
+	Camera *camera = Camera::create();
 
+
+	// Add map Background
+	auto map = TMXTiledMap::create("map.tmx");
+
+	map->setAnchorPoint(Vec2(0, 0));
+	map->setVisible(true);
+	map->setPosition(0, 0);
+	map->setScale(1.2);
+	this->addChild(map, 5);
     // create menu, it's an autorelease object
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
@@ -113,7 +125,7 @@ bool HelloWorld::init()
         sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 
         // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
+        //this->addChild(sprite, 0);
     }
     return true;
 }

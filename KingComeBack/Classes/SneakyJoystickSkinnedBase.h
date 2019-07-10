@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "SneakyJoystick.h"
 
+
 class SneakyJoystickSkinnedBase : public cocos2d::Layer
 {
 public:

@@ -1,4 +1,6 @@
 #include"GamePlayScene.h"
+
+
 GamePlayScene::GamePlayScene()
 {
 }
@@ -9,12 +11,12 @@ GamePlayScene::~GamePlayScene()
 
 Scene * GamePlayScene::createScene()
 {
+	//auto scene = GamePlayScene::create();
 	auto scene = Scene::createWithPhysics();
-
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-
 	auto layer = GamePlayScene::create();
-	scene->addChild(layer, 0);
+
+	scene->addChild(layer);
 	return scene;
 }
 
@@ -26,21 +28,28 @@ bool GamePlayScene::init()
 	}
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
+
 	//add map
 	this->AddMap();
+
+	//Add listener
+	this->AddListener();
+
+	// add layer 
+	//this->createLayerUI();
+
+	//Add joystick
+	this->AddJoystick();
 
 	// add camera
 	this->AddCamera();
 
-	//Add listener
-	this->AddListener();
 
 	return true;
 }
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
-	touchLocation[0] = touch->getLocation();
 	if (map->getBoundingBox().containsPoint(touch->getLocation()))
 	{
 		return true;
@@ -99,11 +108,12 @@ void GamePlayScene::AddMap()
 
 	map->setPhysicsBody(physicBody);
 
-	this->addChild(map);
+	this->addChild(map, indexMap);
 }
 
 void GamePlayScene::AddCamera()
 {
+	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, false);
 	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
 
 	camera = Camera::create();
@@ -123,7 +133,7 @@ void GamePlayScene::AddCamera()
 
 	camera->setPhysicsBody(physicBody);
 
-	this->addChild(camera);
+	this->addChild(camera, indexCamera);
 }
 
 void GamePlayScene::AddListener()
@@ -139,6 +149,59 @@ void GamePlayScene::AddListener()
 	contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
+void GamePlayScene::AddJoystick()
+{
+	Rect joystickBaseDimensions;
+	joystickBaseDimensions = Rect(0, 0, 160.0f, 160.0f);
 
+	Point joystickBasePosition;
+	joystickBasePosition = Vec2(screenSize.width * 0.2f, screenSize.height*0.2f);
+
+	SneakyJoystickSkinnedBase *joystickBase = new SneakyJoystickSkinnedBase();
+	joystickBase->init();
+	joystickBase->setPosition(joystickBasePosition);
+
+	joystickBase->setBackgroundSprite(Sprite::create("res/joystick-back.png"));
+	joystickBase->setThumbSprite(Sprite::create("res/stick.png"));
+
+	SneakyJoystick *aJoystick = new SneakyJoystick();
+	aJoystick->initWithRect(joystickBaseDimensions);
+
+	aJoystick->autorelease();
+	joystickBase->setJoystick(aJoystick);
+	joystickBase->setPosition(joystickBasePosition);
+
+	leftJoystick = joystickBase->getJoystick();
+	leftJoystick->retain();
+	this->addChild(joystickBase, indexJoystick);
+}
+
+void GamePlayScene::AddButton()
+{
+
+}
+
+void GamePlayScene::createLayerUI()
+{
+
+}
+
+//void GamePlayScene::update(float dt)
+//{
+//	
+//	if (leftJoystick->getVelocity().x > 0) {
+//		everboyBody->setVelocity(Vect(200, 0));
+//	}
+//	if (leftJoystick->getVelocity().x < 0) {
+//		everboyBody->setVelocity(Vect(-200, 0));
+//	}
+//	if (leftJoystick->getVelocity().x == 0) {
+//		everboyBody->setVelocity(Vect(0, everboyBody->getWorld()->getGravity().y));
+//	}
+//	if (jumpBtn->getValue()) {
+//		everboyBody->applyImpulse(Vec2(0, 200));
+//		everboyBody->setVelocity(Vec2(0, 100));
+//	}
+//}
 
 

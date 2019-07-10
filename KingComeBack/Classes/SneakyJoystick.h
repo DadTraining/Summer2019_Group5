@@ -44,5 +44,6 @@ private:
 	void updateVelocity(Point point);
 	void setTouchRadius();
 
+	float round(float r);
 };
 #endif

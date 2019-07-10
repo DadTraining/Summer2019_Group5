@@ -41,7 +41,7 @@ bool SneakyJoystick::initWithRect(Rect rect)
 	return true;
 }
 
-float round(float r)
+float SneakyJoystick::round(float r)
 {
     return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
 }

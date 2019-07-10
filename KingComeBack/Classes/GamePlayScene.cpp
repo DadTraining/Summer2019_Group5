@@ -50,8 +50,15 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 
 void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 {
-	Vec2 moveCamera = touch->getLocation() - touch->getPreviousLocation() + camera->getPosition();
-	camera->setPosition(moveCamera);
+	if (camera->getPositionX() >= screenSize.width / 2 + map->getPositionX()
+		&& camera->getPositionY() >= screenSize.height / 2 + map->getPositionY()
+		&& camera->getPositionX() <= map->getContentSize().width - screenSize.width / 2
+		&& camera->getPositionY() <= map->getContentSize().height - screenSize.height / 2)
+	{
+		Vec2 moveCamera = touch->getLocation() - touch->getPreviousLocation() + camera->getPosition();
+		camera->setPosition(moveCamera);
+	}
+
 }
 
 void GamePlayScene::OnTouchEnd(Touch * touch, Event * unused_event)

@@ -20,7 +20,7 @@ ID: 0
 PATH: %s/Sprites/legend/legend.splist
 ID: 1
 PATH: %s/Sprites/karep/karep.splist
-#TITLEMAP 7
+#TITLEMAP 1
 ID: 0
 PATH: %s/map.tmx
 #BUTTON 3

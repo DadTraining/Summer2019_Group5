@@ -13,7 +13,7 @@ class ResourceManager
 public:
 	ResourceManager ();
 	~ResourceManager ();
-	ResourceManager* GetInstance();
+	static ResourceManager* GetInstance();
 	void Init(const std::string path);
 	void Load(std::string filename);
 	Sprite* GetSpriteById(int id);

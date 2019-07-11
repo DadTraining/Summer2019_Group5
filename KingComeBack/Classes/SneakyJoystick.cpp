@@ -127,7 +127,8 @@ bool SneakyJoystick::onTouchBegan(Touch *touch, Event *event)
     
 	location = target->convertToNodeSpace(location);
 	//Do a fast rect check before doing a circle hit check:
-	if(location.x < -target->getJoystickRadius() || location.x > target->getJoystickRadius() || location.y < -target->getJoystickRadius() || location.y > target->getJoystickRadius())
+	if(location.x < -target->getJoystickRadius() || location.x > target->getJoystickRadius() 
+		|| location.y < -target->getJoystickRadius() || location.y > target->getJoystickRadius())
     {
 		return false;
 	}

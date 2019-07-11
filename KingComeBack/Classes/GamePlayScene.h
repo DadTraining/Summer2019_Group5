@@ -38,7 +38,7 @@ public:
 
 	void createLayerUI();
 
-	//void update(float dt);
+	void update(float dt) override;
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -46,14 +46,20 @@ private:
 	Vec2 touchLocation[2];
 	TMXTiledMap *map;
 	Size sizeWall;
+	Vec2 positionJoystick;
+	Sprite *joystickBack;
+	Sprite *joystick;
 
 	SneakyJoystick *leftJoystick;
-	SneakyButton *jumpBtn;
+	SneakyJoystickSkinnedBase *joystickBase;
+	SneakyJoystick *aJoystick;
 
-	GamePlayScene *layerUI;
+	GLView *MyGLView;
+
+	Layer *layerUI;
 
 	static const int indexMap = 1;
-	static const int indexCamera = 3;
+	static const int indexCamera = 4;
 	static const int indexJoystick = 3;
 	static const int indexLayerUI = 2;
 };

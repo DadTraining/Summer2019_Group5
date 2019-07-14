@@ -20,11 +20,11 @@ public:
 	~GamePlayScene();
 
 	static Scene *createScene();
-	Camera *camera;
+
 
 	virtual bool init() override;
 
-
+	void createLayer2D();
 
 	bool OnTouchBegan(Touch *touch, Event *unused_event);
 	void OnTouchMove(Touch *touch, Event *unused_event);
@@ -33,10 +33,12 @@ public:
 	bool OnContactBegin(PhysicsContact &contact);
 
 	void AddMap();
-	void AddCamera();
+	void AddCameraUSER1();
+	void AddCameraUSER2();
 	void AddListener();
 	void AddJoystick();
 	void AddButton();
+	void AddSpriteUI();
 
 	void createLayerUI();
 
@@ -50,7 +52,8 @@ private:
 	Vec2 positionJoystick;
 	Sprite *joystickBack;
 	Sprite *joystick;
-
+	Camera *camera;
+	Camera *cameraUS2;
 	bool moveOutBackground = true;
 
 	SneakyJoystick *leftJoystick;
@@ -59,6 +62,7 @@ private:
 
 	GLView *MyGLView;
 
+	Layer *_layer2D;
 	Layer *layerUI;
 
 	static const int indexMap = 1;

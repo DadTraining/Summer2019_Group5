@@ -27,24 +27,39 @@ bool GamePlayScene::init()
 	}
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
+	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, true);
+	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
+	//winSize = Director::getInstance()->getWinSize();
+
+	//Create Layer for map and camera
+	this->createLayer2D();
+
+	// add camera
+	this->AddCameraUSER1();
+
 	//add map
 	this->AddMap();
 
 	//Add listener
 	this->AddListener();
 
+	//Add camera User 2
+	this->AddCameraUSER2();
+
 	// add layer 
 	this->createLayerUI();
 
-	//Add joystick
-	this->AddJoystick();
-
-	// add camera
-	this->AddCamera();
+	_layer2D->setCameraMask(2);
 
 	//this->scheduleUpdate();
-
 	return true;
+}
+
+void GamePlayScene::createLayer2D()
+{
+	auto layer2D = Layer::create();
+	this->addChild(layer2D, 0);
+	_layer2D = layer2D;
 }
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
@@ -59,12 +74,8 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 	//	layerUI->setPosition(camera->getPosition());//camera->getPosition() - (map->getContentSize() - screenSize) / 2);
 	//}
 	//if (moveOutBackground)
-	{
-		log("touch position : %f, %f", touch->getLocation().x, touch->getLocation().y);
-		return true;
-
-	}
-	//return false;
+	log("touch position : %f, %f", touch->getLocation().x, touch->getLocation().y);
+	return true;
 }
 
 void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
@@ -73,8 +84,13 @@ void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 	Vec2 touchLocation = touch->getLocation();
 	Point newPos = touch->getPreviousLocation() - touch->getLocation();
 
+	Vec3 cameraForward;
 	Vec3 cameraDownDir;
 	Vec3 cameraRightDir;
+
+	camera->getNodeToWorldTransform().getForwardVector(&cameraForward);
+	cameraForward.normalize();
+	//cameraForward.y = 0;
 
 	camera->getNodeToWorldTransform().getDownVector(&cameraDownDir);
 	cameraDownDir.normalize();
@@ -82,14 +98,14 @@ void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 
 	camera->getNodeToWorldTransform().getRightVector(&cameraRightDir);
 	cameraRightDir.normalize();
-
 	cameraRightDir.z = 0;
 
 	Vec3 cameraPos = camera->getPosition3D();
-	cameraPos += cameraDownDir*newPos.y*0.5f;
+	cameraPos -= cameraDownDir*newPos.y*0.5f;
 	cameraPos += cameraRightDir*newPos.x*0.5f;
 	camera->setPosition3D(cameraPos);
 
+	//layerUI->setPosition3D(cameraPos);
 	
 	/*	if (camera->getPositionX() >= screenSize.width / 2 + map->getPositionX()
 		&& camera->getPositionY() >= screenSize.height / 2 + map->getPositionY()
@@ -150,25 +166,25 @@ void GamePlayScene::AddMap()
 
 	map->setPhysicsBody(physicBody);
 
-	this->addChild(map, indexMap);
+	_layer2D->addChild(map);
 }
 
-void GamePlayScene::AddCamera()
+void GamePlayScene::AddCameraUSER1()
 {
-	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, false);
-	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
-	auto s = Director::getInstance()->getWinSize();
-
 	camera = Camera::create();
 
-	camera->setPosition(layerUI->getPosition());
+	//camera->setPosition();
 	camera->setCameraFlag(CameraFlag::USER1);
 
-	Vec2 size = camera->getPosition();
+	_layer2D->addChild(camera);
+	
+}
 
-
-	layerUI->addChild(camera, indexCamera);
-	camera->setCameraMask(2);
+void GamePlayScene::AddCameraUSER2()
+{
+	cameraUS2 = Camera::create();
+	cameraUS2->setCameraMask(4);
+	this->addChild(cameraUS2);
 }
 
 void GamePlayScene::AddListener()
@@ -192,7 +208,7 @@ void GamePlayScene::AddJoystick()
 	joystickBaseDimensions = Rect(0, 0, 160.0f, 160.0f);
 
 	Point joystickBasePosition;
-	joystickBasePosition = Point(s.width - 50, VisibleRect::top().y - 100);//Point(layerUI->getPosition() - screenSize * 3 / 8);
+	joystickBasePosition = Point(screenSize.width / 9, screenSize.height / 7);//Point(layerUI->getPosition() - screenSize * 3 / 8);
 
 	joystickBase = new SneakyJoystickSkinnedBase();
 	joystickBase->init();
@@ -213,7 +229,7 @@ void GamePlayScene::AddJoystick()
 
 	leftJoystick = joystickBase->getJoystick();
 	leftJoystick->retain();
-	layerUI->addChild(joystickBase, indexJoystick);
+	this->addChild(joystickBase, 10);
 }
 
 void GamePlayScene::AddButton()
@@ -221,13 +237,23 @@ void GamePlayScene::AddButton()
 
 }
 
+void GamePlayScene::AddSpriteUI()
+{
+	auto containerForSpriteUI = Node::create();
+	auto sprite = Sprite::create("UI.png");
+	sprite->setPosition(screenSize / 2);
+	containerForSpriteUI->addChild(sprite);
+	layerUI->addChild(containerForSpriteUI, 10);
+	//containerForSpriteUI->setCameraMask(4);
+}
+
 void GamePlayScene::createLayerUI()
 {
 	layerUI = Layer::create();
-	layerUI->setPosition(Vec2(256 , 256));
+	layerUI->setPosition(Vec2(0 , 0));
 	log("Layer Position : %f, %f", layerUI->getPosition().x, layerUI->getPosition().y);
 	log("Layer ContentSize: %f, %f", layerUI->getContentSize().width, layerUI->getContentSize().height);
-	auto physicBody = PhysicsBody::createBox(layerUI->getContentSize(),
+	auto physicBody = PhysicsBody::createBox(screenSize,
 		PHYSICSBODY_MATERIAL_DEFAULT);
 
 	physicBody->setCollisionBitmask(BITMASK_LAYER_UI);
@@ -238,13 +264,13 @@ void GamePlayScene::createLayerUI()
 
 	//layerUI->setPhysicsBody(physicBody);
 
-	this->addChild(layerUI, indexLayerUI);
+	this->addChild(layerUI, 10);
 
-	auto containerForSpriteUI = Node::create();
-	auto sprite = Sprite::create("UI.png");
-	sprite->setPosition(layerUI->getPosition());
-	containerForSpriteUI->addChild(sprite);
-	addChild(containerForSpriteUI, 3);
+	//Add sprite UI;
+	this->AddSpriteUI();
+
+	//Add joystick
+	this->AddJoystick();
 }
 
 void GamePlayScene::update(float dt)

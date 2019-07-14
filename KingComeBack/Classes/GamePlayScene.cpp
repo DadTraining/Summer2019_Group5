@@ -1,6 +1,5 @@
 #include"GamePlayScene.h"
 
-
 GamePlayScene::GamePlayScene()
 {
 }
@@ -40,9 +39,6 @@ bool GamePlayScene::init()
 	//Add joystick
 	this->AddJoystick();
 
-	MyGLView = Director::getInstance()->getOpenGLView();
-
-
 	// add camera
 	this->AddCamera();
 
@@ -62,31 +58,59 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 	//	camera->setPosition(moveCamera);
 	//	layerUI->setPosition(camera->getPosition());//camera->getPosition() - (map->getContentSize() - screenSize) / 2);
 	//}
+	//if (moveOutBackground)
+	{
+		log("touch position : %f, %f", touch->getLocation().x, touch->getLocation().y);
+		return true;
 
-	return true;
+	}
+	//return false;
 }
 
 void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 {
-	if (camera->getPositionX() >= screenSize.width / 2 + map->getPositionX()
+
+	Vec2 touchLocation = touch->getLocation();
+	Point newPos = touch->getPreviousLocation() - touch->getLocation();
+
+	Vec3 cameraDownDir;
+	Vec3 cameraRightDir;
+
+	camera->getNodeToWorldTransform().getDownVector(&cameraDownDir);
+	cameraDownDir.normalize();
+	cameraDownDir.z = 0;
+
+	camera->getNodeToWorldTransform().getRightVector(&cameraRightDir);
+	cameraRightDir.normalize();
+
+	cameraRightDir.z = 0;
+
+	Vec3 cameraPos = camera->getPosition3D();
+	cameraPos += cameraDownDir*newPos.y*0.5f;
+	cameraPos += cameraRightDir*newPos.x*0.5f;
+	camera->setPosition3D(cameraPos);
+
+	
+	/*	if (camera->getPositionX() >= screenSize.width / 2 + map->getPositionX()
 		&& camera->getPositionY() >= screenSize.height / 2 + map->getPositionY()
 		&& camera->getPositionX() <= map->getContentSize().width - screenSize.width / 2
-		&& camera->getPositionY() <= map->getContentSize().height - screenSize.height / 2)
-	{
+		&& camera->getPositionY() <= map->getContentSize().height - screenSize.height / 2*/
+	/*{
 		Vec2 moveCamera = touch->getLocation() - touch->getPreviousLocation() + camera->getPosition();
-		camera->setPosition(moveCamera);
 
-		layerUI->setPosition(camera->getPosition()); //(map->getContentSize() - screenSize) / 2);
-	}
-	// 
-	//-touch->getPreviousLocation() + Director::getInstance()->getRunningScene()->getDefaultCamera()->getPosition()
-
-	//Director::getInstance()->getRunningScene()->getDefaultCamera()->setPosition(touch->getLocation());
+		layerUI->setPosition(touch->getLocation() - touch->getPreviousLocation() + layerUI->getPosition());
+		
+		log("Layer Position : %f, %f", layerUI->getPosition().x, layerUI->getPosition().y);
+		log("Camera Position: %f, %f", camera->getPosition().x, camera->getPosition().y);
+		log("joystick position: %f, %f", leftJoystick->getPositionX(), leftJoystick->getPositionY());
+		log("joystickBase postion: %f, %f", joystickBase->getPositionX(), joystickBase->getPositionY());
+	}*/
+	
 }
 
 void GamePlayScene::OnTouchEnd(Touch * touch, Event * unused_event)
 {
-
+	moveOutBackground = true;
 }
 
 bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
@@ -94,11 +118,13 @@ bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
 	auto spriteA = contact.getShapeA()->getBody();
 	auto spriteB = contact.getShapeB()->getBody();
 
+	int a = spriteA->getCollisionBitmask();
+	int b = spriteB->getCollisionBitmask();
 	// camera with map
-	if ((spriteA->getCollisionBitmask() == BITMASK_MAP && spriteB->getCollisionBitmask() == BITMASK_CAMERA)
-		|| (spriteA->getCollisionBitmask() == BITMASK_CAMERA && spriteB->getCollisionBitmask() == BITMASK_MAP))
+	if ((spriteA->getCollisionBitmask() == BITMASK_MAP && spriteB->getCollisionBitmask() == BITMASK_LAYER_UI)
+		|| (spriteA->getCollisionBitmask() == BITMASK_LAYER_UI && spriteB->getCollisionBitmask() == BITMASK_MAP))
 	{
-
+		//moveOutBackground = false;
 	}
 	return true;
 }
@@ -108,9 +134,9 @@ void GamePlayScene::AddMap()
 	map = TMXTiledMap::create("map.tmx");
 
 	map->setAnchorPoint(Vec2(0, 0));
-	map->setVisible(false);
+	//map->setVisible(false);
 
-	map->setPosition(0, 0);
+	map->setPosition(this->getPosition());
 
 	// add physic for map
 
@@ -119,7 +145,7 @@ void GamePlayScene::AddMap()
 	auto physicBody = PhysicsBody::createEdgeBox(sizeMap,
 		PHYSICSBODY_MATERIAL_DEFAULT, 2);
 	physicBody->setDynamic(false);
-	physicBody->setCollisionBitmask(101);
+	physicBody->setCollisionBitmask(BITMASK_MAP);
 	physicBody->setContactTestBitmask(true);
 
 	map->setPhysicsBody(physicBody);
@@ -131,26 +157,18 @@ void GamePlayScene::AddCamera()
 {
 	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, false);
 	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
+	auto s = Director::getInstance()->getWinSize();
 
 	camera = Camera::create();
-	camera->setPosition(map->getPosition() + screenSize / 2);
-	camera->setAnchorPoint(Vec2(0.5, 0.5));
+
+	camera->setPosition(layerUI->getPosition());
 	camera->setCameraFlag(CameraFlag::USER1);
 
-	Size size = Director::getInstance()->getOpenGLView()->getVisibleSize();
+	Vec2 size = camera->getPosition();
 
-	auto physicBody = PhysicsBody::createBox(screenSize,
-		PHYSICSBODY_MATERIAL_DEFAULT);
 
-	physicBody->setCollisionBitmask(BITMASK_CAMERA);
-	physicBody->setContactTestBitmask(true);
-	physicBody->setGravityEnable(false);
-	physicBody->setRotationEnable(false);
-	physicBody->setDynamic(true);
-
-	camera->setPhysicsBody(physicBody);
-
-	this->addChild(camera, indexCamera);
+	layerUI->addChild(camera, indexCamera);
+	camera->setCameraMask(2);
 }
 
 void GamePlayScene::AddListener()
@@ -159,20 +177,22 @@ void GamePlayScene::AddListener()
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(GamePlayScene::OnTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(GamePlayScene::OnTouchMove, this);
+	listener->onTouchEnded = CC_CALLBACK_2(GamePlayScene::OnTouchEnd, this);
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 	// add listen contact
-	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+	//auto contactListener = EventListenerPhysicsContact::create();
+	//contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
+	//this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 void GamePlayScene::AddJoystick()
 {
+	Size s = Director::getInstance()->getWinSize();
 	Rect joystickBaseDimensions;
 	joystickBaseDimensions = Rect(0, 0, 160.0f, 160.0f);
 
 	Point joystickBasePosition;
-	joystickBasePosition = Point(screenSize.width / 9, screenSize.height / 6);
+	joystickBasePosition = Point(s.width - 50, VisibleRect::top().y - 100);//Point(layerUI->getPosition() - screenSize * 3 / 8);
 
 	joystickBase = new SneakyJoystickSkinnedBase();
 	joystickBase->init();
@@ -204,21 +224,32 @@ void GamePlayScene::AddButton()
 void GamePlayScene::createLayerUI()
 {
 	layerUI = Layer::create();
-	Size size = layerUI->getContentSize();
+	layerUI->setPosition(Vec2(256 , 256));
+	log("Layer Position : %f, %f", layerUI->getPosition().x, layerUI->getPosition().y);
+	log("Layer ContentSize: %f, %f", layerUI->getContentSize().width, layerUI->getContentSize().height);
+	auto physicBody = PhysicsBody::createBox(layerUI->getContentSize(),
+		PHYSICSBODY_MATERIAL_DEFAULT);
 
-	//layerUI->setScale(0.5);
-	layerUI->setAnchorPoint(Vec2::ZERO);
-	//layerUI->setPosition(map->getPosition());
+	physicBody->setCollisionBitmask(BITMASK_LAYER_UI);
+	physicBody->setContactTestBitmask(true);
+	physicBody->setGravityEnable(false);
+	physicBody->setRotationEnable(false);
+	physicBody->setDynamic(true);
+
+	//layerUI->setPhysicsBody(physicBody);
+
 	this->addChild(layerUI, indexLayerUI);
 
+	auto containerForSpriteUI = Node::create();
 	auto sprite = Sprite::create("UI.png");
-	sprite->setAnchorPoint(Vec2(0 , 0));
 	sprite->setPosition(layerUI->getPosition());
-	layerUI->addChild(sprite, 3);
+	containerForSpriteUI->addChild(sprite);
+	addChild(containerForSpriteUI, 3);
 }
 
 void GamePlayScene::update(float dt)
 {
+
 //	if (leftJoystick->getVelocity().x > 0) {
 //		everboyBody->setVelocity(Vect(200, 0));
 //	}
@@ -235,4 +266,8 @@ void GamePlayScene::update(float dt)
 	//joystickBase->updatePositions(dt);
 }
 
-
+//void CollisionMapCamera()
+//{
+//
+//	if ()
+//}

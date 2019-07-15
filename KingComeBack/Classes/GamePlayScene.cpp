@@ -48,6 +48,8 @@ bool GamePlayScene::init()
 	// add layer 
 	this->createLayerUI();
 
+	this->AddButtonPopUpHero();
+
 	this->scheduleUpdate();
 
 	return true;
@@ -218,9 +220,24 @@ void GamePlayScene::AddJoystick()
 	_layerUI->addChild(joystickBase, 10);
 }
 
-void GamePlayScene::AddButton()
+void GamePlayScene::AddButtonPopUpHero()
 {
-
+	auto button = ui::Button::create("CloseNormal.png", "CloseSelected.png");
+	button->setTitleText("Button text");
+	button->setPosition(Vec2(screenSize.width / 1.6, screenSize.height / 9));
+	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type){
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			this->AddPopupHero();
+			break;
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
+	});
+	_layerUI->addChild(button, 10);
 }
 
 void GamePlayScene::AddSpriteUI()
@@ -231,6 +248,19 @@ void GamePlayScene::AddSpriteUI()
 	containerForSpriteUI->addChild(sprite);
 	_layerUI->addChild(containerForSpriteUI, 10);
 }
+
+void GamePlayScene::AddPopupHero()
+{
+	auto popUpHero = UICustom::Popup::createAsConfirmDialogue("", "", [=]() {
+		auto sprite = Sprite::create("Popup.png");
+		sprite->setScale(1.5);
+		sprite->setPosition(screenSize / 2);
+		sprite->setCameraMask((unsigned short)CameraFlag::USER2);
+		_layerUI->addChild(sprite, 10);
+	});
+	_layerUI->addChild(popUpHero, 10);
+}
+
 
 void GamePlayScene::createLayerUI()
 {

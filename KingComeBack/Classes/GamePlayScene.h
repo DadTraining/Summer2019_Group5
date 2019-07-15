@@ -3,8 +3,9 @@
 #include"SneakyButton.h"
 #include"SneakyButtonSkinnedBase.h"
 #include"SneakyJoystickSkinnedBase.h"
-#include"ui/UISlider.h"
+#include"ui/CocosGUI.h"
 #include"VisibleRect.h"
+#include"Popup.h"
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -37,8 +38,9 @@ public:
 	void AddCameraUSER2();
 	void AddListener();
 	void AddJoystick();
-	void AddButton();
+	void AddButtonPopUpHero();
 	void AddSpriteUI();
+	void AddPopupHero();
 
 	void createLayerUI();
 

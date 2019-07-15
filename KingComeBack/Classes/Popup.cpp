@@ -33,7 +33,7 @@ namespace IMAGEPATH {
 	const char *CANCEL_BUTTON = "CloseNormal.png";
 	const char *CANCEL_BUTTON_PRESSED = "CloseNormal.png";
 	const char *CLOSE_BUTTON = "CloseNormal.png";
-	const char *BACKGROUND_IMAGE = "background-repo.jpg";
+	const char *BACKGROUND_IMAGE = "m_PopupHero.png";
 }
 namespace UICustom {
 
@@ -179,16 +179,16 @@ namespace UICustom {
 
 		_bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
 		_bg->setScale9Enabled(true);
-		_bg->setContentSize(size);
+		//_bg->setContentSize(size);
 
 		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
-		_bg->addChild(fill);
+		//_bg->addChild(fill);
 		fill->setColor(Color3B(210, 210, 210));
 		fill->setScale9Enabled(true);
 		fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
 		fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
-		fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
-
+		//fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+		
 
 		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
 		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);

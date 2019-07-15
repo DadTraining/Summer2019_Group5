@@ -1,4 +1,5 @@
 #pragma once
+#include "ResourceManager.h"
 #include "MyObject.h"
 #define ID_ITEM_STRENGTH 1
 

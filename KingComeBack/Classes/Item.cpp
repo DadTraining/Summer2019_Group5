@@ -6,6 +6,10 @@ Item::Item(Scene * scene, int ID)
 	scene->addChild(m_sprite);
 }
 
+Item::~Item()
+{
+}
+
 void Item::Init(int ID)
 {
 	switch (ID)
@@ -27,11 +31,15 @@ void Item::Init(int ID)
 	default:
 		break;
 	}
-	this->m_sprite = ResourceManager::getInstance()->GetSpriteById(ID);
+	this->m_sprite = ResourceManager::GetInstance()->GetSpriteById(ID);
 	Size screensize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	this->m_sprite->removeFromParent();
 	
+}
+
+void Item::Died()
+{
 }
 
 String Item::SetState(String toggle_state)

@@ -1,4 +1,5 @@
 #pragma once
+#include"ResourceManager.h"
 #include "MyObject.h"
 class ResourceNature : public  MyObject {
 private:
@@ -6,7 +7,7 @@ private:
 	int m_total;
 public:
 	ResourceNature(Scene * scene, int ID);
-	~Money();
+	
 	void Init(int ID);
 	void Died();
 	void Reduce(int ID);

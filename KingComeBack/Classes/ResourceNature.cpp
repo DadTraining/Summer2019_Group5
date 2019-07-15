@@ -6,6 +6,7 @@ ResourceNature::ResourceNature(Scene * scene, int ID)
 	scene->addChild(m_sprite);
 }
 
+
 void ResourceNature::Init(int ID)
 {
 	switch (ID)
@@ -21,10 +22,14 @@ void ResourceNature::Init(int ID)
 	default:
 		break;
 	}
-	this->m_sprite = ResourceManager::getInstance()->GetSpriteById(ID);
+	this->m_sprite = ResourceManager::GetInstance()->GetSpriteById(ID);
 	Size screensize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	this->m_sprite->removeFromParent();
+}
+
+void ResourceNature::Died()
+{
 }
 
 void ResourceNature::Reduce(int ID)

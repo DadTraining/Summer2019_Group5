@@ -9,3 +9,7 @@ Person::~Person()
 {
 
 }
+
+void Person::Update()
+{
+}

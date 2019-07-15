@@ -223,7 +223,7 @@ void GamePlayScene::AddJoystick()
 void GamePlayScene::AddButtonPopUpHero()
 {
 	auto button = ui::Button::create("CloseNormal.png", "CloseSelected.png");
-	button->setTitleText("Button text");
+	//button->setTitleText("Button text");
 	button->setPosition(Vec2(screenSize.width / 1.6, screenSize.height / 9));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type){
 		switch (type)

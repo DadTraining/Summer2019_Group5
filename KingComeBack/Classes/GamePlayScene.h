@@ -42,7 +42,7 @@ public:
 
 	void createLayerUI();
 
-	void update(float dt) override;
+	//void update(float dt) override;
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -63,7 +63,7 @@ private:
 	GLView *MyGLView;
 
 	Layer *_layer2D;
-	Layer *layerUI;
+	Layer *_layerUI;
 
 	static const int indexMap = 1;
 	static const int indexCamera = 4;

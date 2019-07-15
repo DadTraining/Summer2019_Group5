@@ -10,9 +10,8 @@ GamePlayScene::~GamePlayScene()
 
 Scene * GamePlayScene::createScene()
 {
-	//auto scene = GamePlayScene::create();
 	auto scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	auto layer = GamePlayScene::create();
 
 	scene->addChild(layer);
@@ -27,18 +26,18 @@ bool GamePlayScene::init()
 	}
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
+
 	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, true);
 	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
-	//winSize = Director::getInstance()->getWinSize();
 
 	//Create Layer for map and camera
 	this->createLayer2D();
 
-	// add camera
-	this->AddCameraUSER1();
-
 	//add map
 	this->AddMap();
+
+	// add camera
+	this->AddCameraUSER1();
 
 	//Add listener
 	this->AddListener();
@@ -49,9 +48,8 @@ bool GamePlayScene::init()
 	// add layer 
 	this->createLayerUI();
 
-	_layer2D->setCameraMask(2);
+	this->scheduleUpdate();
 
-	//this->scheduleUpdate();
 	return true;
 }
 
@@ -64,32 +62,20 @@ void GamePlayScene::createLayer2D()
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
-	//if (camera->getPositionX() >= screenSize.width / 2 + map->getPositionX()
-	//	&& camera->getPositionY() >= screenSize.height / 2 + map->getPositionY()
-	//	&& camera->getPositionX() <= map->getContentSize().width - screenSize.width / 2
-	//	&& camera->getPositionY() <= map->getContentSize().height - screenSize.height / 2)
-	//{
-	//	Vec2 moveCamera = touch->getLocation() - touch->getPreviousLocation() + camera->getPosition();
-	//	camera->setPosition(moveCamera);
-	//	layerUI->setPosition(camera->getPosition());//camera->getPosition() - (map->getContentSize() - screenSize) / 2);
-	//}
-	//if (moveOutBackground)
-	log("touch position : %f, %f", touch->getLocation().x, touch->getLocation().y);
 	return true;
 }
 
 void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 {
 
-	Vec2 touchLocation = touch->getLocation();
 	Point newPos = touch->getPreviousLocation() - touch->getLocation();
 
 	Vec3 cameraForward;
 	Vec3 cameraDownDir;
 	Vec3 cameraRightDir;
 
-	camera->getNodeToWorldTransform().getForwardVector(&cameraForward);
-	cameraForward.normalize();
+	//camera->getNodeToWorldTransform().getForwardVector(&cameraForward);
+	//cameraForward.normalize();
 	//cameraForward.y = 0;
 
 	camera->getNodeToWorldTransform().getDownVector(&cameraDownDir);
@@ -104,24 +90,13 @@ void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 	cameraPos -= cameraDownDir*newPos.y*0.5f;
 	cameraPos += cameraRightDir*newPos.x*0.5f;
 	camera->setPosition3D(cameraPos);
-
-	//layerUI->setPosition3D(cameraPos);
 	
-	/*	if (camera->getPositionX() >= screenSize.width / 2 + map->getPositionX()
-		&& camera->getPositionY() >= screenSize.height / 2 + map->getPositionY()
-		&& camera->getPositionX() <= map->getContentSize().width - screenSize.width / 2
-		&& camera->getPositionY() <= map->getContentSize().height - screenSize.height / 2*/
-	/*{
-		Vec2 moveCamera = touch->getLocation() - touch->getPreviousLocation() + camera->getPosition();
+	//log("touch position : %f, %f", touch->getLocation().x, touch->getLocation().y);
+	//log("newPos Position : %f, %f", newPos.x, newPos.y);
+	//log("LayerUI Position : %f, %f", _layerUI->getPosition().x, _layerUI->getPosition().y);
+	//log("Camera Position: %f, %f", camera->getPosition().x, camera->getPosition().y);
+	//log("Layer2D Position : %f, %f", _layer2D->getPosition().x, _layer2D->getPosition().y);
 
-		layerUI->setPosition(touch->getLocation() - touch->getPreviousLocation() + layerUI->getPosition());
-		
-		log("Layer Position : %f, %f", layerUI->getPosition().x, layerUI->getPosition().y);
-		log("Camera Position: %f, %f", camera->getPosition().x, camera->getPosition().y);
-		log("joystick position: %f, %f", leftJoystick->getPositionX(), leftJoystick->getPositionY());
-		log("joystickBase postion: %f, %f", joystickBase->getPositionX(), joystickBase->getPositionY());
-	}*/
-	
 }
 
 void GamePlayScene::OnTouchEnd(Touch * touch, Event * unused_event)
@@ -150,7 +125,6 @@ void GamePlayScene::AddMap()
 	map = TMXTiledMap::create("map.tmx");
 
 	map->setAnchorPoint(Vec2(0, 0));
-	//map->setVisible(false);
 
 	map->setPosition(this->getPosition());
 
@@ -159,7 +133,7 @@ void GamePlayScene::AddMap()
 	auto sizeMap = map->getContentSize();
 
 	auto physicBody = PhysicsBody::createEdgeBox(sizeMap,
-		PHYSICSBODY_MATERIAL_DEFAULT, 2);
+		PHYSICSBODY_MATERIAL_DEFAULT, 1);
 	physicBody->setDynamic(false);
 	physicBody->setCollisionBitmask(BITMASK_MAP);
 	physicBody->setContactTestBitmask(true);
@@ -172,12 +146,20 @@ void GamePlayScene::AddMap()
 void GamePlayScene::AddCameraUSER1()
 {
 	camera = Camera::create();
-
-	//camera->setPosition();
 	camera->setCameraFlag(CameraFlag::USER1);
 
-	_layer2D->addChild(camera);
-	
+	auto physicBody = PhysicsBody::createBox(screenSize,
+		PHYSICSBODY_MATERIAL_DEFAULT);
+
+	physicBody->setCollisionBitmask(BITMASK_LAYER_UI);
+	physicBody->setContactTestBitmask(true);
+	physicBody->setGravityEnable(false);
+	physicBody->setRotationEnable(false);
+	physicBody->setDynamic(true);
+
+	camera->setPhysicsBody(physicBody);
+	_layer2D->addChild(camera, 1);	
+	_layer2D->setCameraMask((unsigned short)CameraFlag::USER1);
 }
 
 void GamePlayScene::AddCameraUSER2()
@@ -196,6 +178,10 @@ void GamePlayScene::AddListener()
 	listener->onTouchEnded = CC_CALLBACK_2(GamePlayScene::OnTouchEnd, this);
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+	/*auto listenerMouse = EventListenerMouse::create();
+	listenerMouse->onMouseScroll = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerMouse, this);*/
+
 	// add listen contact
 	//auto contactListener = EventListenerPhysicsContact::create();
 	//contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
@@ -208,7 +194,7 @@ void GamePlayScene::AddJoystick()
 	joystickBaseDimensions = Rect(0, 0, 160.0f, 160.0f);
 
 	Point joystickBasePosition;
-	joystickBasePosition = Point(screenSize.width / 9, screenSize.height / 7);//Point(layerUI->getPosition() - screenSize * 3 / 8);
+	joystickBasePosition = Point(screenSize.width / 9, screenSize.height / 7);
 
 	joystickBase = new SneakyJoystickSkinnedBase();
 	joystickBase->init();
@@ -229,7 +215,7 @@ void GamePlayScene::AddJoystick()
 
 	leftJoystick = joystickBase->getJoystick();
 	leftJoystick->retain();
-	this->addChild(joystickBase, 10);
+	_layerUI->addChild(joystickBase, 10);
 }
 
 void GamePlayScene::AddButton()
@@ -243,28 +229,17 @@ void GamePlayScene::AddSpriteUI()
 	auto sprite = Sprite::create("UI.png");
 	sprite->setPosition(screenSize / 2);
 	containerForSpriteUI->addChild(sprite);
-	layerUI->addChild(containerForSpriteUI, 10);
-	//containerForSpriteUI->setCameraMask(4);
+	_layerUI->addChild(containerForSpriteUI, 10);
 }
 
 void GamePlayScene::createLayerUI()
 {
-	layerUI = Layer::create();
-	layerUI->setPosition(Vec2(0 , 0));
-	log("Layer Position : %f, %f", layerUI->getPosition().x, layerUI->getPosition().y);
-	log("Layer ContentSize: %f, %f", layerUI->getContentSize().width, layerUI->getContentSize().height);
-	auto physicBody = PhysicsBody::createBox(screenSize,
-		PHYSICSBODY_MATERIAL_DEFAULT);
-
-	physicBody->setCollisionBitmask(BITMASK_LAYER_UI);
-	physicBody->setContactTestBitmask(true);
-	physicBody->setGravityEnable(false);
-	physicBody->setRotationEnable(false);
-	physicBody->setDynamic(true);
-
-	//layerUI->setPhysicsBody(physicBody);
-
-	this->addChild(layerUI, 10);
+	_layerUI = Layer::create();
+	_layerUI->setPosition(Vec2(2 , 2));
+	log("layerUI contentsize : %f , %f", _layerUI->getContentSize().width, _layerUI->getContentSize().height);
+	
+	this->addChild(_layerUI, 10);
+	_layerUI->setCameraMask((unsigned short)CameraFlag::USER2);
 
 	//Add sprite UI;
 	this->AddSpriteUI();
@@ -273,9 +248,9 @@ void GamePlayScene::createLayerUI()
 	this->AddJoystick();
 }
 
-void GamePlayScene::update(float dt)
-{
-
+//void GamePlayScene::update(float dt)
+//{
+//
 //	if (leftJoystick->getVelocity().x > 0) {
 //		everboyBody->setVelocity(Vect(200, 0));
 //	}
@@ -289,11 +264,5 @@ void GamePlayScene::update(float dt)
 //		everboyBody->applyImpulse(Vec2(0, 200));
 //		everboyBody->setVelocity(Vec2(0, 100));
 //	}
-	//joystickBase->updatePositions(dt);
-}
-
-//void CollisionMapCamera()
-//{
-//
-//	if ()
+//	joystickBase->updatePositions(dt);
 //}

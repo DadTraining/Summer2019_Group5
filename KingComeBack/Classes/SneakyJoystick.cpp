@@ -121,8 +121,6 @@ void SneakyJoystick::setDeadRadius(float r)
 
 bool SneakyJoystick::onTouchBegan(Touch *touch, Event *event)
 {
-	log("Location joystick: %f, %f", touch->getLocation().x, touch->getLocation().y);
-	Vec2 touchLocation = touch->getLocationInView() - Vec2(128,64) + touch->getLocationInView();
 	Point location = Director::getInstance()->convertToGL(touch->getLocationInView());
 
     auto target = static_cast<SneakyJoystick*>(event->getCurrentTarget());

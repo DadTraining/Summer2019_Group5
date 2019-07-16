@@ -9,4 +9,6 @@ public:
 	~MyObject();
 	virtual void Init(int ID) = 0;
 	virtual void Died() = 0;
+	
+	Sprite *getSprite();
 };

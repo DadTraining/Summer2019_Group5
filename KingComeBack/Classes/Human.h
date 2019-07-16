@@ -11,6 +11,7 @@ public:
 	~Human();
 	virtual void Init(int id) = 0;
 	virtual void Died() = 0;
+	virtual void Update(float dt) = 0;
 private:
 	float m_blood;
 	float m_amor;

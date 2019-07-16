@@ -8,3 +8,8 @@ MyObject::MyObject()
 MyObject::~MyObject()
 {
 }
+
+Sprite * MyObject::getSprite()
+{
+	return m_sprite;
+}

@@ -11,7 +11,8 @@ public:
 	~Home();
 	virtual void Init(int id) = 0;
 	virtual void Died() = 0;
-	virtual void LoadingBuil() = 0;
+	virtual void LoadingBuild() = 0;
+	virtual void Update(float dt) = 0;
 private:
 
 };

@@ -26,18 +26,18 @@ namespace FONT {
 	const char *GAME_FONT = "fonts/arial.ttf";
 	const float LABEL_STROKE = 4;
 }
-
 namespace IMAGEPATH {
 	const char *OK_BUTTON = "CloseNormal.png";
 	const char *OK_BUTTON_PRESSED = "CloseNormal.png";
 	const char *CANCEL_BUTTON = "CloseNormal.png";
 	const char *CANCEL_BUTTON_PRESSED = "CloseNormal.png";
 	const char *CLOSE_BUTTON = "CloseNormal.png";
-	const char *BACKGROUND_IMAGE = "m_PopupHero.png";
+	const char *BACKGROUND_IMAGE_HERO = "m_PopupHero.png";
+	const char *BACKGROUND_IMAGE_HOUSE = "PopupHouse.png";
+	const char *TOWN_HALL_BUTTON = "HallTownButton.png";
+	const char *TOWN_HALL_BUTTON_PRESS = "HallTownButton_press.png";
 }
 namespace UICustom {
-
-
 
 	PopupDelegates *PopupDelegates::create()
 	{
@@ -107,17 +107,12 @@ namespace UICustom {
 	}
 
 
-
-
-
-
-
-	Popup *Popup::createAsMessage(const std::string &title, const std::string &msg)
+	Popup *Popup::createAsMessage(const std::string &title ,const std::string &msg)
 	{
 		return createAsConfirmDialogue(title, msg, NULL);
 	}
 
-	Popup *Popup::createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc)
+	Popup *Popup::createAsConfirmDialogue(const std::string &title, const std::string &msg,const std::function<void()> &YesFunc)
 	{
 		return create(title, msg, NULL, YesFunc);
 	}
@@ -128,7 +123,6 @@ namespace UICustom {
 		Size winSize = Director::getInstance()->getWinSize();
 		if (node && node->init())
 		{
-
 			if (!lbl) {
 				lbl = Label::createWithTTF(msg, FONT::GAME_FONT, FONT::DESCRIPTION_TEXT_SIZE);
 			}
@@ -136,7 +130,6 @@ namespace UICustom {
 			lbl->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
 			lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
-
 
 			if (YesFunc) {
 				MenuItemImage *yesButton = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
@@ -149,8 +142,7 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 
-
-				Menu *menu = Menu::create(yesButton, noButton, NULL);
+				Menu *menu = Menu::create(noButton, NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
@@ -174,14 +166,14 @@ namespace UICustom {
 
 		Size winSize = Director::getInstance()->getWinSize();
 
-		_bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
+		_bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_HERO);
 		this->addChild(_bg);
 
 		_bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
 		_bg->setScale9Enabled(true);
 		//_bg->setContentSize(size);
 
-		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
+		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_HERO);
 		//_bg->addChild(fill);
 		fill->setColor(Color3B(210, 210, 210));
 		fill->setScale9Enabled(true);
@@ -197,5 +189,90 @@ namespace UICustom {
 		heading->enableShadow(Color4B::BLACK, Size(0, -3));
 	}
 
+	//---------------Popup of house--------------------------------
+
+	PopupHouse * PopupHouse::createAsMessage(const std::string & title, const std::string & msg)
+	{
+		return createAsConfirmDialogue(title, msg, nullptr);
+	}
+	PopupHouse *PopupHouse::createAsConfirmDialogue(const std::string &title, const std::string & msg, const std::function<void()> &YesFunc)
+	{
+		return create(title, msg, NULL, YesFunc);
+	}
+
+	PopupHouse *PopupHouse::create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc)
+	{
+		PopupHouse *node = new (std::nothrow)PopupHouse();
+		Size winSize = Director::getInstance()->getWinSize();
+		if (node && node->init())
+		{
+			if (!lbl) {
+				lbl = Label::createWithTTF(msg, FONT::GAME_FONT, FONT::DESCRIPTION_TEXT_SIZE);
+			}
+			lbl->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+			lbl->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+			lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
+			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
+
+			
+			if (YesFunc) {
+				MenuItemImage *hallTownImage = MenuItemImage::create(IMAGEPATH::TOWN_HALL_BUTTON, IMAGEPATH::TOWN_HALL_BUTTON_PRESS, [=](Ref *sender) {
+					YesFunc();
+					node->dismiss(true);
+				});
+				//MenuItemImage *hallTownImage = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
+				//	YesFunc();
+				//	node->dismiss(true);
+				//});
+				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
+					node->dismiss(true);
+				});
+
+				Menu *menu = Menu::create(hallTownImage ,noButton, NULL);
+				node->addChild(menu, 2);
+				menu->setPosition(winSize.width / 2, winSize.height / 1.5 - lbl->getContentSize().height / 2 - 75);
+				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
+
+				lbl->setPosition(winSize / 2);
+				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
+			}
+			node->addChild(lbl, 10);
+			node->initBg(lbl->getContentSize() + CONFIRM_DIALOGUE_SIZE_OFFSET, title);
+			node->autorelease();
+			return node;
+		}
+
+		CC_SAFE_DELETE(node);
+		return nullptr;
+	}
+
+
+	void PopupHouse::initBg(Size size, const std::string &title)
+	{
+
+		Size winSize = Director::getInstance()->getWinSize();
+
+		_bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_HOUSE);
+		this->addChild(_bg);
+
+		_bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
+		_bg->setScale9Enabled(true);
+		//_bg->setContentSize(size);
+
+		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_HOUSE);
+		//_bg->addChild(fill);
+		fill->setColor(Color3B(210, 210, 210));
+		fill->setScale9Enabled(true);
+		fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
+		fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
+		//fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+
+
+		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
+		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);
+		_bg->addChild(heading);
+		heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+		heading->enableShadow(Color4B::BLACK, Size(0, -3));
+	}
 
 }

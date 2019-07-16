@@ -5,32 +5,50 @@ TownHall ::~TownHall()
 {
 }
 
-TownHall::TownHall(Scene* scene, int id)
+TownHall::TownHall(Layer* _layer, int id)
 {
-	Init(id);
-	scene->addChild(m_sprite, 10);
-	scene->addChild(this->m_sprite, 10);
+	this->Init(id);
+	_layer->addChild(m_sprite, 10);
 }
 
 void TownHall::Init(int id)
 {
-	this->m_sprite = ResourceManager::GetInstance()->GetSpriteById(id);
-	this->m_sprite->setVisible(false);
+	//this->m_sprite = ResourceManager::GetInstance()->GetSpriteById(id);
 
-	this->m_sprite->setScale(0.5);
-
+	m_sprite = Sprite::create("HallTown.png");
+	m_sprite->setScale(0.4);
 }
 
 void TownHall::Died()
 {
+	m_sprite->removeFromParentAndCleanup(true);
+}
 
-	m_sprite->setVisible(false);
+void TownHall::LoadingBuild()
+{
 
-	this->m_sprite->setVisible(false);
+}
 
+void TownHall::Update(float dt)
+{
 }
 
 void TownHall::CreateKnight()
 {
 
+}
+
+bool TownHall::OnTouchBegan(Touch * touch, Event * unused_event)
+{
+	
+	return true;
+}
+
+void TownHall::OnTouchMove(Touch * touch, Event * unused_event)
+{
+
+}
+
+void TownHall::OnTouchEnd(Touch * touch, Event * unused_event)
+{
 }

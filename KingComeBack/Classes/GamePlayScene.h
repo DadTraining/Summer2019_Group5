@@ -6,6 +6,7 @@
 #include"ui/CocosGUI.h"
 #include"VisibleRect.h"
 #include"Popup.h"
+#include"TownHall.h"
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -39,8 +40,10 @@ public:
 	void AddListener();
 	void AddJoystick();
 	void AddButtonPopUpHero();
+	void AddButtonPopUpHouse();
 	void AddSpriteUI();
 	void AddPopupHero();
+	void AddPopupHouse();
 
 	void createLayerUI();
 

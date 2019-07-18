@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "Home.h"
+#include "Popup.h"
 
 USING_NS_CC;
 
@@ -16,11 +17,15 @@ public:
 
 	void CreateKnight();
 
-	bool OnTouchBegan(Touch *touch, Event *unused_event);
-	void OnTouchMove(Touch *touch, Event *unused_event);
+	bool OnTouchBegin(Touch * touch, Event * unused_event);
+//void OnTouchMove(Touch *touch, Event *unused_event);
 	void OnTouchEnd(Touch *touch, Event *unused_event);
+
+	Sprite *loadingBar;
 
 
 private:
 	int id_home;
+	Sprite *loadingBarBg;
+	GLubyte hallTownOpacity;
 };

@@ -51,7 +51,7 @@ public:
 
 	void createLayerUI();
 
-	//void update(float dt) override;
+	void update(float dt) override;
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -63,7 +63,7 @@ private:
 	Sprite *joystick;
 	Camera *camera;
 	Camera *cameraUS2;
-	bool moveOutBackground = true;
+	bool createListenerForTownHall = true;
 
 	SneakyJoystick *leftJoystick;
 	SneakyJoystickSkinnedBase *joystickBase;
@@ -81,5 +81,8 @@ private:
 
 	Size mapContentSize;
 	Point touchCurrenPositon;
+
+	ScoutTown *newScoutTown;
+	TownHall *newHallTown;
 };
 

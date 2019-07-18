@@ -64,18 +64,29 @@ namespace UICustom {
 		static PopupHouse* createAsConfirmDialogue(const std::string &title, const std::string &msg,  const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
 		static PopupHouse* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
 
-
-
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};
 
+	// popup hero
 	class PopupHero : public PopupDelegates
 	{
 	public:
 		static PopupHero* createAsMessage(const std::string &title, const std::string &msg);
 		static PopupHero* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
 		static PopupHero* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
+
+	private:
+		void initBg(const cocos2d::Size size, const std::string &title);
+	};
+
+	// popup town hall
+	class PopupTownHall : public PopupDelegates
+	{
+	public:
+		static PopupTownHall* createAsMessage(const std::string &title, const std::string &msg);
+		static PopupTownHall* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
+		static PopupTownHall* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
 
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);

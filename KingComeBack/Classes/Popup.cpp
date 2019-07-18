@@ -16,26 +16,28 @@ using namespace ui;
 namespace {
 	cocos2d::Size CONFIRM_DIALOGUE_SIZE_OFFSET = Size(100, 150);
 	const float ANIMATION_TIME = 0.15f;
-	const float FADE_RATIO = 150;
+	const float FADE_RATIO = 200;
 }
 
 namespace FONT {
 	const float LABEL_OFFSET = 50;
 	const float DESCRIPTION_TEXT_SIZE = 45;
-	const float TITLE_TEXT_SIZE = 70;
-	const char *GAME_FONT = "fonts/arial.ttf";
+	const float TITLE_TEXT_SIZE = 30;
+	const char *GAME_FONT = "fonts/Marker Felt.ttf";
 	const float LABEL_STROKE = 4;
 }
 namespace IMAGEPATH {
 	const char *OK_BUTTON = "CloseNormal.png";
 	const char *OK_BUTTON_PRESSED = "CloseNormal.png";
-	const char *CANCEL_BUTTON = "CloseNormal.png";
-	const char *CANCEL_BUTTON_PRESSED = "CloseNormal.png";
+	const char *CANCEL_BUTTON = "x.png";
+	const char *CANCEL_BUTTON_PRESSED = "x_press.png";
 	const char *CLOSE_BUTTON = "CloseNormal.png";
-	const char *BACKGROUND_IMAGE_HERO = "m_PopupHero.png";
+	const char *BACKGROUND_IMAGE_HERO = "m_PopupHero1.png";
 	const char *BACKGROUND_IMAGE_HOUSE = "PopupHouse.png";
 	const char *TOWN_HALL_BUTTON = "HallTownButton.png";
 	const char *TOWN_HALL_BUTTON_PRESS = "HallTownButton_press.png";
+	const char *SCOUT_TOWN_BUTTON = "ScoutTown2D_button.jpg";
+	const char *SCOUT_TOWN_BUTTON_PRESS = "ScoutTown2D_button_press.png";
 }
 namespace UICustom {
 
@@ -183,7 +185,7 @@ namespace UICustom {
 		
 
 		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
-		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);
+		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET / 2.3);
 		_bg->addChild(heading);
 		heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
 		heading->enableShadow(Color4B::BLACK, Size(0, -3));
@@ -193,14 +195,16 @@ namespace UICustom {
 
 	PopupHouse * PopupHouse::createAsMessage(const std::string & title, const std::string & msg)
 	{
-		return createAsConfirmDialogue(title, msg, nullptr);
+		//return createAsConfirmDialogue(title, msg, nullptr);
+		return nullptr;
 	}
-	PopupHouse *PopupHouse::createAsConfirmDialogue(const std::string &title, const std::string & msg, const std::function<void()> &YesFunc)
+	PopupHouse *PopupHouse::createAsConfirmDialogue(const std::string &title, const std::string & msg, const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1)
 	{
-		return create(title, msg, NULL, YesFunc);
+		return create(title, msg, NULL, YesFunc, YesFunc1);
 	}
 
-	PopupHouse *PopupHouse::create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc)
+	PopupHouse *PopupHouse::create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, 
+		const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1)
 	{
 		PopupHouse *node = new (std::nothrow)PopupHouse();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -216,19 +220,23 @@ namespace UICustom {
 
 			
 			if (YesFunc) {
+				//MenuItemImage *hallTownImage = MenuItemImage::create(IMAGEPATH::TOWN_HALL_BUTTON, IMAGEPATH::TOWN_HALL_BUTTON_PRESS, [=](Ref *sender) {
+				//	YesFunc();
+				//	node->dismiss(true);
+				//});
 				MenuItemImage *hallTownImage = MenuItemImage::create(IMAGEPATH::TOWN_HALL_BUTTON, IMAGEPATH::TOWN_HALL_BUTTON_PRESS, [=](Ref *sender) {
 					YesFunc();
 					node->dismiss(true);
 				});
-				//MenuItemImage *hallTownImage = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
-				//	YesFunc();
-				//	node->dismiss(true);
-				//});
+				MenuItemImage *scoutTownImage = MenuItemImage::create(IMAGEPATH::SCOUT_TOWN_BUTTON, IMAGEPATH::SCOUT_TOWN_BUTTON_PRESS, [=](Ref *sender) {
+					YesFunc1();
+					node->dismiss(true);
+				});
 				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
 					node->dismiss(true);
 				});
 
-				Menu *menu = Menu::create(hallTownImage ,noButton, NULL);
+				Menu *menu = Menu::create(hallTownImage, scoutTownImage ,noButton, NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 1.5 - lbl->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
@@ -256,7 +264,7 @@ namespace UICustom {
 		this->addChild(_bg);
 
 		_bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
-		_bg->setScale9Enabled(true);
+		//_bg->setScale9Enabled(true);
 		//_bg->setContentSize(size);
 
 		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_HOUSE);
@@ -267,12 +275,10 @@ namespace UICustom {
 		fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
 		//fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
 
-
 		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
-		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);
+		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height / 1.5 - FONT::LABEL_OFFSET / 2.3);
 		_bg->addChild(heading);
 		heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
 		heading->enableShadow(Color4B::BLACK, Size(0, -3));
 	}
-
 }

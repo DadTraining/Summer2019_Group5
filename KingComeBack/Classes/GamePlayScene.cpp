@@ -98,7 +98,7 @@ void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 	//log("touch position : %f, %f", touch->getLocation().x, touch->getLocation().y);
 	//log("newPos Position : %f, %f", newPos.x, newPos.y);
 	//log("LayerUI Position : %f, %f", _layerUI->getPosition().x, _layerUI->getPosition().y);
-	log("Camera Position: %f, %f", camera->getPosition().x, camera->getPosition().y);
+	//log("Camera Position: %f, %f", camera->getPosition().x, camera->getPosition().y);
 	//log("Layer2D Position : %f, %f", _layer2D->getPosition().x, _layer2D->getPosition().y);
 
 }
@@ -113,14 +113,10 @@ bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
 	auto spriteA = contact.getShapeA()->getBody();
 	auto spriteB = contact.getShapeB()->getBody();
 
-	int a = spriteA->getCollisionBitmask();
-	int b = spriteB->getCollisionBitmask();
 	// camera with map
-	if ((spriteA->getCollisionBitmask() == BITMASK_MAP && spriteB->getCollisionBitmask() == BITMASK_LAYER_UI)
-		|| (spriteA->getCollisionBitmask() == BITMASK_LAYER_UI && spriteB->getCollisionBitmask() == BITMASK_MAP))
-	{
-		//moveOutBackground = false;
-	}
+	auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
+	CC_ASSERT(body->getCategoryBitmask() == 0x04 || body->getCategoryBitmask() == 0x08);
+
 	return true;
 }
 
@@ -139,10 +135,9 @@ void GamePlayScene::AddMap()
 	auto physicBody = PhysicsBody::createEdgeBox(sizeMap,
 		PHYSICSBODY_MATERIAL_DEFAULT, 3);
 	physicBody->setDynamic(false);
-	physicBody->setCollisionBitmask(BITMASK_MAP);
-	physicBody->setContactTestBitmask(true);
-
-	physicBody->getShape(0)->setFriction(2.0f);
+	physicBody->setCategoryBitmask(1);
+	physicBody->setCollisionBitmask(8);
+	//physicBody->setContactTestBitmask(5);
 
 	map->setPhysicsBody(physicBody);
 
@@ -157,12 +152,13 @@ void GamePlayScene::AddCameraUSER1()
 	auto physicBody = PhysicsBody::createBox(screenSize,
 		PHYSICSBODY_MATERIAL_DEFAULT);
 
-	physicBody->setCollisionBitmask(BITMASK_LAYER_UI);
-	physicBody->setContactTestBitmask(true);
+	physicBody->setCategoryBitmask(2);
+	physicBody->setCollisionBitmask(8);
+	//physicBody->setContactTestBitmask(2);
+
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
-	physicBody->getShape(0)->setRestitution(100.0f);
-	physicBody->setDynamic(true);
+	physicBody->setDynamic(true); 
 
 	camera->setPhysicsBody(physicBody);
 	_layer2D->addChild(camera, 1);	
@@ -190,9 +186,9 @@ void GamePlayScene::AddListener()
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerMouse, this);*/
 
 	// add listen contact
-	//auto contactListener = EventListenerPhysicsContact::create();
-	//contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
-	//this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 void GamePlayScene::AddJoystick()
 {
@@ -227,7 +223,7 @@ void GamePlayScene::AddJoystick()
 
 void GamePlayScene::AddButtonPopUpHero()
 {
-	auto button = ui::Button::create("CloseNormal.png", "CloseSelected.png");
+	auto button = ui::Button::create("backpack.png", "backpack_press.png");
 	button->setTitleText("Hero");
 	button->setPosition(Vec2(screenSize.width / 1.65, screenSize.height / 9.2));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type){
@@ -255,6 +251,7 @@ void GamePlayScene::AddButtonPopUpHouse()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			this->AddPopupHouse();
+
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -276,7 +273,7 @@ void GamePlayScene::AddSpriteUI()
 
 void GamePlayScene::AddPopupHero()
 {
-	auto popUpHero = UICustom::Popup::createAsConfirmDialogue("", "",[=]() {
+	auto popUpHero = UICustom::Popup::createAsConfirmDialogue("hero", "",[=]() {
 		auto sprite = Node::create();
 		sprite->setPosition(screenSize / 2);
 		sprite->setCameraMask((unsigned short)CameraFlag::USER2);
@@ -287,27 +284,24 @@ void GamePlayScene::AddPopupHero()
 
 void GamePlayScene::AddPopupHouse()
 {
-	auto popupHouse = UICustom::PopupHouse::createAsConfirmDialogue("", "",[=]() {
-
-		//Add House
-		//auto hallTown = Sprite::create("HallTown.png");
-		//hallTown->setScale(0.2);
-		//hallTown->setPosition(Director::getInstance()->getVisibleSize() / 2);
-		//containerHouse->addChild(hallTown);
-
+	auto popupHouse = UICustom::PopupHouse::createAsConfirmDialogue("House", "",
+		CC_CALLBACK_0(GamePlayScene::AddEventForPopupTownHall, this),
+		CC_CALLBACK_0(GamePlayScene::AddEventForPopupScoutTown, this)
+		);
+	_layerUI->addChild(popupHouse, 10);
+}
+void GamePlayScene::AddEventForPopupTownHall()
+{
 		//Add house copy
 		auto copyHallTown = Sprite::create("HallTown.png");
-		copyHallTown->setVisible(false);
+		copyHallTown->setOpacity(50);
 		_layerUI->addChild(copyHallTown);
 
 		//Add event touch
 		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
 		buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
-	
-			copyHallTown->setVisible(true);
-			copyHallTown->setScale(0.4);
-			copyHallTown->setOpacity(50);
+
 			copyHallTown->setPosition(_touch->getLocation());
 			return true;
 		};
@@ -319,15 +313,44 @@ void GamePlayScene::AddPopupHouse()
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHallTown->setVisible(false);
 			auto newHallTown = new TownHall(_layer2D, 2);
-			newHallTown->getSprite()->setPosition(_touch->getLocation());
+			newHallTown->getSprite()->setPosition(_touch->getLocation()
+				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 			newHallTown->getSprite()->setCameraMask(2);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
 
 		};
-		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
-	});
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+}
 
-	_layerUI->addChild(popupHouse, 10);
+void GamePlayScene::AddEventForPopupScoutTown()
+{
+	//Add house copy
+	auto copyScoutTown = Sprite::create("ScoutTown2D.png");
+	copyScoutTown->setOpacity(50);
+	_layerUI->addChild(copyScoutTown);
+
+	//Add event touch
+	auto buildHouseListener = EventListenerTouchOneByOne::create();
+
+	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+
+		copyScoutTown->setPosition(_touch->getLocation());
+		return true;
+	};
+
+	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+		copyScoutTown->setPosition(_touch->getLocation());
+	};
+
+	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+		copyScoutTown->setVisible(false);
+		auto newScoutTown = new ScoutTown(_layer2D, 2);
+		newScoutTown->getSprite()->setPosition(_touch->getLocation()
+			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+		newScoutTown->getSprite()->setCameraMask(2);
+		this->getEventDispatcher()->removeEventListener(buildHouseListener);
+	};
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 }
 
 

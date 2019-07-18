@@ -16,7 +16,6 @@ void TownHall::Init(int id)
 	//this->m_sprite = ResourceManager::GetInstance()->GetSpriteById(id);
 
 	m_sprite = Sprite::create("HallTown.png");
-	m_sprite->setScale(0.4);
 }
 
 void TownHall::Died()

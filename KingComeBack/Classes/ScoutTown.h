@@ -8,11 +8,14 @@ USING_NS_CC;
 class ScoutTown : public Home
 {
 public:
-	ScoutTown (Scene* scene,int id);
+	ScoutTown (Layer* scene,int id);
 	~ScoutTown ();
 	void Init(int id) override;
 	void Died() override;
 	void Attack();
+	void LoadingBuild() override;
+	void Update(float dt) override;
+
 private:
 	float m_dame;
 };

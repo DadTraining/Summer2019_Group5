@@ -7,6 +7,7 @@
 #include"VisibleRect.h"
 #include"Popup.h"
 #include"TownHall.h"
+#include"ScoutTown.h"
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -44,6 +45,9 @@ public:
 	void AddSpriteUI();
 	void AddPopupHero();
 	void AddPopupHouse();
+
+	void AddEventForPopupTownHall();
+	void AddEventForPopupScoutTown();
 
 	void createLayerUI();
 

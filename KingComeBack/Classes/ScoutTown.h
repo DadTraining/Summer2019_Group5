@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "Home.h"
 #include "Defines.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -18,5 +19,8 @@ public:
 
 private:
 	float m_dame;
+	Sprite *loadingBar;
+	Sprite *loadingBarBg;
+	GLubyte scoutTownOpacity;
 };
 

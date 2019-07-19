@@ -58,6 +58,7 @@ public:
 
 	void createButtonAttack();
 
+
 	CREATE_FUNC(GamePlayScene);
 private:
 	Size screenSize;
@@ -89,8 +90,7 @@ private:
 
 	ScoutTown *newScoutTown;
 	TownHall *newHallTown;
-
-
+  
 	cocos2d::Animation * animaton;
 
 
@@ -107,5 +107,6 @@ private:
 	Sprite * mButtonAttack;
 	Vec2  mCurrentTouch;
 	Hero * hero;
+
 };
 

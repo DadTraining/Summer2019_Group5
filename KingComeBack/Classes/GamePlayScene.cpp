@@ -146,25 +146,67 @@ bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
 void GamePlayScene::AddMap()
 {
 	map = TMXTiledMap::create("map.tmx");
-
 	map->setAnchorPoint(Vec2(0, 0));
-
 	map->setPosition(this->getPosition());
-
-	// add physic for map
-
-	auto sizeMap = map->getContentSize();
-
-	auto physicBody = PhysicsBody::createEdgeBox(sizeMap,
-		PHYSICSBODY_MATERIAL_DEFAULT, 3);
-	physicBody->setDynamic(false);
-	physicBody->setCategoryBitmask(1);
-	physicBody->setCollisionBitmask(2);
-	//physicBody->setContactTestBitmask(5);
-
-	map->setPhysicsBody(physicBody);
-
 	_layer2D->addChild(map);
+
+	// Map top
+	auto mapTop = TMXTiledMap::create("mapTop.tmx");
+	mapTop->setAnchorPoint(Vec2(0, 0));
+	mapTop->setPositionY(map->getContentSize().height);
+	_layer2D->addChild(mapTop);
+
+	auto sizeMapHeight = Size(10, map->getContentSize().height + mapTop->getContentSize().height);
+	auto sizeMapUp = Size(map->getContentSize().width, 10);
+	// add physic for map left
+
+
+	auto nodeLeft = Node::create();
+	auto physicLeft = PhysicsBody::createBox(sizeMapHeight,
+		PHYSICSBODY_MATERIAL_DEFAULT);
+	physicLeft->setDynamic(false);
+	physicLeft->setCategoryBitmask(1);
+	physicLeft->setCollisionBitmask(2);
+	nodeLeft->setPhysicsBody(physicLeft);
+	nodeLeft->setPosition(map->getPositionX() - 10, sizeMapHeight.height / 2);
+	_layer2D->addChild(nodeLeft);
+
+
+	// add physic for map up
+
+	auto nodeUP = Node::create();
+	auto physicUp = PhysicsBody::createBox(sizeMapUp,
+		PHYSICSBODY_MATERIAL_DEFAULT);
+	physicUp->setDynamic(false);
+	physicUp->setCategoryBitmask(1);
+	physicUp->setCollisionBitmask(2);
+	nodeUP->setPhysicsBody(physicUp);
+	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height + 5);
+	_layer2D->addChild(nodeUP);
+
+	// add physic for map right
+
+	auto nodeRight = Node::create();
+	auto physicRight = PhysicsBody::createBox(sizeMapHeight,
+		PHYSICSBODY_MATERIAL_DEFAULT);
+	physicRight->setDynamic(false);
+	physicRight->setCategoryBitmask(1);
+	physicRight->setCollisionBitmask(2);
+	nodeRight->setPhysicsBody(physicRight);
+	nodeRight->setPosition(map->getContentSize().width + 10, sizeMapHeight.height / 2);
+	_layer2D->addChild(nodeRight);
+
+	// add physic for map down
+
+	auto nodeDown = Node::create();
+	auto physicDown = PhysicsBody::createBox(sizeMapUp,
+		PHYSICSBODY_MATERIAL_DEFAULT);
+	physicDown->setDynamic(false);
+	physicDown->setCategoryBitmask(1);
+	physicDown->setCollisionBitmask(2);
+	nodeDown->setPhysicsBody(physicDown);
+	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y - 5);
+	_layer2D->addChild(nodeDown);
 }
 
 void GamePlayScene::AddCameraUSER1()
@@ -420,6 +462,7 @@ void GamePlayScene::update(float dt)
 		};
 		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
 
+
 		
 
 	}
@@ -566,3 +609,21 @@ void GamePlayScene::createButtonAttack()
 	_layerUI->addChild(mButtonAttack,10);
 
 }
+	}
+
+//	if (leftJoystick->getVelocity().x > 0) {
+//		everboyBody->setVelocity(Vect(200, 0));
+//	}
+//	if (leftJoystick->getVelocity().x < 0) {
+//		everboyBody->setVelocity(Vect(-200, 0));
+//	}
+//	if (leftJoystick->getVelocity().x == 0) {
+//		everboyBody->setVelocity(Vect(0, everboyBody->getWorld()->getGravity().y));
+//	}
+//	if (jumpBtn->getValue()) {
+//		everboyBody->applyImpulse(Vec2(0, 200));
+//		everboyBody->setVelocity(Vec2(0, 100));
+//	}
+//	joystickBase->updatePositions(dt);
+}
+

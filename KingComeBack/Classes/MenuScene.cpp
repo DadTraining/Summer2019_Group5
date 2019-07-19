@@ -1,6 +1,8 @@
 #include "MenuScene.h"
 #include "SettingScene.h"
+#include "MainMenuScene.h"
 #include "GameSetting.h"
+#include "GamePlayScene.h"
 
 MenuScene::MenuScene()
 {
@@ -48,7 +50,12 @@ bool MenuScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			// chuyen sang trang dang nhap
+			if (GameSetting::getIntance()->isEnableSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sound/confirm.wav");
+			}
+			btnSetting->setOpacity(100);
+			Director::getInstance()->replaceScene(GamePlayScene::createScene());
 			break;
 		default:
 			break;
@@ -73,6 +80,10 @@ bool MenuScene::init()
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			// chuyen sang trang dang nhap
+			if (GameSetting::getIntance()->isEnableSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sound/confirm.wav");
+			}
 			break;
 		default:
 			break;
@@ -96,8 +107,12 @@ bool MenuScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			auto fadeOut = FadeOut::create(2.0f);
-			btnSetting->runAction(fadeOut);
+			//auto fadeOut = FadeOut::create(2.0f);
+			if (GameSetting::getIntance()->isEnableSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sound/confirm.wav");
+			}
+			btnSetting->setOpacity(100);
 			Director::getInstance()->replaceScene(SettingScene::createScene());
 			break;
 		
@@ -121,7 +136,11 @@ bool MenuScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			// chuyen sang trang dang nhap
+			if (GameSetting::getIntance()->isEnableSound())
+			{
+				SimpleAudioEngine::getInstance()->playEffect("Sound/confirm.wav");
+			}
+			Director::getInstance()->end();
 			break;
 		default:
 			break;

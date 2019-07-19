@@ -8,6 +8,7 @@
 #include"Popup.h"
 #include"TownHall.h"
 #include"ScoutTown.h"
+#include "Hero.h"
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -53,6 +54,11 @@ public:
 
 	void update(float dt) override;
 
+	void heroAttack(int);
+
+	void createButtonAttack();
+
+
 	CREATE_FUNC(GamePlayScene);
 private:
 	Size screenSize;
@@ -84,5 +90,23 @@ private:
 
 	ScoutTown *newScoutTown;
 	TownHall *newHallTown;
+  
+	cocos2d::Animation * animaton;
+
+
+	Sprite* gameSprite;
+	Sprite * gameSpriteAttack;
+	CCCallFunc * callBackAttack;
+	Vec2 tempTouch;
+	bool stateTouchHero = false;
+	
+	PhysicsBody * bodyA;
+	Vec2 tempPositinSprite;
+	int count = 0;
+	Action* mListAction[10];
+	Sprite * mButtonAttack;
+	Vec2  mCurrentTouch;
+	Hero * hero;
+
 };
 

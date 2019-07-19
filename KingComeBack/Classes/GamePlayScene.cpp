@@ -38,8 +38,16 @@ bool GamePlayScene::init()
 	//add map
 	this->AddMap();
 
+
+
+	//code duoc
+	hero = new Hero(_layer2D);
+
+
 	// add camera
 	this->AddCameraUSER1();
+
+
 
 	//Add listener
 	this->AddListener();
@@ -49,6 +57,9 @@ bool GamePlayScene::init()
 
 	// add layer 
 	this->createLayerUI();
+
+	//code duoc
+	createButtonAttack();
 
 	this->AddButtonPopUpHero();
 
@@ -64,10 +75,20 @@ void GamePlayScene::createLayer2D()
 	auto layer2D = Layer::create();
 	this->addChild(layer2D, 0);
 	_layer2D = layer2D;
+
+	
 }
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
+
+	mCurrentTouch.x = touch->getLocation().x;
+	mCurrentTouch.y = touch->getLocation().y;
+	tempTouch.x = (touch->getLocation().x - screenSize.width / 2);
+	tempTouch.y = (touch->getLocation().y - screenSize.height / 2);
+	//	gameSprite->runAction(sqe);
+	tempTouch.x = camera->getPosition().x + tempTouch.x;
+	tempTouch.y = camera->getPosition().y + tempTouch.y;
 	return true;
 }
 
@@ -139,6 +160,7 @@ void GamePlayScene::AddMap()
 	auto sizeMapUp = Size(map->getContentSize().width, 10);
 	// add physic for map left
 
+
 	auto nodeLeft = Node::create();
 	auto physicLeft = PhysicsBody::createBox(sizeMapHeight,
 		PHYSICSBODY_MATERIAL_DEFAULT);
@@ -148,6 +170,7 @@ void GamePlayScene::AddMap()
 	nodeLeft->setPhysicsBody(physicLeft);
 	nodeLeft->setPosition(map->getPositionX() - 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeLeft);
+
 
 	// add physic for map up
 
@@ -438,6 +461,154 @@ void GamePlayScene::update(float dt)
 			return false;
 		};
 		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
+
+
+		
+
+	}
+
+
+	// code duoc
+
+	//gameSprite->runAction(mListAction[0]);
+	log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
+
+	if (leftJoystick->getVelocity().x > 0 && leftJoystick->getVelocity().y > -0.2 && leftJoystick->getVelocity().y < 0.2) {
+		if (count<5) {
+			if (count == 1) {
+
+				log("ok");
+			}
+
+			hero->moveRight0();
+			hero->setDirect(0);
+			count++;
+			if (count == 5) {
+				count = 0;
+			}
+		}
+	}
+	if (leftJoystick->getVelocity().x > 0 && leftJoystick->getVelocity().y > 0.2 && leftJoystick->getVelocity().y < 0.8) {
+		if (count<5) {
+
+			count++;
+			hero->moveRight1();
+			hero->setDirect(1);
+			log("ok");
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().y > 0 && leftJoystick->getVelocity().x > -0.2 && leftJoystick->getVelocity().x < 0.2) {
+		if (count<5) {
+
+			count++;
+			log("ok");
+			hero->upTo();
+			hero->setDirect(2);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+	if (leftJoystick->getVelocity().y > 0 && leftJoystick->getVelocity().x <= -0.2 && leftJoystick->getVelocity().x >= -0.8) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->moveLeft1();
+			hero->setDirect(3);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+	}
+
+	if (leftJoystick->getVelocity().x < 0 && leftJoystick->getVelocity().y > -0.2 && leftJoystick->getVelocity().y < 0.2) {
+		if (count<5) {
+			//gameSprite->setFlippedX(true);
+
+			count++;
+
+			hero->moveLeft0();
+			hero->setDirect(4);
+
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+	if (leftJoystick->getVelocity().x < 0 && leftJoystick->getVelocity().y <= -0.2 && leftJoystick->getVelocity().y >= -0.8) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->moveLeft_1();
+			hero->setDirect(5);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().y < 0 && leftJoystick->getVelocity().x <= 0.2 && leftJoystick->getVelocity().x >= -0.2) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->downTo();
+			hero->setDirect(6);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().y < 0 && leftJoystick->getVelocity().x <= 0.8 && leftJoystick->getVelocity().x >= 0.2) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->moveRight_1();
+			hero->setDirect(7);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+	}
+
+	if (leftJoystick->getVelocity().x == 0.0 && leftJoystick->getVelocity().y == 0.0) {
+		//gameSprite->stopAllActions();
+	}
+
+	joystickBase->updatePositions(dt);
+
+	//	spriteFocus->setPosition(gameSprite->getPosition().x , gameSprite->getPosition().y +50);
+
+	heroAttack(hero->getDirect());
+
+}
+
+void GamePlayScene::heroAttack(int STATE_ATTACK) {
+	if (mButtonAttack->getBoundingBox().containsPoint(mCurrentTouch)) {
+		hero->getAttack(STATE_ATTACK);
+		mCurrentTouch.x++;
+	}
+
+}
+
+void GamePlayScene::createButtonAttack()
+{
+	//code duoc
+	mButtonAttack = Sprite::create("focus.png");
+	mButtonAttack->setScale(1);
+	mButtonAttack->setPosition(screenSize.width *3/ 4 , screenSize.height * 1 / 4  );
+	_layerUI->addChild(mButtonAttack,10);
+
+}
 	}
 
 //	if (leftJoystick->getVelocity().x > 0) {

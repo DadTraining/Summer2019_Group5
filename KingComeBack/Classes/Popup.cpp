@@ -361,8 +361,7 @@ namespace UICustom {
 		_bg->addChild(heading);
 		heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
 		heading->enableShadow(Color4B::BLACK, Size(0, -3));
-	}
-
+	}\
 	// popup town hall
 	PopupTownHall * PopupTownHall::createAsMessage(const std::string & title, const std::string & msg)
 	{

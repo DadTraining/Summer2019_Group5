@@ -290,6 +290,7 @@ void GamePlayScene::AddButtonPopUpHero()
 {
 	auto button = ui::Button::create("backpack.png", "backpack_press.png");
 	button->setTitleText("Hero");
+	button->setScale(0.3);
 	button->setPosition(Vec2(screenSize.width / 1.65, screenSize.height / 9.2));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type){
 		switch (type)
@@ -308,8 +309,9 @@ void GamePlayScene::AddButtonPopUpHero()
 
 void GamePlayScene::AddButtonPopUpHouse()
 {
-	auto button = ui::Button::create("CloseNormal.png", "CloseSelected.png");
+	auto button = ui::Button::create("ButtonShop.png", "ButtonShop_press.png");
 	button->setTitleText("House");
+	button->setScale(0.3);
 	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -604,12 +606,12 @@ void GamePlayScene::createButtonAttack()
 {
 	//code duoc
 	mButtonAttack = Sprite::create("focus.png");
-	mButtonAttack->setScale(1);
-	mButtonAttack->setPosition(screenSize.width *3/ 4 , screenSize.height * 1 / 4  );
+	mButtonAttack->setScale(0.25);
+	mButtonAttack->setPosition(screenSize.width *5/6  , screenSize.height * 1 / 4  );
 	_layerUI->addChild(mButtonAttack,10);
 
 }
-	}
+	
 
 //	if (leftJoystick->getVelocity().x > 0) {
 //		everboyBody->setVelocity(Vect(200, 0));
@@ -625,5 +627,5 @@ void GamePlayScene::createButtonAttack()
 //		everboyBody->setVelocity(Vec2(0, 100));
 //	}
 //	joystickBase->updatePositions(dt);
-}
+
 

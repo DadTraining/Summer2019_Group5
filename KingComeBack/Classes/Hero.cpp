@@ -34,6 +34,10 @@ Hero::Hero(Layer * _layer2D)
 //	Init(1);
 }
 
+Hero::~Hero()
+{
+}
+
 void Hero::Init(int d)
 {
 

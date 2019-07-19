@@ -11,7 +11,7 @@ public:
 	void Move(Vec2 vec) override;
 	void Died()override;
 	Animation* createAnimation(std::string frefixName, int pFrame, float delay);
-	Animation * createAnimation_Attack(std::string frefixName, int pFrame, float delay);
+	
 
 	void moveRight_1();
 	void moveRight0();

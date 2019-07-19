@@ -1,4 +1,4 @@
-#include "MainMenuScene.h"
+/*#include "MainMenuScene.h"
 #include "ResourceManager.h"
 
 int MainMenuScene::id = 0;
@@ -113,4 +113,4 @@ cocos2d::Scene * MainMenuScene::createScene()
 	scene->addChild(layer);
 
 	return scene;
-}
+}*/

@@ -24,6 +24,7 @@
 
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
+#include "LoadingScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -121,7 +122,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto scene = GamePlayScene::createScene();
 
     // run
-	director->runWithScene(GamePlayScene::createScene());
+	director->runWithScene(LoadingScene::createScene());
     return true;
 }
 

@@ -24,6 +24,8 @@ bool GamePlayScene::init()
 	{
 		return false;
 	}
+	newScoutTown = nullptr;
+	newHallTown = nullptr;
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
 
@@ -36,8 +38,16 @@ bool GamePlayScene::init()
 	//add map
 	this->AddMap();
 
+
+
+	//code duoc
+	hero = new Hero(_layer2D);
+
+
 	// add camera
 	this->AddCameraUSER1();
+
+
 
 	//Add listener
 	this->AddListener();
@@ -47,6 +57,9 @@ bool GamePlayScene::init()
 
 	// add layer 
 	this->createLayerUI();
+
+	//code duoc
+	createButtonAttack();
 
 	this->AddButtonPopUpHero();
 
@@ -62,10 +75,20 @@ void GamePlayScene::createLayer2D()
 	auto layer2D = Layer::create();
 	this->addChild(layer2D, 0);
 	_layer2D = layer2D;
+
+	
 }
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
+
+	mCurrentTouch.x = touch->getLocation().x;
+	mCurrentTouch.y = touch->getLocation().y;
+	tempTouch.x = (touch->getLocation().x - screenSize.width / 2);
+	tempTouch.y = (touch->getLocation().y - screenSize.height / 2);
+	//	gameSprite->runAction(sqe);
+	tempTouch.x = camera->getPosition().x + tempTouch.x;
+	tempTouch.y = camera->getPosition().y + tempTouch.y;
 	return true;
 }
 
@@ -105,7 +128,7 @@ void GamePlayScene::OnTouchMove(Touch * touch, Event * unused_event)
 
 void GamePlayScene::OnTouchEnd(Touch * touch, Event * unused_event)
 {
-	moveOutBackground = true;
+
 }
 
 bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
@@ -136,7 +159,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT, 3);
 	physicBody->setDynamic(false);
 	physicBody->setCategoryBitmask(1);
-	physicBody->setCollisionBitmask(8);
+	physicBody->setCollisionBitmask(2);
 	//physicBody->setContactTestBitmask(5);
 
 	map->setPhysicsBody(physicBody);
@@ -153,7 +176,7 @@ void GamePlayScene::AddCameraUSER1()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 
 	physicBody->setCategoryBitmask(2);
-	physicBody->setCollisionBitmask(8);
+	physicBody->setCollisionBitmask(1);
 	//physicBody->setContactTestBitmask(2);
 
 	physicBody->setGravityEnable(false);
@@ -274,10 +297,7 @@ void GamePlayScene::AddSpriteUI()
 void GamePlayScene::AddPopupHero()
 {
 	auto popUpHero = UICustom::Popup::createAsConfirmDialogue("hero", "",[=]() {
-		auto sprite = Node::create();
-		sprite->setPosition(screenSize / 2);
-		sprite->setCameraMask((unsigned short)CameraFlag::USER2);
-		_layerUI->addChild(sprite, 10);
+
 	});
 	_layerUI->addChild(popUpHero, 10);
 }
@@ -297,6 +317,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 		copyHallTown->setOpacity(50);
 		_layerUI->addChild(copyHallTown);
 
+
 		//Add event touch
 		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
@@ -312,7 +333,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHallTown->setVisible(false);
-			auto newHallTown = new TownHall(_layer2D, 2);
+			newHallTown = new TownHall(_layer2D, 2);
 			newHallTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 			newHallTown->getSprite()->setCameraMask(2);
@@ -344,7 +365,7 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyScoutTown->setVisible(false);
-		auto newScoutTown = new ScoutTown(_layer2D, 2);
+		newScoutTown = new ScoutTown(_layer2D, 2);
 		newScoutTown->getSprite()->setPosition(_touch->getLocation()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 		newScoutTown->getSprite()->setCameraMask(2);
@@ -352,7 +373,6 @@ void GamePlayScene::AddEventForPopupScoutTown()
 	};
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 }
-
 
 void GamePlayScene::createLayerUI()
 {
@@ -370,21 +390,179 @@ void GamePlayScene::createLayerUI()
 	this->AddJoystick();
 }
 
-//void GamePlayScene::update(float dt)
-//{
-//
-//	if (leftJoystick->getVelocity().x > 0) {
-//		everboyBody->setVelocity(Vect(200, 0));
-//	}
-//	if (leftJoystick->getVelocity().x < 0) {
-//		everboyBody->setVelocity(Vect(-200, 0));
-//	}
-//	if (leftJoystick->getVelocity().x == 0) {
-//		everboyBody->setVelocity(Vect(0, everboyBody->getWorld()->getGravity().y));
-//	}
-//	if (jumpBtn->getValue()) {
-//		everboyBody->applyImpulse(Vec2(0, 200));
-//		everboyBody->setVelocity(Vec2(0, 100));
-//	}
-//	joystickBase->updatePositions(dt);
-//}
+void GamePlayScene::update(float dt)
+{
+	if (newScoutTown != nullptr)
+	{
+		newScoutTown->Update(dt);
+	}
+	if (newHallTown != nullptr)
+	{
+		newHallTown->Update(dt);
+	}
+	if (newHallTown != nullptr && newHallTown->loadingBar == nullptr && createListenerForTownHall == true)
+	{
+		createListenerForTownHall = false;
+		auto listenerTownHall = EventListenerTouchOneByOne::create();
+		listenerTownHall->onTouchBegan = [=](Touch *touch, Event *_event)
+		{
+			if (newHallTown->getSprite()->getBoundingBox().containsPoint(touch->getLocation()
+				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2))
+			{
+				auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [=]()
+				{
+					// event
+				});
+				_layer2D->addChild(popup);
+				return true;
+			}
+			return false;
+		};
+		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
+
+		
+
+	}
+
+
+	// code duoc
+
+	//gameSprite->runAction(mListAction[0]);
+	log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
+
+	if (leftJoystick->getVelocity().x > 0 && leftJoystick->getVelocity().y > -0.2 && leftJoystick->getVelocity().y < 0.2) {
+		if (count<5) {
+			if (count == 1) {
+
+				log("ok");
+			}
+
+			hero->moveRight0();
+			hero->setDirect(0);
+			count++;
+			if (count == 5) {
+				count = 0;
+			}
+		}
+	}
+	if (leftJoystick->getVelocity().x > 0 && leftJoystick->getVelocity().y > 0.2 && leftJoystick->getVelocity().y < 0.8) {
+		if (count<5) {
+
+			count++;
+			hero->moveRight1();
+			hero->setDirect(1);
+			log("ok");
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().y > 0 && leftJoystick->getVelocity().x > -0.2 && leftJoystick->getVelocity().x < 0.2) {
+		if (count<5) {
+
+			count++;
+			log("ok");
+			hero->upTo();
+			hero->setDirect(2);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+	if (leftJoystick->getVelocity().y > 0 && leftJoystick->getVelocity().x <= -0.2 && leftJoystick->getVelocity().x >= -0.8) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->moveLeft1();
+			hero->setDirect(3);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+	}
+
+	if (leftJoystick->getVelocity().x < 0 && leftJoystick->getVelocity().y > -0.2 && leftJoystick->getVelocity().y < 0.2) {
+		if (count<5) {
+			//gameSprite->setFlippedX(true);
+
+			count++;
+
+			hero->moveLeft0();
+			hero->setDirect(4);
+
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+	if (leftJoystick->getVelocity().x < 0 && leftJoystick->getVelocity().y <= -0.2 && leftJoystick->getVelocity().y >= -0.8) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->moveLeft_1();
+			hero->setDirect(5);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().y < 0 && leftJoystick->getVelocity().x <= 0.2 && leftJoystick->getVelocity().x >= -0.2) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->downTo();
+			hero->setDirect(6);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().y < 0 && leftJoystick->getVelocity().x <= 0.8 && leftJoystick->getVelocity().x >= 0.2) {
+		if (count<5) {
+			log("ok");
+			count++;
+			hero->moveRight_1();
+			hero->setDirect(7);
+			if (count == 5) {
+				count = 0;
+			}
+		}
+	}
+
+	if (leftJoystick->getVelocity().x == 0.0 && leftJoystick->getVelocity().y == 0.0) {
+		//gameSprite->stopAllActions();
+	}
+
+	joystickBase->updatePositions(dt);
+
+	//	spriteFocus->setPosition(gameSprite->getPosition().x , gameSprite->getPosition().y +50);
+
+	heroAttack(hero->getDirect());
+
+}
+
+void GamePlayScene::heroAttack(int STATE_ATTACK) {
+	if (mButtonAttack->getBoundingBox().containsPoint(mCurrentTouch)) {
+		hero->getAttack(STATE_ATTACK);
+		mCurrentTouch.x++;
+	}
+
+}
+
+void GamePlayScene::createButtonAttack()
+{
+	//code duoc
+	mButtonAttack = Sprite::create("focus.png");
+	mButtonAttack->setScale(1);
+	mButtonAttack->setPosition(screenSize.width *3/ 4 , screenSize.height * 1 / 4  );
+	_layerUI->addChild(mButtonAttack,10);
+
+}

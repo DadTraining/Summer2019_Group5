@@ -8,6 +8,7 @@
 #include"Popup.h"
 #include"TownHall.h"
 #include"ScoutTown.h"
+#include "Hero.h"
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -51,7 +52,11 @@ public:
 
 	void createLayerUI();
 
-	//void update(float dt) override;
+	void update(float dt) override;
+
+	void heroAttack(int);
+
+	void createButtonAttack();
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -63,7 +68,7 @@ private:
 	Sprite *joystick;
 	Camera *camera;
 	Camera *cameraUS2;
-	bool moveOutBackground = true;
+	bool createListenerForTownHall = true;
 
 	SneakyJoystick *leftJoystick;
 	SneakyJoystickSkinnedBase *joystickBase;
@@ -81,5 +86,26 @@ private:
 
 	Size mapContentSize;
 	Point touchCurrenPositon;
+
+	ScoutTown *newScoutTown;
+	TownHall *newHallTown;
+
+
+	cocos2d::Animation * animaton;
+
+
+	Sprite* gameSprite;
+	Sprite * gameSpriteAttack;
+	CCCallFunc * callBackAttack;
+	Vec2 tempTouch;
+	bool stateTouchHero = false;
+	
+	PhysicsBody * bodyA;
+	Vec2 tempPositinSprite;
+	int count = 0;
+	Action* mListAction[10];
+	Sprite * mButtonAttack;
+	Vec2  mCurrentTouch;
+	Hero * hero;
 };
 

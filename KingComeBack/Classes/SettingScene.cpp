@@ -95,10 +95,18 @@ bool SettingScene::init()
 	{
 		switch (type)
 		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			break;
 		case ui::Widget::TouchEventType::ENDED:
 			GameSetting::getIntance()->setVolume(slVolume->getPercent());
 			SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(GameSetting::getIntance()->getVolume());
 			SimpleAudioEngine::getInstance()->setEffectsVolume(GameSetting::getIntance()->getVolume());
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+			break;
+		default:
 			break;
 		}
 	});

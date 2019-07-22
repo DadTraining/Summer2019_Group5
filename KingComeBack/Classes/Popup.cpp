@@ -319,7 +319,7 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 
-				Menu *menu = Menu::create(NULL);
+				Menu *menu = Menu::create(noButton, NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
@@ -396,7 +396,7 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 
-				Menu *menu = Menu::create(NULL);
+				Menu *menu = Menu::create(noButton , NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);

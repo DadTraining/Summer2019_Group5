@@ -17,7 +17,7 @@ public:
 	void Init(const std::string path);
 	void Load(std::string filename);
 	Sprite* GetSpriteById(int id);
-	String* GetSplistById(int id);
+	std::string GetSplistById(int id);
 	ui::Button* GetButtonById(int id);
 	Label* GetLabelById(int id);
 	TMXTiledMap* GetTitleMapById(int id);
@@ -26,7 +26,7 @@ private:
 	static ResourceManager* s_instance;
 	std::string m_dadaFolderPath;
 	std::map <int, Sprite*> m_sprites;
-	std::map <int, String*> m_splist;
+	std::map <int, std::string> m_splist;
 	std::map <int, ui::Button*> m_buttons;
 	std::map <int, Label*> m_labels;
 	std::map <int, TMXTiledMap*> m_title;

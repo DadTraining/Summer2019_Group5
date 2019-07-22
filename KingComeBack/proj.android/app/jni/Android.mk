@@ -13,7 +13,30 @@ LOCAL_MODULE_FILENAME := libMyGame
 
 LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/AppDelegate.cpp \
-                   $(LOCAL_PATH)/../../../Classes/HelloWorldScene.cpp
+                   $(LOCAL_PATH)/../../../Classes/HelloWorldScene.cpp \
+				   $(LOCAL_PATH)/../../../Classes/GamePlayScene.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Hero.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Home.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Human.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Item.cpp \
+				   $(LOCAL_PATH)/../../../Classes/GameSetting.cpp \
+				   $(LOCAL_PATH)/../../../Classes/SettingScene.cpp \
+				   $(LOCAL_PATH)/../../../Classes/LoadingScene.cpp \
+				   $(LOCAL_PATH)/../../../Classes/MenuScene.cpp \
+				   $(LOCAL_PATH)/../../../Classes/MainMenuScene.cpp \
+				   $(LOCAL_PATH)/../../../Classes/MyObject.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Person.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Popup.cpp \
+				   $(LOCAL_PATH)/../../../Classes/PopupHero.cpp \
+				   $(LOCAL_PATH)/../../../Classes/ResourceManager.cpp \
+				   $(LOCAL_PATH)/../../../Classes/ResourceNature.cpp \
+				   $(LOCAL_PATH)/../../../Classes/ScoutTown.cpp \
+				   $(LOCAL_PATH)/../../../Classes/SneakyButton.cpp \
+				   $(LOCAL_PATH)/../../../Classes/SneakyButtonSkinnedBase.cpp \
+				   $(LOCAL_PATH)/../../../Classes/SneakyJoystick.cpp \
+				   $(LOCAL_PATH)/../../../Classes/SneakyJoystickSkinnedBase.cpp \
+				   $(LOCAL_PATH)/../../../Classes/TownHall.cpp \
+				   $(LOCAL_PATH)/../../../Classes/VisibleRect.cpp 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes
 

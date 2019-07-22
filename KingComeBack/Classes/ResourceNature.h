@@ -3,7 +3,7 @@
 #include "MyObject.h"
 class ResourceNature : public  MyObject {
 private:
-	String m_moneyAttribute;
+	std::string m_moneyAttribute;
 	int m_total;
 public:
 	ResourceNature(Scene * scene, int ID);

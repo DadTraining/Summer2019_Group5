@@ -67,9 +67,9 @@ void ResourceManager::Load(std::string filename)
 			infile >> path_normal;
 
 			path_normal.replace(0, 2, this->m_dadaFolderPath);
-			String* splist = String::create(path_normal);
-			splist->retain();
-			m_splist.insert(std::pair<int, String*>(id, splist));
+			std::string splist = path_normal;
+			//splist->retain();
+			m_splist.insert(std::pair<int, std::string>(id, splist));
 		}
 
 		//load button
@@ -164,9 +164,9 @@ Sprite* ResourceManager::GetSpriteById(int id)
 	return it->second;
 }
 
-String* ResourceManager::GetSplistById(int id)
+std::string ResourceManager::GetSplistById(int id)
 {
-	std::map<int, String*>::iterator it = this->m_splist.find(id);
+	std::map<int, std::string>::iterator it = this->m_splist.find(id);
 	return it->second;
 }
 

@@ -42,7 +42,7 @@ protected:
 
 private:
 	void updateVelocity(Point point);
-	void setTouchRadius();
+	//void setTouchRadius();
 
 	float round(float r);
 };

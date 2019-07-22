@@ -42,9 +42,9 @@ void Item::Died()
 {
 }
 
-String Item::SetState(String toggle_state)
+std::string Item::SetState(std::string state)
 {
-	m_state = toggle_state;
+	m_state = state;
 	return m_state;
 }
 

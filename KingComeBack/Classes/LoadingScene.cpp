@@ -37,7 +37,7 @@ bool LoadingScene::init()
 	lbNameGame->setColor(Color3B::RED);
 	//lbNameGame->setOpacity(1);
 	// add the label as a child to this scene
-	this->addChild(lbNameGame, 10);/**/
+	this->addChild(lbNameGame, 10);*/
 
 	// add loading bar 
 	//add loading bar nomal

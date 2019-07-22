@@ -26,7 +26,8 @@
 #define  _APP_DELEGATE_H_
 
 #include "cocos2d.h"
-#include "GamePlayScene.h"
+#include "LoadingScene.h"
+
 /**
 @brief    The cocos2d Application.
 

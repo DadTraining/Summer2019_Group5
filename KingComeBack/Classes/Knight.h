@@ -14,7 +14,7 @@ private:
 
 	Animate* ActionKnight(std::string actionName);
 
-	bool m_isSelected;
+	bool m_isSelected = false;
 public:
 	Knight(Layer* layer, int id);
 	~Knight();
@@ -26,6 +26,10 @@ public:
 	void Attack() override;
 
 	void SetPositionKnight(Vec2 vec);
+
+	void SetSelected(bool isSelected);
+
+	bool GetSelected();
 
 	static const int CURRENT_DIRECT_0 = 0;
 	static const int CURRENT_DIRECT_1 = CURRENT_DIRECT_0 + 1;

@@ -84,6 +84,7 @@ void Knight::Init(int id)
 	body->setCollisionBitmask(5);
 	m_sprite->setPhysicsBody(body);
 
+	SetColor(id);
 }
 
 void Knight::Update(float dt)

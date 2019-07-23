@@ -27,6 +27,9 @@ public:
 
 	void SetPositionKnight(Vec2 vec);
 
+	void SetSelected(bool isSelected);
+	bool GetSelected();
+
 	static const int CURRENT_DIRECT_0 = 0;
 	static const int CURRENT_DIRECT_1 = CURRENT_DIRECT_0 + 1;
 	static const int CURRENT_DIRECT_2 = CURRENT_DIRECT_1 + 1;

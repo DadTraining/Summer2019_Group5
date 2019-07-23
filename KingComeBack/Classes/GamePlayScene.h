@@ -59,8 +59,6 @@ public:
 
 	void createButtonAttack();
 
-	void AddKnight();
-
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -110,9 +108,6 @@ private:
 	Sprite * mButtonAttack;
 	Vec2  mCurrentTouch;
 	Hero * hero;
-
-	// Knight
-	Knight *knight;
 
 };
 

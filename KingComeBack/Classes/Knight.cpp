@@ -3,7 +3,8 @@
 
 void Knight::SetCurrentDirect(Vec2 vec)
 {
-	Vec2 direct = Vec2(m_sprite->getPosition(), vec);
+	direct = Vec2(m_sprite->getPosition(), vec);
+	m_distance = vec.distance(m_sprite->getPosition());
 
 	if (direct.x > 0 && direct.y > 0 && direct.y / direct.x > 0.5 && direct.y / direct.x <= 2.5)
 	{
@@ -84,6 +85,7 @@ void Knight::Init(int id)
 	body->setCollisionBitmask(5);
 	m_sprite->setPhysicsBody(body);
 
+	SetColor(id);
 }
 
 void Knight::Update(float dt)
@@ -97,8 +99,14 @@ void Knight::Move(Vec2 vec)
 
 	char actionName[MAX_LENGHT] = { 0 };
 	sprintf(actionName, "knight_walk_%d000", m_currentDirect);
-	auto moveTo = MoveTo::create(0.5f, vec);
-	auto spaw = Spawn::create(moveTo, ActionKnight(actionName), nullptr);
+
+	m_time = m_distance / 70.0;
+	auto moveTo = MoveTo::create(m_time, vec);
+
+	count_repeat = m_time + 1;
+	auto action = Repeat::create(ActionKnight(actionName), count_repeat);
+
+	auto spaw = Spawn::create(moveTo, action, nullptr);
 	m_sprite->runAction(spaw);
 }
 

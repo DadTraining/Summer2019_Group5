@@ -12,8 +12,12 @@ public:
 	virtual void Init(int id) = 0;
 	virtual void Died() = 0;
 	virtual void Update(float dt) = 0;
-private:
+
+	void SetColor(int color);
+	int GetColor();
+protected:
 	float m_blood;
 	float m_amor;
+	int m_color;
 };
 

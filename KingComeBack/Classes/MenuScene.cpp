@@ -28,7 +28,7 @@ bool MenuScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	//add back ground 
-	background = Sprite::create("/Sprites/Background/Untitled.png");
+	background = Sprite::create("Sprites/Background/Untitled.png");
 	background->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 	background->setScale( background->getContentSize().width/ visibleSize.width ,
 		 background->getContentSize().height / visibleSize.height );
@@ -36,7 +36,7 @@ bool MenuScene::init()
 	this->addChild(background, -10);
 
 	// add buton Play
-	btnPlay = ui::Button::create("/Buttons/king_buton.png","/Buttons/king_buton.png");
+	btnPlay = ui::Button::create("Buttons/king_buton.png","/Buttons/king_buton.png");
 
 	btnPlay->setTitleText(" New Game ");
 	btnPlay->setTitleFontName("/Fonts/arial.ttf");
@@ -65,10 +65,10 @@ bool MenuScene::init()
 	this->addChild(btnPlay,1);
 
 	// add buton restart
-	btnAgainPlay = ui::Button::create("/Buttons/king_buton.png", "/Buttons/king_buton.png");
+	btnAgainPlay = ui::Button::create("Buttons/king_buton.png", "Buttons/king_buton.png");
 
 	btnAgainPlay->setTitleText(" Restart ");
-	btnAgainPlay->setTitleFontName("/Fonts/arial.ttf");
+	btnAgainPlay->setTitleFontName("Fonts/arial.ttf");
 	btnAgainPlay->setTitleFontSize(20);
 	btnAgainPlay->setScale(2,1.5);
 	btnAgainPlay->setPosition(Vec2(3*visibleSize.width / 4, btnPlay->getPositionY() - btnPlay->getContentSize().height - 32));
@@ -93,7 +93,7 @@ bool MenuScene::init()
 	this->addChild(btnAgainPlay, 1);
 
 	//add button setting
-	btnSetting = ui::Button::create("/Buttons/king_buton.png", "/Buttons/king_buton.png");
+	btnSetting = ui::Button::create("Buttons/king_buton.png", "Buttons/king_buton.png");
 
 	btnSetting->setTitleText(" Setting ");
 	btnSetting->setTitleFontName("/Fonts/arial.ttf");
@@ -122,10 +122,10 @@ bool MenuScene::init()
 	this->addChild(btnSetting, 1);
 
 	//add button exit
-	btnExit = ui::Button::create("/Buttons/king_buton.png", "/Buttons/king_buton.png");
+	btnExit = ui::Button::create("Buttons/king_buton.png", "Buttons/king_buton.png");
 
 	btnExit->setTitleText(" Exit ");
-	btnExit->setTitleFontName("/Fonts/arial.ttf");
+	btnExit->setTitleFontName("Fonts/arial.ttf");
 	btnExit->setTitleFontSize(20);
 	btnExit->setScale(2,1.5);
 	btnExit->setPosition(Vec2(3*visibleSize.width / 4, btnSetting->getPositionY() - btnSetting->getContentSize().height - 32));

@@ -43,7 +43,8 @@ bool GamePlayScene::init()
 	//code duoc
 	hero = new Hero(_layer2D);
 
-
+	//add knight
+	AddKnight();
 	// add camera
 	this->AddCameraUSER1();
 
@@ -89,6 +90,10 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 	//	gameSprite->runAction(sqe);
 	tempTouch.x = camera->getPosition().x + tempTouch.x;
 	tempTouch.y = camera->getPosition().y + tempTouch.y;
+	touchCurrenPositon = touch->getLocation()
+		+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
+	knight->Move(touchCurrenPositon);
+
 	return true;
 }
 
@@ -610,6 +615,12 @@ void GamePlayScene::createButtonAttack()
 	mButtonAttack->setPosition(screenSize.width *5/6  , screenSize.height * 1 / 4  );
 	_layerUI->addChild(mButtonAttack,10);
 
+}
+
+void GamePlayScene::AddKnight()
+{
+	knight = new Knight(_layer2D, 0);
+	knight->SetPositionKnight(Vec2(screenSize.width / 2, screenSize.height / 2));
 }
 	
 

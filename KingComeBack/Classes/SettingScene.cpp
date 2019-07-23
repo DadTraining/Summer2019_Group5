@@ -29,7 +29,7 @@ bool SettingScene::init()
 	addChild(title);
 	
 	//add checkbox music
-	cbMusic = ui::CheckBox::create("/Sprites/Checkbox/checkbox_normal.png", "/Sprites/Checkbox/checkbox_pressed.png", "/Sprites/Checkbox/checkbox_checked.png", "/Sprites/Checkbox/checkbox_normal_disable.png", "/Sprites/Checkbox/checkbox_checked_disable.png");
+	cbMusic = ui::CheckBox::create("Sprites/Checkbox/checkbox_normal.png", "Sprites/Checkbox/checkbox_pressed.png", "/Sprites/Checkbox/checkbox_checked.png", "/Sprites/Checkbox/checkbox_normal_disable.png", "/Sprites/Checkbox/checkbox_checked_disable.png");
 	cbMusic->setScale(0.5f);
 	cbMusic -> setAnchorPoint(Vec2(0, 0.5));
 	cbMusic->setSelected(GameSetting::getIntance()->isEnableMusic());
@@ -54,7 +54,7 @@ bool SettingScene::init()
 	addChild(cbMusicTitle);
 
 	//add checkbox sound
-	cbSound = ui::CheckBox::create("/Sprites/Checkbox/checkbox_normal.png", "/Sprites/Checkbox/checkbox_pressed.png", "/Sprites/Checkbox/checkbox_checked.png", "/Sprites/Checkbox/checkbox_normal_disable.png", "/Sprites/Checkbox/checkbox_checked_disable.png");
+	cbSound = ui::CheckBox::create("Sprites/Checkbox/checkbox_normal.png", "Sprites/Checkbox/checkbox_pressed.png", "/Sprites/Checkbox/checkbox_checked.png", "/Sprites/Checkbox/checkbox_normal_disable.png", "/Sprites/Checkbox/checkbox_checked_disable.png");
 	cbSound->setScale(0.5f);
 	cbSound->setAnchorPoint(Vec2(0, 0.5));
 	cbSound->setSelected(GameSetting::getIntance()->isEnableSound());
@@ -86,9 +86,9 @@ bool SettingScene::init()
 	//add slider volume
 	slVolume = ui::Slider::create();
 	slVolume->setAnchorPoint(Vec2(0, 0.5));
-	slVolume->loadBarTexture("/Sprites/Loading/slider_bar_bg.png");
-	slVolume->loadSlidBallTextures("/Sprites/Loading/slider_ball_normal.png", "/Sprites/Loading/slider_ball_pressed.png", "/Sprites/Loading/slider_ball_disable.png");
-	slVolume->loadProgressBarTexture("/Sprites/Loading/slider_bar_pressed.png");
+	slVolume->loadBarTexture("Sprites/Loading/slider_bar_bg.png");
+	slVolume->loadSlidBallTextures("Sprites/Loading/slider_ball_normal.png", "Sprites/Loading/slider_ball_pressed.png", "/Sprites/Loading/slider_ball_disable.png");
+	slVolume->loadProgressBarTexture("Sprites/Loading/slider_bar_pressed.png");
 	slVolume->setPosition(Vec2(cbMusic->getPosition().x, visibleSize.height - 360));
 	slVolume->setPercent(GameSetting::getIntance()->getVolume());
 	slVolume->addTouchEventListener([](Ref* sender, ui::Widget::TouchEventType type)
@@ -118,12 +118,12 @@ bool SettingScene::init()
 
 	addChild(slVolume);
 
-	auto paricleEffect = ParticleSystemQuad::create("/Sprites/particles/menu.plist");
+	auto paricleEffect = ParticleSystemQuad::create("Sprites/particles/menu.plist");
 	paricleEffect->setPosition(Vec2(visibleSize.width / 2, 0));
 	addChild(paricleEffect);
 
 	//add button back menu
-	auto btnBack = ui::Button::create("/Buttons/pngguru.com-id-bixpo_04.png", "/Buttons/pngguru.com-id-bixpo_08.png");
+	auto btnBack = ui::Button::create("Buttons/pngguru.com-id-bixpo_04.png", "Buttons/pngguru.com-id-bixpo_08.png");
 	btnBack->setPosition(Vec2(70, 70));
 	btnBack->setScale(0.5);
 	btnBack->addClickEventListener([](Ref* event) {

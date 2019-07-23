@@ -23,7 +23,7 @@ bool LoadingScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	// Add background
-	background = Sprite::create("/Sprites/Background/lua.jpg");
+	background = Sprite::create("Sprites/Background/lua.jpg");
 	background->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 	background->setScale(visibleSize.width / background->getContentSize().width,
 		visibleSize.height / background->getContentSize().height);

@@ -9,6 +9,7 @@
 #include"TownHall.h"
 #include"ScoutTown.h"
 #include "Hero.h"
+#include "Knight.h"
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -57,6 +58,8 @@ public:
 	void heroAttack(int);
 
 	void createButtonAttack();
+
+	void AddKnight();
 
 
 	CREATE_FUNC(GamePlayScene);
@@ -107,6 +110,9 @@ private:
 	Sprite * mButtonAttack;
 	Vec2  mCurrentTouch;
 	Hero * hero;
+
+	// Knight
+	Knight *knight;
 
 };
 

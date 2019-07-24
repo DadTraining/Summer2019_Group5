@@ -29,7 +29,7 @@ bool GamePlayScene::init()
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
 
-	condinatorMiniMap = Vec2(screenSize.width*1/20, screenSize.height*8/10);
+	condinatorMiniMap = Vec2(screenSize.width * 1 / 20, screenSize.height * 8 / 10);
 	pause = DelayTime::create(20);
 	
 
@@ -179,6 +179,7 @@ void GamePlayScene::AddMap()
 	map = TMXTiledMap::create("map.tmx");
 	map->setAnchorPoint(Vec2(0, 0));
 	map->setPosition(this->getPosition());
+	//map->setScale(m_scale);
 	_layer2D->addChild(map);
 
 	//get contensize big map
@@ -190,6 +191,7 @@ void GamePlayScene::AddMap()
 	mapTop = TMXTiledMap::create("mapTop.tmx");
 	mapTop->setAnchorPoint(Vec2(0, 0));
 	mapTop->setPositionY(map->getContentSize().height);
+	//mapTop->setScale(m_scale);
 	_layer2D->addChild(mapTop);
 
 	auto sizeMapHeight = Size(10, map->getContentSize().height + mapTop->getContentSize().height);
@@ -298,7 +300,7 @@ void GamePlayScene::AddJoystick()
 	joystickBaseDimensions = Rect(0, 0, 160.0f, 160.0f);
 
 	Point joystickBasePosition;
-	joystickBasePosition = Point(screenSize.width / 9, screenSize.height / 7);
+	joystickBasePosition = Point(screenSize.width / 9, screenSize.height * 2 / 7);
 
 	joystickBase = new SneakyJoystickSkinnedBase();
 	joystickBase->init();
@@ -319,6 +321,7 @@ void GamePlayScene::AddJoystick()
 
 	leftJoystick = joystickBase->getJoystick();
 	leftJoystick->retain();
+	joystickBase->setScale(m_scaleX, m_scaleY);
 	_layerUI->addChild(joystickBase, 10);
 }
 
@@ -326,8 +329,8 @@ void GamePlayScene::AddButtonPopUpHero()
 {
 	auto button = ui::Button::create("backpack.png", "backpack_press.png");
 	button->setTitleText("Hero");
-	button->setScale(0.3);
-	button->setPosition(Vec2(screenSize.width / 1.65, screenSize.height / 9.2));
+	button->setScale(m_scaleX * 0.3, m_scaleY * 0.3);
+	button->setPosition(Vec2(screenSize.width / 1.65, screenSize.height / 9.5));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type){
 		switch (type)
 		{
@@ -348,7 +351,7 @@ void GamePlayScene::AddButtonPopUpHouse()
 	auto button = ui::Button::create("ButtonShop.png", "ButtonShop_press.png");
 	button->setTitleText("House");
 	button->setScale(0.3);
-	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9));
+	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9.5));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -369,10 +372,12 @@ void GamePlayScene::AddSpriteUI()
 {
 	auto containerForSpriteUI = Node::create();
 	auto sprite = Sprite::create("UI.png");
-	sprite->setScale(1);
+	//sprite->setScale(1);
 	sprite->setPosition(screenSize / 2);
-	sprite->setScale(screenSize.width / sprite->getContentSize().width,
-		screenSize.height / sprite->getContentSize().height);
+	m_scaleX = screenSize.width / sprite->getContentSize().width;
+	m_scaleY = screenSize.height / sprite->getContentSize().height;
+	
+	sprite->setScale(m_scaleX,m_scaleY);
 	containerForSpriteUI->addChild(sprite);
 
 	_layerUI->addChild(containerForSpriteUI, 10);
@@ -463,7 +468,7 @@ void GamePlayScene::createLayerUI()
 {
 	_layerUI = Layer::create();
 	_layerUI->setPosition(Vec2(2 , 2));
-	log("layerUI contentsize : %f , %f", _layerUI->getContentSize().width, _layerUI->getContentSize().height);
+	//log("layerUI contentsize : %f , %f", _layerUI->getContentSize().width, _layerUI->getContentSize().height);
 	
 	this->addChild(_layerUI, 10);
 	_layerUI->setCameraMask((unsigned short)CameraFlag::USER2);
@@ -522,11 +527,11 @@ void GamePlayScene::update(float dt)
 			hero->setDirect(1);
 		}
 		count[0]++;
-		if (count[0]>50) {
+		if (count[0] > 50) {
 			count[0] = 0;
 
-	//log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
-
+			//log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
+		}
 		
 	}
 
@@ -665,7 +670,6 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 	}
 }
 
-
 void GamePlayScene::createButtonAttack()
 {
 	//code duoc
@@ -728,7 +732,7 @@ void GamePlayScene::miniMap()
 	//minimapSprite->setScale(0.3);
 	//minimapSprite->setPosition(50*screenSize.width / (2 * 256), 820*screenSize.height  / (2*512));
 	dot->setAnchorPoint(Vec2(0.5,0.5));
-	dot->setPosition(screenSize.width * 0.05/2.0, screenSize.height * 9 / 10);
+	dot->setPosition(m_miniMap->getPosition());
 	//_layerUI->addChild(minimapSprite,11);
 	_layerUI->addChild(dot, 11);
 	dot->setVisible(false);
@@ -763,10 +767,6 @@ void GamePlayScene::handleBullet(Vec2 v)
 	
 
 }
-	
-
-
-
 
 void GamePlayScene::AddKnightRed()
 {
@@ -780,6 +780,7 @@ void GamePlayScene::AddKnightRed()
 		log("%f %f", _layer2D->getContentSize().width, _layer2D->getContentSize().height);
 	}
 }
+
 	
 
 

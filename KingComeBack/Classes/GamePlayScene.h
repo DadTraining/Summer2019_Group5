@@ -83,6 +83,8 @@ private:
 	Size screenSize;
 	TMXTiledMap *map, *mapTop;
 	Size sizeWall;
+	float m_scaleX;
+	float m_scaleY;
 	Vec2 positionJoystick;
 	Sprite *joystickBack;
 	Sprite *joystick;

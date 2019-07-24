@@ -23,6 +23,8 @@ const int BITMASK_MAP = 100;
 const int BITMASK_LAYER_UI = 101;
 
 #define SPEED 65
+#define BLUE 0
+#define RED 1
 
 class GamePlayScene :public cocos2d::Scene
 {

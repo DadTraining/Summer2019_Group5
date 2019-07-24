@@ -9,7 +9,11 @@
 #include"TownHall.h"
 #include"ScoutTown.h"
 #include "Hero.h"
+
+#include "Dragon.h"
+
 #include "Knight.h"
+
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -17,6 +21,8 @@ const float heightWall = 1;
 
 const int BITMASK_MAP = 100;
 const int BITMASK_LAYER_UI = 101;
+
+#define SPEED 65
 
 class GamePlayScene :public cocos2d::Scene
 {
@@ -26,7 +32,6 @@ public:
 
 	static Scene *createScene();
 
-
 	virtual bool init() override;
 
 	void createLayer2D();
@@ -34,7 +39,6 @@ public:
 	bool OnTouchBegan(Touch *touch, Event *unused_event);
 	void OnTouchMove(Touch *touch, Event *unused_event);
 	void OnTouchEnd(Touch *touch, Event *unused_event);
-
 	bool OnContactBegin(PhysicsContact &contact);
 
 	void AddMap();
@@ -59,7 +63,20 @@ public:
 
 	void createButtonAttack();
 
+
+	void createButton_Skill_1();
+	void createButton_Skill_2();
+
+	void miniMap();
+	
+	void HandleMinimap();
+
+	void createBullet();
+
+	void handleBullet(Vec2);
+
 	void AddKnightRed();
+
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -106,11 +123,25 @@ private:
 	
 	PhysicsBody * bodyA;
 	Vec2 tempPositinSprite;
-	int count = 0;
+	int count[10] = {0};
 	Action* mListAction[10];
 	Sprite * mButtonAttack;
 	Vec2  mCurrentTouch;
 	Hero * hero;
+	DelayTime * pause;
+	int keep_Press = -1;
+	Sprite * dot, *m_miniMap, *map_1;
+	Vec2 condinatorBigMap ;
+	Vec2 condinatorMiniMap ;
+	Sprite * mButtonSkill_1;
+	Sprite * mButtonSkill_2;
+
+	Dragon * dragon;
+
+	Sprite * bullet;
+
+	MoveTo * moveToBullet;
+	
 
 	// Knight
 	std::vector<Knight*> m_knightRead;

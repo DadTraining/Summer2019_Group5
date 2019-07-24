@@ -79,12 +79,16 @@ void Hero::Died()
 Animation * Hero::createAnimation(std::string frefixName, int pFrame, float delay)
 {
 	Vector<SpriteFrame*> animFrames;
+	float x = m_sprite -> getPosition().x;
+	
+	float y = m_sprite->getPosition().y;
 
 	// Lặp để đọc numberSprite ảnh trong file format
 	for (int index = 0; index <= pFrame; index++)
 	{
 		
-
+		x += index;
+		y ;
 		char buffer[20] = { 0 };
 		// Lấy sprite frame name
 		sprintf(buffer, "%d.png", index);
@@ -93,10 +97,16 @@ Animation * Hero::createAnimation(std::string frefixName, int pFrame, float dela
 
 		// Tạo 1 khung, lấy ra từ bộ đệm SpriteFrameCache có tên là spriteFrameByName;
 		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
-		// Push frame.
+		
+		//	auto frame = SpriteFrame::create(str, Rect(x, y, m_sprite->getContentSize().width, m_sprite->getContentSize().height));
+			// Push frame.
+		//	log("frame %s", frame->getRect().size);
+		//frame->setRect(Rect(x,y, m_sprite->getContentSize().width, m_sprite->getContentSize().height));
 		animFrames.pushBack(frame);
+		
 	}
 	auto animatonFunc = Animation::createWithSpriteFrames(animFrames, delay);
+	
 	animFrames.clear();
 	return animatonFunc;
 }
@@ -104,110 +114,28 @@ Animation * Hero::createAnimation(std::string frefixName, int pFrame, float dela
 
 
 
-void Hero::moveRight_1()
+void Hero::moveR(int directMove, int x , int y)
 {
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x + 2, tempPositinSprite.y - 2);
-
-	animaton = Hero::createAnimation("walk_0000", 7, 0.1f);
-	Animate* animate = Animate::create(animaton);
-	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
-	m_sprite->runAction(Repeat::create(animate, 2));
-}
-
-void Hero::moveRight0()
-{
-	//gameSprite->setFlippedX(false);
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x + 2, tempPositinSprite.y);
 	
-	animaton = Hero::createAnimation("walk_1000", 7, 0.1f);
-	Animate* animate = Animate::create(animaton);
-	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
-	m_sprite->runAction(Repeat::create(animate, 2));
-}
-
-void Hero::moveRight1()
-{
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x + 2, tempPositinSprite.y + 2);
+	tempPositinSprite.x = m_sprite->getPosition().x + x;
+	tempPositinSprite.y = m_sprite->getPosition().y + y;
 	
-	animaton = Hero::createAnimation("walk_2000", 7, 0.1f);
+	char buffer[20] = { 0 };
+	sprintf(buffer, "walk_%d000", directMove);
+	std::string str = buffer;
+	//m_sprite->runAction( mListAction[2] );
+	animaton = Hero::createAnimation(str, 7, 0.09f);
 	Animate* animate = Animate::create(animaton);
 	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
+	m_sprite->stopAllActions();
+	auto moveto = MoveTo::create(1.5,Vec2( tempPositinSprite.x, tempPositinSprite.y));
+	m_sprite->runAction(moveto);
+	
 	m_sprite->runAction(Repeat::create(animate, 2));
+
+//	m_sprite->setPosition(tempPositinSprite.x, tempPositinSprite.y);
 }
 
-void Hero::moveLeft_1()
-{
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x - 2, tempPositinSprite.y - 2);
-
-	animaton = Hero::createAnimation("walk_6000", 7, 0.1f);
-	Animate* animate = Animate::create(animaton);
-	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
-	m_sprite->runAction(Repeat::create(animate, 2));
-}
-
-void Hero::moveLeft0()
-{
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x - 2, tempPositinSprite.y );
-
-	animaton = Hero::createAnimation("walk_5000", 7, 0.1f);
-	Animate* animate = Animate::create(animaton);
-	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
-	m_sprite->runAction(Repeat::create(animate, 2));
-}
-
-void Hero::moveLeft1()
-{
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x - 2, tempPositinSprite.y + 2);
-
-	animaton = Hero::createAnimation("walk_4000", 7, 0.1f);
-	Animate* animate = Animate::create(animaton);
-	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
-	m_sprite->runAction(Repeat::create(animate, 2));
-}
-
-void Hero::upTo()
-{
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x , tempPositinSprite.y + 2);
-
-	animaton = Hero::createAnimation("walk_3000", 7, 0.1f);
-	Animate* animate = Animate::create(animaton);
-	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
-	m_sprite->runAction(Repeat::create(animate, 2));
-}
-
-void Hero::downTo()
-{
-	tempPositinSprite.x = m_sprite->getPosition().x;
-	tempPositinSprite.y = m_sprite->getPosition().y;
-	m_sprite->setPosition(tempPositinSprite.x, tempPositinSprite.y - 2);
-
-	animaton = Hero::createAnimation("walk_7000", 7, 0.1f);
-	Animate* animate = Animate::create(animaton);
-	animate->retain();
-	// Chạy Acction animation với số lần lặp vô hạn.
-	m_sprite->runAction(Repeat::create(animate, 2));
-}
 
 int Hero::getDirect()
 {
@@ -226,10 +154,15 @@ void  Hero::getAttack(int directAttack)
 	std::string str = buffer;
 		
 	//m_sprite->runAction( mListAction[2] );
-	animaton = Hero::createAnimation(str, 7, 0.01f);
+	animaton = Hero::createAnimation(str, 9, 0.01f);
 	Animate* animate = Animate::create(animaton);
 	animate->retain();
-	//Chạy Acction animation với số lần lặp vô hạn.
+
 	m_sprite->runAction(Repeat::create(animate, 1));
 		
+}
+
+Vec2  Hero::getPositionHero()
+{
+	return  m_sprite->getPosition();
 }

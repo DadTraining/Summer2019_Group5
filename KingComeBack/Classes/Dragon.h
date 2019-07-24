@@ -1,10 +1,10 @@
 #pragma once
 #include "Person.h"
 #include "cocos2d.h"
-class Hero : public Person {
+class Dragon : public Person {
 public:
-	Hero(Layer * _layer2D);
-	~Hero();
+	Dragon(Layer * _layer2D);
+	~Dragon();
 	void Init( int ) override;
 	void Attack() override;
 	void Update( float) override;

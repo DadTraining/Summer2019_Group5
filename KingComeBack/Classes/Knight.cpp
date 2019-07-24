@@ -79,17 +79,16 @@ void Knight::Init(int id)
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("knight.plist", "knight.png");
 
 	m_sprite = Sprite::createWithSpriteFrameName("knight_walk_00000.png");
-
-	auto body = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	m_sprite->setScale(0.5);
+	auto body = PhysicsBody::createBox(m_sprite->getContentSize() / 2, PHYSICSBODY_MATERIAL_DEFAULT);
 	body->setGravityEnable(false);
 	body->setCategoryBitmask(16);
-	body->setCollisionBitmask(13);
+	body->setRotationEnable(false);
+	body->setCollisionBitmask(29);
 	m_sprite->setPhysicsBody(body);
-<<<<<<< HEAD
-=======
 
 	SetColor(id);
->>>>>>> eab30377d27e43419b07f4a27cc26f9e72e022c1
+
 }
 
 void Knight::Update(float dt)
@@ -99,19 +98,25 @@ void Knight::Update(float dt)
 
 void Knight::Move(Vec2 vec)
 {
-	SetCurrentDirect(vec);
+	if (m_sprite->getActionManager())
+	{
+		m_sprite->stopAllActions();
+	}
 
-	char actionName[MAX_LENGHT] = { 0 };
-	sprintf(actionName, "knight_walk_%d000", m_currentDirect);
+		SetCurrentDirect(vec);
 
-	m_time = m_distance / 70.0;
-	auto moveTo = MoveTo::create(m_time, vec);
+		char actionName[MAX_LENGHT] = { 0 };
+		sprintf(actionName, "knight_walk_%d000", m_currentDirect);
 
-	count_repeat = m_time + 1;
-	auto action = Repeat::create(ActionKnight(actionName), count_repeat);
+		m_time = m_distance / 70.0;
+		auto moveTo = MoveTo::create(m_time, vec);
 
-	auto spaw = Spawn::create(moveTo, action, nullptr);
-	m_sprite->runAction(spaw);
+		count_repeat = m_time + 1;
+		auto action = Repeat::create(ActionKnight(actionName), count_repeat);
+
+		auto spaw = Spawn::create(moveTo, action, nullptr);
+		m_sprite->runAction(spaw);
+	
 }
 
 void Knight::Died()

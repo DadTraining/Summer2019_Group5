@@ -25,8 +25,7 @@ bool GamePlayScene::init()
 		return false;
 	}
 	newScoutTown = nullptr;
-	newHallTown = nullptr;
-	knight = nullptr;
+	//newHallTown = nullptr;
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
 
@@ -95,10 +94,14 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 	
 	touchCurrenPositon = touch->getLocation()
 		+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
-	if (knight != nullptr)
+	for (auto k : knight)
 	{
-		knight->Move(touchCurrenPositon);
+		if (k != nullptr)
+		{
+			k->Move(touchCurrenPositon);
+		}
 	}
+
 
 	return true;
 }
@@ -178,7 +181,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicLeft->setDynamic(false);
 	physicLeft->setCategoryBitmask(1);
-	physicLeft->setCollisionBitmask(10);
+	physicLeft->setCollisionBitmask(31);
 	nodeLeft->setPhysicsBody(physicLeft);
 	nodeLeft->setPosition(map->getPositionX() - 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeLeft);
@@ -191,7 +194,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicUp->setDynamic(false);
 	physicUp->setCategoryBitmask(1);
-	physicUp->setCollisionBitmask(10);
+	physicUp->setCollisionBitmask(31);
 	nodeUP->setPhysicsBody(physicUp);
 	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height + 5);
 	_layer2D->addChild(nodeUP);
@@ -203,7 +206,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicRight->setDynamic(false);
 	physicRight->setCategoryBitmask(1);
-	physicRight->setCollisionBitmask(10);
+	physicRight->setCollisionBitmask(31);
 	nodeRight->setPhysicsBody(physicRight);
 	nodeRight->setPosition(map->getContentSize().width + 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeRight);
@@ -215,7 +218,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicDown->setDynamic(false);
 	physicDown->setCategoryBitmask(1);
-	physicDown->setCollisionBitmask(10);
+	physicDown->setCollisionBitmask(31);
 	nodeDown->setPhysicsBody(physicDown);
 	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y - 5);
 	_layer2D->addChild(nodeDown);
@@ -394,10 +397,11 @@ void GamePlayScene::AddEventForPopupTownHall()
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHallTown->setVisible(false);
 
-			newHallTown = new TownHall(_layer2D, 2);
-			newHallTown->getSprite()->setPosition(_touch->getLocation()
+			auto HallTown = new TownHall(_layer2D, 2);
+			HallTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-			newHallTown->getSprite()->setCameraMask(2);
+			HallTown->getSprite()->setCameraMask(2);
+			newHallTown.push_back(HallTown);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
 
 		};
@@ -437,11 +441,11 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 void GamePlayScene::CreateKnight()
 {
-	knight = new Knight(_layer2D, 2);
+	auto createKnight = new Knight(_layer2D, 2);
 	//knight->getSprite()->setCameraMask(2);
 
-	knight->SetPositionKnight(screenSize / 2);
-
+	createKnight->SetPositionKnight(newHallTown.at(0)->getSprite()->getPosition());
+	knight.push_back(createKnight);
 }
 
 void GamePlayScene::createLayerUI()
@@ -466,28 +470,30 @@ void GamePlayScene::update(float dt)
 	{
 		newScoutTown->Update(dt);
 	}
-	if (newHallTown != nullptr)
+	for (auto hallTown : newHallTown)
 	{
-		newHallTown->Update(dt);
-	}
-	if (newHallTown != nullptr && newHallTown->loadingBar == nullptr && createListenerForTownHall == true)
-	{
-		createListenerForTownHall = false;
-		auto listenerTownHall = EventListenerTouchOneByOne::create();
-		listenerTownHall->onTouchBegan = [=](Touch *touch, Event *_event)
+		if (hallTown != nullptr)
 		{
-			if (newHallTown->getSprite()->getBoundingBox().containsPoint(touch->getLocation()
-				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2))
+			hallTown->Update(dt);
+		}
+		if (hallTown != nullptr && hallTown->loadingBar == nullptr && createListenerForTownHall == true)
+		{
+			createListenerForTownHall = false;
+			auto listenerTownHall = EventListenerTouchOneByOne::create();
+			listenerTownHall->onTouchBegan = [=](Touch *touch, Event *_event)
 			{
-				auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", 
-					CC_CALLBACK_0(GamePlayScene::CreateKnight, this));
-				_layer2D->addChild(popup);
-				return true;
-			}
-			return false;
-		};
-		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
-
+				if (hallTown->getSprite()->getBoundingBox().containsPoint(touch->getLocation()
+					+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2))
+				{
+					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "",
+						CC_CALLBACK_0(GamePlayScene::CreateKnight, this));
+					_layer2D->addChild(popup);
+					return true;
+				}
+				return false;
+			};
+			this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
+		}
 	}
 
 

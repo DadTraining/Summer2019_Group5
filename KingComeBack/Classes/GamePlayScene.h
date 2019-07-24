@@ -95,11 +95,10 @@ private:
 	Point touchCurrenPositon;
 
 	ScoutTown *newScoutTown;
-	TownHall *newHallTown;
   
 	cocos2d::Animation * animaton;
 
-	Knight *knight;
+	std::vector<Knight *> knight;
 	Sprite* gameSprite;
 	Sprite * gameSpriteAttack;
 	CCCallFunc * callBackAttack;
@@ -116,6 +115,7 @@ private:
 
 	// Knight
 	std::vector<Knight*> m_knightRead;
+	std::vector<TownHall *> newHallTown;
 
 };
 

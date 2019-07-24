@@ -21,7 +21,7 @@ void ScoutTown::Init(int id)
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
-	physicBody->setCollisionBitmask(9);
+	physicBody->setCollisionBitmask(25);
 	m_sprite->setPhysicsBody(physicBody);
 
 	this->LoadingBuild();

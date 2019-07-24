@@ -359,7 +359,7 @@ void GamePlayScene::AddButtonPopUpHouse()
 {
 	auto button = ui::Button::create("ButtonShop.png", "ButtonShop_press.png");
 	button->setTitleText("House");
-	button->setScale(0.3);
+	button->setScale(m_scaleX * 0.3, m_scaleX * 0.3);
 	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9.5));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)

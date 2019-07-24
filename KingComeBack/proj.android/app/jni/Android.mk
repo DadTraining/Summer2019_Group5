@@ -22,6 +22,7 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
 				   $(LOCAL_PATH)/../../../Classes/GameSetting.cpp \
 				   $(LOCAL_PATH)/../../../Classes/SettingScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/LoadingScene.cpp \
+				   $(LOCAL_PATH)/../../../Classes/LogoScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/MenuScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/MainMenuScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/MyObject.cpp \
@@ -36,7 +37,9 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
 				   $(LOCAL_PATH)/../../../Classes/SneakyJoystick.cpp \
 				   $(LOCAL_PATH)/../../../Classes/SneakyJoystickSkinnedBase.cpp \
 				   $(LOCAL_PATH)/../../../Classes/TownHall.cpp \
-				   $(LOCAL_PATH)/../../../Classes/VisibleRect.cpp 
+				   $(LOCAL_PATH)/../../../Classes/VisibleRect.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Dragon.cpp \
+				   $(LOCAL_PATH)/../../../Classes/Knight.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes
 

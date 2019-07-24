@@ -4,6 +4,25 @@ Item::Item(Layer * layer, int ID)
 {
 	this->Init(ID); 
 
+	menuItemImage = MenuItemImage::create("axe.png", "axe.png", [&](Ref *ref) {
+
+		//menuItemImage->setPosition(- screenSize.width / 2, 90);
+		//menuItemImage->setCameraMask(4);
+		menuItemImage->setVisible(false);
+		auto itemEquip = MenuItemImage::create("axe.png", "axe.png", [&](Ref *ref) {
+			menuItemImage->setVisible(true);
+
+			//itemEquip->setVisible(false);
+		});
+		auto menu = Menu::create(itemEquip, NULL);
+		menu->setPosition(screenSize / 2);
+		auto node = Node::create();
+		node->addChild(menu);
+		layer->addChild(node);
+		//log("MenuItemImage Position: %f, %f", menuItemImage->getPosition().x, menuItemImage->getPositionY());
+	});
+	m_state = ID_STATE_WAREHOUSE;
+
 	//layer->addChild(menuItemImage);
 	//auto listenerItem = EventListenerTouchOneByOne::create();
 	//listenerItem->onTouchBegan = [=](Touch *_touch, Event *_event) {
@@ -42,10 +61,7 @@ void Item::Init(int ID)
 	default:
 		break;
 	}
-	menuItemImage = MenuItemImage::create("axe.png", "axe.png", [&](Ref *ref) {
-		menuItemImage->setPosition(screenSize.width / 2, screenSize.height / 2);
-	});
-	m_state = ID_STATE_WAREHOUSE;
+
 }
 
 void Item::Died()

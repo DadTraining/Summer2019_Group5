@@ -66,6 +66,7 @@ Knight::Knight(Layer * layer, int id)
 {
 	Init(id);
 	layer->addChild(m_sprite);
+	m_sprite->setCameraMask(2);
 }
 
 Knight::~Knight()
@@ -81,9 +82,8 @@ void Knight::Init(int id)
 	auto body = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
 	body->setGravityEnable(false);
 	body->setCategoryBitmask(16);
-	body->setCollisionBitmask(5);
+	body->setCollisionBitmask(13);
 	m_sprite->setPhysicsBody(body);
-
 }
 
 void Knight::Update(float dt)

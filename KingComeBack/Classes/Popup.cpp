@@ -40,6 +40,7 @@ namespace IMAGEPATH {
 	const char *SCOUT_TOWN_BUTTON = "ScoutTown2D_button.png";
 	const char *SCOUT_TOWN_BUTTON_PRESS = "ScoutTown2D_button_press.png";
 	const char *AXE_ITEM = "axe.png";
+	const char *KNIHT_ITEM = "itemKnight.png";
 }
 namespace UICustom {
 
@@ -388,8 +389,9 @@ namespace UICustom {
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
 
 			if (YesFunc) {
-				MenuItemImage *knight = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
-					
+				MenuItemImage *knight = MenuItemImage::create(IMAGEPATH::KNIHT_ITEM, IMAGEPATH::KNIHT_ITEM, [=](Ref *sender) {
+					YesFunc();
+					node->dismiss(true);
 				});
 
 				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
@@ -461,7 +463,7 @@ namespace UICustom {
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
 
 			if (YesFunc) {
-				MenuItemImage *yesButton = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
+				MenuItemImage *knight = MenuItemImage::create(IMAGEPATH::KNIHT_ITEM, IMAGEPATH::KNIHT_ITEM, [=](Ref *sender) {
 
 					YesFunc();
 					node->dismiss(true);
@@ -471,7 +473,7 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 
-				Menu *menu = Menu::create(noButton, NULL);
+				Menu *menu = Menu::create(knight, noButton, NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);

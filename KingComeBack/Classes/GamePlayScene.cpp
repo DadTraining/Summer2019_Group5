@@ -26,6 +26,7 @@ bool GamePlayScene::init()
 	}
 	newScoutTown = nullptr;
 	newHallTown = nullptr;
+	knight = nullptr;
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
 
@@ -91,6 +92,10 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 	
 	touchCurrenPositon = touch->getLocation()
 		+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
+	if (knight != nullptr)
+	{
+		knight->Move(touchCurrenPositon);
+	}
 
 	return true;
 }
@@ -239,6 +244,7 @@ void GamePlayScene::AddCameraUSER2()
 	cameraUS2 = Camera::create();
 	cameraUS2->setCameraMask(4);
 	this->addChild(cameraUS2);
+
 }
 
 void GamePlayScene::AddListener()
@@ -426,6 +432,15 @@ void GamePlayScene::AddEventForPopupScoutTown()
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 }
 
+void GamePlayScene::CreateKnight()
+{
+	knight = new Knight(_layer2D, 2);
+	//knight->getSprite()->setCameraMask(2);
+
+	knight->SetPositionKnight(screenSize / 2);
+
+}
+
 void GamePlayScene::createLayerUI()
 {
 	_layerUI = Layer::create();
@@ -461,10 +476,8 @@ void GamePlayScene::update(float dt)
 			if (newHallTown->getSprite()->getBoundingBox().containsPoint(touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2))
 			{
-				auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [=]()
-				{
-					
-				});
+				auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", 
+					CC_CALLBACK_0(GamePlayScene::CreateKnight, this));
 				_layer2D->addChild(popup);
 				return true;
 			}

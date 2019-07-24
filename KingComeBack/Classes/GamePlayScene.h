@@ -51,6 +51,8 @@ public:
 	void AddEventForPopupTownHall();
 	void AddEventForPopupScoutTown();
 
+	void CreateKnight();
+
 	void createLayerUI();
 
 	void update(float dt) override;
@@ -96,7 +98,7 @@ private:
   
 	cocos2d::Animation * animaton;
 
-
+	Knight *knight;
 	Sprite* gameSprite;
 	Sprite * gameSpriteAttack;
 	CCCallFunc * callBackAttack;

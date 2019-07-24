@@ -440,14 +440,17 @@ void Menu::alignItemsInColumnsWithArray(const ValueVector& rows)
 
         child->setPosition(x - winSize.width / 2,
                                y - child->getContentSize().height / 2);
+		//--------change---------------------
+        x += child->getContentSize().width + 2;
+		//-----------------------------------
 
-        x += w;
         ++columnsOccupied;
 
         if (columnsOccupied >= rowColumns)
         {
-            y -= rowHeight + 5;
-
+			//-------change-----
+            y -= rowHeight + 3;
+			//------------------
             columnsOccupied = 0;
             rowColumns = 0;
             rowHeight = 0;

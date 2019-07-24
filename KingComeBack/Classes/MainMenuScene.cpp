@@ -1,7 +1,6 @@
-/*#include "MainMenuScene.h"
+﻿#include "MainMenuScene.h"
 #include "ResourceManager.h"
-
-int MainMenuScene::id = 0;
+#include "GameSetting.h"
 
 MainMenuScene::~MainMenuScene()
 {
@@ -13,104 +12,108 @@ MainMenuScene::MainMenuScene()
 
 bool MainMenuScene::init()
 {
-	if (!Layer::init())
+	if (!Scene::init())
 	{
 		return false;
 	}
 	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto frames1 = Sprite::create("/Buttons/hero/pngguru.com-id-nafyj_01.png");
-	frames1->setScale(0.5);
+	//add back ground 
+	background = Sprite::create("Loading/rsz_background_bb.png");
+	background->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+	background->setScale(visibleSize.width / background->getContentSize().width,
+		visibleSize.height / background->getContentSize().height);
+	background->removeFromParent();
+	this->addChild(background, -10);
 
-	heroLeft = ui::Button::create("/Buttons/hero/Assasin_01.png", "/Buttons/hero/Assasin_01.png");
-	//heroLeft->setScale(0.5);
-	heroLeft->setSize(Size(heroLeft->getContentSize().width/10, heroLeft->getContentSize().height/10));
-	heroLeft->setPosition(Vec2( visibleSize.width / 3, 2*visibleSize.height/3));
-	heroLeft->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-	{
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			//auto fadeOut = FadeOut::create(2.0f);
-			heroLeft->setOpacity(100);
-			MainMenuScene::id = 1;
-			break;
+	//add logo game
 
-		}
-	});
-	frames1->setPosition(heroLeft->getPosition());
-	addChild(frames1,1);
-	addChild(heroLeft,5);
+	logo = Sprite::create("Loading/logoName.png");
+	logo->setPosition(origin.x + (logo->getContentSize().height / 1.2), visibleSize.height - (logo->getContentSize().height / 3));
+	logo->setScale(0.5);
+	this->addChild(logo, 2);
 
-	//add hero center
+	//add label for hero 
+	lbHero = Label::createWithTTF("", "Fonts/arial.ttf", 20);
+	lbHero->setVisible(false);
+	this->addChild(lbHero, 1);
 
-	auto frames2 = Sprite::create("/Buttons/hero/pngguru.com-id-nafyj_01.png");
-	frames2->setScale(0.5);
+	AddListener();
 
-	heroCenter = ui::Button::create("/Buttons/hero/Leona_01.png", "/Buttons/hero/Leona_01.png");
-	heroCenter->setContentSize(Size(145, 221));
-	//heroLeft->setTitleText(" Setting ");
-	//heroLeft->setScale(2, 1.5);
-	heroCenter->setPosition(Vec2(heroLeft->getPositionX() + heroLeft->getContentSize().width + 32,2* visibleSize.height / 3));
-	heroCenter->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-	{
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			auto fadeOut = FadeOut::create(2.0f);
-			heroCenter->setOpacity(100);
-			MainMenuScene::id = 2;
-			break;
+	//add button hero thiện xạ
+	itemMarksman = Sprite::create("Loading/walk_70000.png");
+	itemMarksman->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	itemMarksman->setScale(2);
+	this->addChild(itemMarksman,2);
 
-		}
-	});
-	frames2->setPosition(heroCenter->getPosition());
-	addChild(frames2, 1);
-	addChild(heroCenter,5);
-
-	//add hero right
-
-	auto frames3 = Sprite::create("/Buttons/hero/pngguru.com-id-nafyj_01.png");
-	frames3->setScale(0.5);
-
-	heroRight = ui::Button::create("/Buttons/hero/Knight.png", "/Buttons/hero/Knight.png");
-	//heroRight->setSize(Size(145, 221));
-	//heroLeft->setTitleText(" Setting ");
-	//heroLeft->setScale(2, 1.5);
-	heroRight->setSize(Size(heroRight->getContentSize().width*4.0f, heroRight->getContentSize().height*1.2f));
-	heroRight->setPosition(Vec2(heroCenter->getPositionX() + heroCenter->getContentSize().width + 32,2* visibleSize.height / 3));
-	heroRight->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
-	{
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			auto fadeOut = FadeOut::create(2.0f);
-			heroRight->setOpacity(100);
-			MainMenuScene::id = 3;
-			break;
-
-		}
-	});
-	frames3->setPosition(heroRight->getPosition());
-	addChild(frames3, 1);
-	addChild(heroRight,5);
-
+	scheduleUpdate();
 	return true;
 }
-
-cocos2d::Scene * MainMenuScene::createScene()
+void MainMenuScene::update(float dt)
 {
-	auto scene = Scene::create();
+	heroAnimation(1);
+}
+bool MainMenuScene::OnTouchBegan(Touch * touch, Event * unused_event)
+{
+	mCurrentTouch.x = touch->getLocation().x;
+	mCurrentTouch.y = touch->getLocation().y;
+	return true;
+}
+void MainMenuScene::OnTouchMove(Touch * touch, Event * unused_event)
+{
+}
+void MainMenuScene::OnTouchEnd(Touch * touch, Event * unused_event)
+{
+	
+}
+void MainMenuScene::AddListener()
+{
+	// add listen touch
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = CC_CALLBACK_2(MainMenuScene::OnTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(MainMenuScene::OnTouchMove, this);
+	listener->onTouchEnded = CC_CALLBACK_2(MainMenuScene::OnTouchEnd, this);
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+}
+void MainMenuScene::heroAnimation(int)
+{
+	if (itemMarksman->getBoundingBox().containsPoint(mCurrentTouch)) {
+		createani();
+		mCurrentTouch.x++;
+		
+	}
+}
+void MainMenuScene::createani()
+{
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Loading/menuHero1.plist", "Loading/menuHero1.png");
 
-	auto layer = MainMenuScene::create();
+	//lbHero->setVisible(true);
+	const int numberSprite = 8;
+	const int maxWord = 50;
 
-	scene->addChild(layer);
+	Vector<SpriteFrame*> animFrames;
+	//animFrames.reserve(numberSprite);
+	
+	
 
-	return scene;
-}*/
+	for (int index = 0; index < numberSprite; index++)
+	{
+		std::string str = "walk_7000";
+		char spritesFramByName[maxWord] = { 0 };
+		sprintf(spritesFramByName, "%d.png", index);
+		str = str + spritesFramByName;
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
+
+		animFrames.pushBack(frame);
+	}
+
+
+	animation = Animation::createWithSpriteFrames(animFrames, 0.05f);
+	Animate* animate = Animate::create(animation);
+	itemMarksman->runAction(RepeatForever::create(animate));
+}
+Scene * MainMenuScene::createScene()
+{
+	return MainMenuScene::create();
+}

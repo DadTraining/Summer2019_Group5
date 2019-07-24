@@ -15,7 +15,7 @@ public:
 	CREATE_FUNC(MenuScene);
 private:
 	Sprite *background, *logo;
-	ui::Button *btnPlay, *btnExit, *btnSetting, *btnAgainPlay;
+	ui::Button *btnPlay, *btnExit, *btnSetting, *btnAgainPlay, *btnMenu;
 };
 
 

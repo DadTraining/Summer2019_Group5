@@ -24,6 +24,7 @@
 
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
+#include "GamePlayScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -94,12 +95,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
 
-    
-
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = LoadingScene::createScene();
+    auto scene = GamePlayScene::createScene();
 
     // run
     director->runWithScene(scene);

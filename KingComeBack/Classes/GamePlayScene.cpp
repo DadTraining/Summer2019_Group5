@@ -81,7 +81,7 @@ void GamePlayScene::createLayer2D()
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
-
+	log("touch Location: %f, %f", touch->getLocation().x, touch->getLocation().y);
 	mCurrentTouch.x = touch->getLocation().x;
 	mCurrentTouch.y = touch->getLocation().y;
 	tempTouch.x = (touch->getLocation().x - screenSize.width / 2);
@@ -137,6 +137,7 @@ bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
 	auto spriteB = contact.getShapeB()->getBody();
 
 	// camera with map
+
 	auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
 	CC_ASSERT(body->getCategoryBitmask() == 0x04 || body->getCategoryBitmask() == 0x08);
 
@@ -166,7 +167,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicLeft->setDynamic(false);
 	physicLeft->setCategoryBitmask(1);
-	physicLeft->setCollisionBitmask(2);
+	physicLeft->setCollisionBitmask(10);
 	nodeLeft->setPhysicsBody(physicLeft);
 	nodeLeft->setPosition(map->getPositionX() - 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeLeft);
@@ -179,7 +180,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicUp->setDynamic(false);
 	physicUp->setCategoryBitmask(1);
-	physicUp->setCollisionBitmask(2);
+	physicUp->setCollisionBitmask(10);
 	nodeUP->setPhysicsBody(physicUp);
 	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height + 5);
 	_layer2D->addChild(nodeUP);
@@ -191,7 +192,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicRight->setDynamic(false);
 	physicRight->setCategoryBitmask(1);
-	physicRight->setCollisionBitmask(2);
+	physicRight->setCollisionBitmask(10);
 	nodeRight->setPhysicsBody(physicRight);
 	nodeRight->setPosition(map->getContentSize().width + 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeRight);
@@ -203,7 +204,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicDown->setDynamic(false);
 	physicDown->setCategoryBitmask(1);
-	physicDown->setCollisionBitmask(2);
+	physicDown->setCollisionBitmask(10);
 	nodeDown->setPhysicsBody(physicDown);
 	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y - 5);
 	_layer2D->addChild(nodeDown);
@@ -211,7 +212,7 @@ void GamePlayScene::AddMap()
 
 void GamePlayScene::AddCameraUSER1()
 {
-	camera = Camera::create();
+	camera = Camera::create(); 
 	camera->setCameraFlag(CameraFlag::USER1);
 
 	auto physicBody = PhysicsBody::createBox(screenSize,
@@ -334,13 +335,16 @@ void GamePlayScene::AddSpriteUI()
 	auto containerForSpriteUI = Node::create();
 	auto sprite = Sprite::create("UI.png");
 	sprite->setPosition(screenSize / 2);
+	sprite->setScale(screenSize.width / sprite->getContentSize().width,
+		screenSize.height / sprite->getContentSize().height);
 	containerForSpriteUI->addChild(sprite);
+
 	_layerUI->addChild(containerForSpriteUI, 10);
 }
 
 void GamePlayScene::AddPopupHero()
 {
-	auto popUpHero = UICustom::Popup::createAsConfirmDialogue("hero", "",[=]() {
+	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"hero", "",[=]() {
 
 	});
 	_layerUI->addChild(popUpHero, 10);
@@ -377,6 +381,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHallTown->setVisible(false);
+
 			newHallTown = new TownHall(_layer2D, 2);
 			newHallTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
@@ -455,7 +460,7 @@ void GamePlayScene::update(float dt)
 			{
 				auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [=]()
 				{
-					// event
+					
 				});
 				_layer2D->addChild(popup);
 				return true;
@@ -464,16 +469,13 @@ void GamePlayScene::update(float dt)
 		};
 		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
 
-
-		
-
 	}
 
 
 	// code duoc
 
 	//gameSprite->runAction(mListAction[0]);
-	log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
+	//log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
 
 	if (leftJoystick->getVelocity().x > 0 && leftJoystick->getVelocity().y > -0.2 && leftJoystick->getVelocity().y < 0.2) {
 		if (count<5) {

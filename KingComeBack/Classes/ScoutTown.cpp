@@ -9,7 +9,7 @@ ScoutTown::ScoutTown(Layer* scene, int id)
 
 ScoutTown::~ScoutTown()
 {
-
+	delete this;
 }  
 
 void ScoutTown::Init(int id)
@@ -21,12 +21,10 @@ void ScoutTown::Init(int id)
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
-	physicBody->setCollisionBitmask(13);
+	physicBody->setCollisionBitmask(9);
 	m_sprite->setPhysicsBody(physicBody);
 
 	this->LoadingBuild();
-
-
 }
 
 void ScoutTown::Died()

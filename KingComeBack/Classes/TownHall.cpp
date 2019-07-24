@@ -3,6 +3,7 @@
 
 TownHall ::~TownHall()
 {
+	delete this;
 }
 
 TownHall::TownHall(Layer* _layer, int id)
@@ -23,7 +24,7 @@ void TownHall::Init(int id)
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
-	physicBody->setCollisionBitmask(13);
+	physicBody->setCollisionBitmask(9);
 
 	m_sprite->setPhysicsBody(physicBody);
 	this->LoadingBuild();
@@ -57,9 +58,10 @@ void TownHall::Update(float dt)
 		if (percent >= 1.0f)
 		{
 			m_sprite->setOpacity(hallTownOpacity);
+			m_sprite->getPhysicsBody()->setDynamic(false);
+
 			loadingBar->removeFromParentAndCleanup(true);
 			loadingBarBg->removeFromParentAndCleanup(true);
-			m_sprite->getPhysicsBody()->setDynamic(false);
 			loadingBar = nullptr;
 		}
 	}

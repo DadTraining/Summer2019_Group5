@@ -39,7 +39,7 @@ namespace IMAGEPATH {
 	const char *TOWN_HALL_BUTTON_PRESS = "HallTownButton_press.png";
 	const char *SCOUT_TOWN_BUTTON = "ScoutTown2D_button.png";
 	const char *SCOUT_TOWN_BUTTON_PRESS = "ScoutTown2D_button_press.png";
-
+	const char *AXE_ITEM = "axe.png";
 }
 namespace UICustom {
 
@@ -290,11 +290,11 @@ namespace UICustom {
 	{
 		return nullptr;
 	}
-	PopupHero * PopupHero::createAsConfirmDialogue(const std::string & title, const std::string & msg, const std::function<void()>& YesFunc)
+	PopupHero * PopupHero::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, const std::function<void()>& YesFunc)
 	{
-		return create(title, msg, NULL, YesFunc);
+		return create(layer, title, msg, NULL, YesFunc);
 	}
-	PopupHero * PopupHero::create(const std::string & title, const std::string & msg, cocos2d::Label * lbl, const std::function<void()>& YesFunc)
+	PopupHero * PopupHero::create(Layer *layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, const std::function<void()>& YesFunc)
 	{
 		PopupHero *node = new (std::nothrow)PopupHero();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -309,20 +309,22 @@ namespace UICustom {
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
 
 			if (YesFunc) {
-				MenuItemImage *yesButton = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
+				Vector<MenuItem *> menuItemImage;
+				for (size_t i = 0; i < 24; i++)
+				{
 
-					YesFunc();
-					node->dismiss(true);
-				});
+					auto item = new Item(layer, 2);
 
-				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
-					node->dismiss(true);
-				});
-
-				Menu *menu = Menu::create(noButton, NULL);
+					menuItemImage.pushBack(item->getMenuItemImage());
+				}
+			
+				Menu *menu = Menu::createWithArray(menuItemImage);
+				
 				node->addChild(menu, 2);
-				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
-				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
+			
+				menu->alignItemsInColumns(4, 4, 4, 4, 4, 4);				
+				menu->setPosition(winSize.width * 3 / 4.4 , winSize.height / 1.9); //- lbl->getContentSize().height / 2 - 75);
+	
 
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
@@ -386,17 +388,15 @@ namespace UICustom {
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
 
 			if (YesFunc) {
-				MenuItemImage *yesButton = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
-
-					YesFunc();
-					node->dismiss(true);
+				MenuItemImage *knight = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
+					
 				});
 
 				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
 					node->dismiss(true);
 				});
 
-				Menu *menu = Menu::create(noButton , NULL);
+				Menu *menu = Menu::create(knight, noButton , NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
@@ -432,6 +432,80 @@ namespace UICustom {
 		fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
 		//fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
 
+		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
+		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET / 2.3);
+		_bg->addChild(heading);
+		heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+		heading->enableShadow(Color4B::BLACK, Size(0, -3));
+	}
+	PopupCreateKnight * PopupCreateKnight::createAsMessage(const std::string & title, const std::string & msg)
+	{
+		return nullptr;
+	}
+	PopupCreateKnight * PopupCreateKnight::createAsConfirmDialogue(const std::string & title, const std::string & msg, const std::function<void()>& YesFunc)
+	{
+		return create(title, msg, NULL, YesFunc);
+	}
+	PopupCreateKnight * PopupCreateKnight::create(const std::string & title, const std::string & msg, cocos2d::Label * lbl, const std::function<void()>& YesFunc)
+	{
+		PopupCreateKnight *node = new (std::nothrow)PopupCreateKnight();
+		Size winSize = Director::getInstance()->getWinSize();
+		if (node && node->init())
+		{
+			if (!lbl) {
+				lbl = Label::createWithTTF(msg, FONT::GAME_FONT, FONT::DESCRIPTION_TEXT_SIZE);
+			}
+			lbl->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+			lbl->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+			lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
+			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
+
+			if (YesFunc) {
+				MenuItemImage *yesButton = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
+
+					YesFunc();
+					node->dismiss(true);
+				});
+
+				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
+					node->dismiss(true);
+				});
+
+				Menu *menu = Menu::create(noButton, NULL);
+				node->addChild(menu, 2);
+				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
+				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
+
+				lbl->setPosition(winSize / 2);
+				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
+			}
+			node->addChild(lbl, 10);
+			node->initBg(lbl->getContentSize() + CONFIRM_DIALOGUE_SIZE_OFFSET, title);
+			node->autorelease();
+			return node;
+		}
+
+		CC_SAFE_DELETE(node);
+		return nullptr;
+	}
+	void PopupCreateKnight::initBg(const cocos2d::Size size, const std::string & title)
+	{
+		Size winSize = Director::getInstance()->getWinSize();
+
+		_bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_TOWNHALL);
+		this->addChild(_bg);
+
+		_bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
+		_bg->setScale9Enabled(true);
+		//_bg->setContentSize(size);
+
+		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_TOWNHALL);
+		//_bg->addChild(fill);
+		fill->setColor(Color3B(210, 210, 210));
+		fill->setScale9Enabled(true);
+		fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
+		fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
+		//fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
 
 		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
 		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET / 2.3);

@@ -23,7 +23,7 @@ bool LoadingScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	// Add background
-	background = Sprite::create("Sprites/Background/lua.jpg");
+	background = Sprite::create("Loading/backgroundLoading.png");
 	background->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 	background->setScale(visibleSize.width / background->getContentSize().width,
 		visibleSize.height / background->getContentSize().height);
@@ -44,6 +44,7 @@ bool LoadingScene::init()
 	loadingBar = Sprite::create("Sprites/Loading/loading.png");
 	loadingBar->setPosition(visibleSize.width / 2, visibleSize.height / 7);
 	loadingBar->setScaleX(3);
+	loadingBar->setScaleY(0.1);
 	loadingBar->setColor(Color3B::WHITE);
 	loadingBar->setOpacity(60);
 	this->addChild(loadingBar, 1);
@@ -53,7 +54,7 @@ bool LoadingScene::init()
 	loadingPress->setAnchorPoint(Vec2(0, 0.5));
 	loadingPress->setPosition(visibleSize.width / 2 - loadingPress->getContentSize().width / 2 -loadingPress->getContentSize().width,  visibleSize.height / 7);
 		this -> addChild(loadingPress, 1);
-		loadingPress->setOpacity(100);
+		//loadingPress->setOpacity(10);
 
 	/*lbLoading = Label::createWithTTF("loading...", "fonts/Marker Felt.ttf", 20);
 	lbLoading->setAnchorPoint(Vec2(0.5, 0.5));
@@ -80,7 +81,7 @@ Scene* LoadingScene::createScene()
 void LoadingScene::update(float detaTime)
 {
 	scale += 0.01;
-	loadingPress->setScale(scale, 1);
+	loadingPress->setScale(scale, 0.1);
 	if (scale >= 3)
 	{
 		this->unscheduleUpdate();

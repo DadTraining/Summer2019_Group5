@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include "Item.h"
 
 /*
 -Displays a popup
@@ -73,8 +74,8 @@ namespace UICustom {
 	{
 	public:
 		static PopupHero* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupHero* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
-		static PopupHero* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
+		static PopupHero* createAsConfirmDialogue(Layer *layer, const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
+		static PopupHero* create(Layer *layer, const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
 
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
@@ -87,6 +88,17 @@ namespace UICustom {
 		static PopupTownHall* createAsMessage(const std::string &title, const std::string &msg);
 		static PopupTownHall* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
 		static PopupTownHall* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
+
+	private:
+		void initBg(const cocos2d::Size size, const std::string &title);
+	};
+
+	class PopupCreateKnight : public PopupDelegates
+	{
+	public:
+		static PopupCreateKnight* createAsMessage(const std::string &title, const std::string &msg);
+		static PopupCreateKnight* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
+		static PopupCreateKnight* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
 
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);

@@ -87,6 +87,8 @@ private:
 	static const int indexJoystick = 3;
 	static const int indexLayerUI = 2;
 
+	Vec2 positionWeapons;
+
 	Size mapContentSize;
 	Point touchCurrenPositon;
 

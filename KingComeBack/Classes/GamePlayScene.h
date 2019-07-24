@@ -61,11 +61,12 @@ public:
 
 	void createButtonAttack();
 
+	void AddKnightRed();
 
 	CREATE_FUNC(GamePlayScene);
 private:
 	Size screenSize;
-	TMXTiledMap *map;
+	TMXTiledMap *map, *mapTop;
 	Size sizeWall;
 	Vec2 positionJoystick;
 	Sprite *joystickBack;
@@ -112,6 +113,9 @@ private:
 	Sprite * mButtonAttack;
 	Vec2  mCurrentTouch;
 	Hero * hero;
+
+	// Knight
+	std::vector<Knight*> m_knightRead;
 
 };
 

@@ -72,7 +72,7 @@ bool MenuScene::init()
 				SimpleAudioEngine::getInstance()->playEffect("Sound/confirm.wav");
 			}
 			btnPlay->setOpacity(100);
-			Director::getInstance()->replaceScene(MainMenuScene::createScene());
+			Director::getInstance()->replaceScene(GamePlayScene::createScene());
 			break;
 		default:
 			break;

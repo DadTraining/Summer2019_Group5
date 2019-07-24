@@ -58,6 +58,9 @@ bool GamePlayScene::init()
 	// add layer 
 	this->createLayerUI();
 
+	//Add Knight Red
+	AddKnightRed();
+
 	//code duoc
 	createButtonAttack();
 
@@ -160,7 +163,7 @@ void GamePlayScene::AddMap()
 	_layer2D->addChild(map);
 
 	// Map top
-	auto mapTop = TMXTiledMap::create("mapTop.tmx");
+	mapTop = TMXTiledMap::create("mapTop.tmx");
 	mapTop->setAnchorPoint(Vec2(0, 0));
 	mapTop->setPositionY(map->getContentSize().height);
 	_layer2D->addChild(mapTop);
@@ -497,7 +500,7 @@ void GamePlayScene::update(float dt)
 		if (count<5) {
 			if (count == 1) {
 
-				log("ok");
+				//log("ok");
 			}
 
 			hero->moveRight0();
@@ -514,7 +517,7 @@ void GamePlayScene::update(float dt)
 			count++;
 			hero->moveRight1();
 			hero->setDirect(1);
-			log("ok");
+			//log("ok");
 			if (count == 5) {
 				count = 0;
 			}
@@ -526,7 +529,7 @@ void GamePlayScene::update(float dt)
 		if (count<5) {
 
 			count++;
-			log("ok");
+			//log("ok");
 			hero->upTo();
 			hero->setDirect(2);
 			if (count == 5) {
@@ -537,7 +540,7 @@ void GamePlayScene::update(float dt)
 	}
 	if (leftJoystick->getVelocity().y > 0 && leftJoystick->getVelocity().x <= -0.2 && leftJoystick->getVelocity().x >= -0.8) {
 		if (count<5) {
-			log("ok");
+			//log("ok");
 			count++;
 			hero->moveLeft1();
 			hero->setDirect(3);
@@ -564,7 +567,7 @@ void GamePlayScene::update(float dt)
 	}
 	if (leftJoystick->getVelocity().x < 0 && leftJoystick->getVelocity().y <= -0.2 && leftJoystick->getVelocity().y >= -0.8) {
 		if (count<5) {
-			log("ok");
+			//log("ok");
 			count++;
 			hero->moveLeft_1();
 			hero->setDirect(5);
@@ -577,7 +580,7 @@ void GamePlayScene::update(float dt)
 
 	if (leftJoystick->getVelocity().y < 0 && leftJoystick->getVelocity().x <= 0.2 && leftJoystick->getVelocity().x >= -0.2) {
 		if (count<5) {
-			log("ok");
+			//log("ok");
 			count++;
 			hero->downTo();
 			hero->setDirect(6);
@@ -590,7 +593,7 @@ void GamePlayScene::update(float dt)
 
 	if (leftJoystick->getVelocity().y < 0 && leftJoystick->getVelocity().x <= 0.8 && leftJoystick->getVelocity().x >= 0.2) {
 		if (count<5) {
-			log("ok");
+			//log("ok");
 			count++;
 			hero->moveRight_1();
 			hero->setDirect(7);
@@ -610,6 +613,7 @@ void GamePlayScene::update(float dt)
 
 	heroAttack(hero->getDirect());
 
+	//log("%f %f", hero->getSprite()->getPosition().x, hero->getSprite()->getPosition().y);
 }
 
 void GamePlayScene::heroAttack(int STATE_ATTACK) {
@@ -628,7 +632,21 @@ void GamePlayScene::createButtonAttack()
 	mButtonAttack->setPosition(screenSize.width *5/6  , screenSize.height * 1 / 4  );
 	_layerUI->addChild(mButtonAttack,10);
 
-}	
+}
+
+void GamePlayScene::AddKnightRed()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		Knight *knightRed = new Knight(_layer2D, 2);
+		knightRed->getSprite()->setCameraMask(2);
+		//this->getContentSize()
+		knightRed->SetPositionKnight((Vec2)mapTop->getContentSize() + mapTop->getPosition());
+		m_knightRead.push_back(knightRed);
+		log("%f %f", _layer2D->getContentSize().width, _layer2D->getContentSize().height);
+	}
+}
+	
 
 //	if (leftJoystick->getVelocity().x > 0) {
 //		everboyBody->setVelocity(Vect(200, 0));

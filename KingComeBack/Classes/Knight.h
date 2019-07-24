@@ -14,7 +14,12 @@ private:
 
 	Animate* ActionKnight(std::string actionName);
 
-	bool m_isSelected;
+	bool m_isSelected = false;
+
+	float m_time;
+	Vec2 direct;
+	float m_distance;
+	int count_repeat;
 public:
 	Knight(Layer* layer, int id);
 	~Knight();
@@ -28,6 +33,7 @@ public:
 	void SetPositionKnight(Vec2 vec);
 
 	void SetSelected(bool isSelected);
+
 	bool GetSelected();
 
 	static const int CURRENT_DIRECT_0 = 0;

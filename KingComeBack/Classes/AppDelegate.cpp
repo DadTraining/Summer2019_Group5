@@ -25,10 +25,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "GamePlayScene.h"
-<<<<<<< HEAD
-=======
 #include "LogoScene.h"
->>>>>>> aba0b2b6ae3523b167962e5001953ae02459af03
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1

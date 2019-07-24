@@ -22,7 +22,7 @@ Hero::Hero(Layer * _layer2D)
 	//bodyA->setContactTestBitmask(true);
 	bodyA->setGravityEnable(false);
 	//bodyA->setContactTestBitmask(BITMASK_LAYER_UI);
-	bodyA->setCategoryBitmask(16);
+	bodyA->setCategoryBitmask(8);
 	bodyA->setCollisionBitmask(5);
 
 	bodyA->setDynamic(true);

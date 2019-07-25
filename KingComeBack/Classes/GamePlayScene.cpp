@@ -42,20 +42,11 @@ bool GamePlayScene::init()
 	//add map
 	this->AddMap();
 
-
-
 	//code duoc
-	hero = new Hero(_layer2D);
-
-
-
-	dragon = new Dragon(_layer2D);
-
+	this->AddHeroAndDragon();
 
 	// add camera
 	this->AddCameraUSER1();
-
-
 
 	//Add listener
 	this->AddListener();
@@ -64,7 +55,7 @@ bool GamePlayScene::init()
 	this->AddCameraUSER2();
 
 	// add layer 
-	this->createLayerUI();
+	this->CreateLayerUI();
 
 	//Add Knight Red
 	AddKnightRed();
@@ -79,9 +70,6 @@ bool GamePlayScene::init()
 
 	createBullet();
 
-	this->AddButtonPopUpHero();
-
-	this->AddButtonPopUpHouse();
 
 	this->scheduleUpdate();
 
@@ -408,6 +396,11 @@ void GamePlayScene::AddPopupHouse()
 		);
 	_layerUI->addChild(popupHouse, 10);
 }
+void GamePlayScene::AddHeroAndDragon()
+{
+	hero = new Hero(_layer2D);
+	dragon = new Dragon(_layer2D);
+}
 void GamePlayScene::AddEventForPopupTownHall()
 {
 		//Add house copy
@@ -483,7 +476,7 @@ void GamePlayScene::CreateKnight()
 	knight.push_back(createKnight);
 }
 
-void GamePlayScene::createLayerUI()
+void GamePlayScene::CreateLayerUI()
 {
 	_layerUI = Layer::create();
 	_layerUI->setPosition(Vec2(2 , 2));
@@ -492,11 +485,40 @@ void GamePlayScene::createLayerUI()
 	this->addChild(_layerUI, 10);
 	_layerUI->setCameraMask((unsigned short)CameraFlag::USER2);
 
-	//Add sprite UI;
+	//Add featurefo UI;
 	this->AddSpriteUI();
-
+	this->CreateChooseKnight();
 	//Add joystick
 	this->AddJoystick();
+	this->AddButtonPopUpHero();
+	this->AddButtonPopUpHouse();
+
+}
+
+void GamePlayScene::CreateChooseKnight()
+{
+	auto button = ui::Button::create("itemKnight.png", "itemKnight.png");
+	button->setScale(0.5);
+	button->setPosition(Vec2(screenSize.width * 0.95, screenSize.height * 0.9));
+	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			this->CreatePopupChooseKnight();
+			break;
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
+	});
+	_layerUI->addChild(button, 10);
+}
+
+void GamePlayScene::CreatePopupChooseKnight()
+{
+	auto popupChooseKnight = UICustom::PopupChooseKnight::createAsConfirmDialogue("Choose knight", "", [=]() {});
+	_layerUI->addChild(popupChooseKnight);
 }
 
 void GamePlayScene::update(float dt)
@@ -530,7 +552,6 @@ void GamePlayScene::update(float dt)
 			this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
 		}
 	}
-
 
 	// code duoc
 

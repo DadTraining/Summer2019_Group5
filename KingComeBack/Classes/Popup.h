@@ -92,13 +92,13 @@ namespace UICustom {
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};
-
-	class PopupCreateKnight : public PopupDelegates
+	// pop up to choose knight
+	class PopupChooseKnight : public PopupDelegates
 	{
 	public:
-		static PopupCreateKnight* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupCreateKnight* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
-		static PopupCreateKnight* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
+		static PopupChooseKnight* createAsMessage(const std::string &title, const std::string &msg);
+		static PopupChooseKnight* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
+		static PopupChooseKnight* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
 
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);

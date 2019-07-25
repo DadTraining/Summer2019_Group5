@@ -9,6 +9,7 @@
 #include"TownHall.h"
 #include"ScoutTown.h"
 #include "Hero.h"
+#include "Defines.h"
 
 #include "Dragon.h"
 
@@ -23,8 +24,7 @@ const int BITMASK_MAP = 100;
 const int BITMASK_LAYER_UI = 101;
 
 #define SPEED 65
-#define BLUE 0
-#define RED 1
+
 
 class GamePlayScene :public cocos2d::Scene
 {
@@ -80,7 +80,11 @@ public:
 	void handleBullet(Vec2);
 
 	void AddKnightRed();
-
+	
+	//knight Attack
+	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
+	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
+	bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -149,8 +153,8 @@ private:
 	
 
 	// Knight
-	std::vector<Knight*> m_knightRead;
+	std::vector<Knight*> m_knightRed;
 	std::vector<TownHall *> newHallTown;
-
+	bool m_checkKnight = false;
 };
 

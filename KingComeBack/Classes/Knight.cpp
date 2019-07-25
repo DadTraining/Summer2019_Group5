@@ -1,4 +1,5 @@
 #include "Knight.h"
+#include "Defines.h"
 
 
 void Knight::SetCurrentDirect(Vec2 vec)
@@ -38,6 +39,21 @@ void Knight::SetCurrentDirect(Vec2 vec)
 	{
 		m_currentDirect = CURRENT_DIRECT_0;
 	}
+}
+
+int Knight::GetCurrentDirect()
+{
+	return m_currentDirect;
+}
+
+void Knight::SetLastDirect(int dir)
+{
+	m_lastDirect = dir;
+}
+
+int Knight::GetLastDirect()
+{
+	return m_lastDirect;
 }
 
 Animate* Knight::ActionKnight(std::string actionName)
@@ -87,6 +103,8 @@ void Knight::Init(int id)
 	body->setCollisionBitmask(29);
 	m_sprite->setPhysicsBody(body);
 
+	m_currentDirect = 0;
+
 	SetColor(id);
 
 }
@@ -98,29 +116,60 @@ void Knight::Update(float dt)
 
 void Knight::Move(Vec2 vec)
 {
-	if (m_sprite->getActionManager())
+	if (m_sprite->getActionByTag(TAG_ACTION_WALK) ||
+		m_sprite->getActionByTag(TAG_ACTION_ATTACK))
 	{
 		m_sprite->stopAllActions();
 	}
-
-		SetCurrentDirect(vec);
-
-		char actionName[MAX_LENGHT] = { 0 };
-		sprintf(actionName, "knight_walk_%d000", m_currentDirect);
-
-		m_time = m_distance / 70.0;
-		auto moveTo = MoveTo::create(m_time, vec);
-
-		count_repeat = m_time + 1;
-		auto action = Repeat::create(ActionKnight(actionName), count_repeat);
-
-		auto spaw = Spawn::create(moveTo, action, nullptr);
-		m_sprite->runAction(spaw);
+	m_lastDirect = m_currentDirect;
 	
+	SetCurrentDirect(vec);
+
+	char actionName[MAX_LENGHT] = { 0 };
+	sprintf(actionName, "knight_walk_%d000", m_currentDirect);
+
+	m_time = m_distance / 70.0;
+	auto moveTo = MoveTo::create(m_time, vec);
+
+	count_repeat = m_time + 1;
+	auto action = Repeat::create(ActionKnight(actionName), count_repeat);
+
+	auto spaw = Spawn::create(moveTo, action, nullptr);
+	spaw->setTag(TAG_ACTION_WALK);
+	m_sprite->runAction(spaw);
+
+	
+
 }
 
 void Knight::Died()
 {
+}
+
+void Knight::MoveRed(Vec2 vec)
+{
+	if (vec == Vec2::ZERO)
+	{
+		m_sprite->stopAllActions();
+	}
+	if (m_sprite->getActionByTag(TAG_ACTION_WALK))
+	{
+		m_sprite->stopActionByTag(TAG_ACTION_WALK);
+	}
+	SetCurrentDirect(vec);
+
+	char actionName[MAX_LENGHT] = { 0 };
+	sprintf(actionName, "knight_walk_%d000", m_currentDirect);
+
+	m_time = m_distance / 70.0;
+	auto moveTo = MoveTo::create(m_time, vec);
+
+	count_repeat = m_time + 1;
+	auto action = Repeat::create(ActionKnight(actionName), count_repeat);
+
+	auto spaw = Spawn::create(moveTo, action, nullptr);
+	spaw->setTag(TAG_ACTION_WALK);
+	m_sprite->runAction(spaw);
 }
 
 void Knight::Attack()
@@ -134,6 +183,11 @@ void Knight::Attack()
 void Knight::SetPositionKnight(Vec2 vec)
 {
 	m_sprite->setPosition(vec);
+}
+
+Point Knight::GetPositionKnight()
+{
+	return m_sprite->getPosition();
 }
 
 void Knight::SetSelected(bool isSelected)

@@ -9,8 +9,9 @@ class Knight : public Person
 {
 private:
 	int m_currentDirect;
+	int m_lastDirect;
 
-	void SetCurrentDirect(Vec2 vec);
+	
 
 	Animate* ActionKnight(std::string actionName);
 
@@ -28,9 +29,16 @@ public:
 	void Update(float dt) override;
 	void Move(Vec2 vec) override;
 	void Died() override;
+
+	void MoveRed(Vec2 vec);
 	void Attack() override;
 
 	void SetPositionKnight(Vec2 vec);
+	Point GetPositionKnight();
+	void SetCurrentDirect(Vec2 vec);
+	int GetCurrentDirect();
+	void SetLastDirect(int vec);
+	int GetLastDirect();
 
 	void SetSelected(bool isSelected);
 

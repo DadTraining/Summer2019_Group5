@@ -476,10 +476,12 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 void GamePlayScene::CreateKnight()
 {
-	auto createKnight = new Knight(_layer2D, 2);
+	auto createKnight = new Knight(_layer2D, BLUE);
 	//knight->getSprite()->setCameraMask(2);
 
 	createKnight->SetPositionKnight(newHallTown.at(0)->getSprite()->getPosition());
+	createKnight->SetSelected(false);
+	//createKnight->SetColor(BLUE);
 	knight.push_back(createKnight);
 }
 
@@ -531,6 +533,8 @@ void GamePlayScene::update(float dt)
 		}
 	}
 
+	// Check Knight
+	this->MoveAttack(m_knightRed,knight);
 
 	// code duoc
 
@@ -709,8 +713,6 @@ void GamePlayScene::createButton_Skill_1()
 
 }
 
-
-
 void GamePlayScene::createButton_Skill_2()
 {
 	mButtonSkill_2 = Sprite::create("skill_2.png");
@@ -791,13 +793,56 @@ void GamePlayScene::AddKnightRed()
 {
 	for (int i = 0; i < 10; i++)
 	{
-		Knight *knightRed = new Knight(_layer2D, 2);
+		Knight *knightRed = new Knight(_layer2D, RED);
 		knightRed->getSprite()->setCameraMask(2);
 		//this->getContentSize()
-		knightRed->SetPositionKnight((Vec2)mapTop->getContentSize() + mapTop->getPosition());
-		m_knightRead.push_back(knightRed);
-		log("%f %f", _layer2D->getContentSize().width, _layer2D->getContentSize().height);
+		knightRed->SetPositionKnight((Vec2)mapTop->getContentSize() *2 / 3 + mapTop->getPosition());
+		m_knightRed.push_back(knightRed);
+		//log("%f %f", _layer2D->getContentSize().width, _layer2D->getContentSize().height);
 	}
+}
+
+Vec2 GamePlayScene::CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue)
+{
+	Point positionKnightRed, positionKnightBlue;
+	for (auto knightRed : red)
+	{
+		positionKnightRed = knightRed->GetPositionKnight();
+		for (auto knightBlue : blue)
+		{
+			positionKnightBlue = knightBlue->GetPositionKnight();
+			float _distance = positionKnightRed.distance(positionKnightBlue);
+			if (_distance <= RANGER_ATTACK)
+			{
+				return positionKnightBlue;
+				//if (knightBlue->GetCurrentDirect() != knightBlue->GetLastDirect()) 
+				//{
+					//return Vec2((positionKnightBlue.x + positionKnightRed.x) / 2,
+						//(positionKnightBlue.y + positionKnightRed.y) / 2);
+				//}
+				//return Vec2::ZERO;
+			}
+		}
+	}
+	return Vec2::ZERO;
+}
+
+void GamePlayScene::MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue)
+{
+	if (CheckRangerAttack(red, blue) != Vec2::ZERO)
+	{
+		Vec2 vec = CheckRangerAttack(red, blue);
+
+		for (auto red : red)
+		{
+			red->MoveRed(vec);
+		}
+	}
+}
+
+bool GamePlayScene::CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue)
+{
+	return false;
 }
 
 	

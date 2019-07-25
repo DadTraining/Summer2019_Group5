@@ -92,26 +92,22 @@ Knight::~Knight()
 
 void Knight::Init(int id)
 {
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("knight.plist", "knight.png");
-
-	m_sprite = Sprite::createWithSpriteFrameName("knight_walk_00000.png");
-	m_sprite->setScale(0.5);
-	auto body = PhysicsBody::createBox(m_sprite->getContentSize() / 2, PHYSICSBODY_MATERIAL_DEFAULT);
-	body->setGravityEnable(false);
-	body->setCategoryBitmask(16);
-	body->setRotationEnable(false);
-	body->setCollisionBitmask(29);
-	m_sprite->setPhysicsBody(body);
-
+	if (id == RED)
+	{
+		InitRed();
+	}
+	else if (id == BLUE)
+	{
+		InitBlue();
+	}
 	m_currentDirect = 0;
 
 	SetColor(id);
-
 }
 
 void Knight::Update(float dt)
 {
-	Attack();
+	//Attack();
 }
 
 void Knight::Move(Vec2 vec)
@@ -146,38 +142,76 @@ void Knight::Died()
 {
 }
 
+void Knight::InitRed()
+{
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("knight.plist", "knight.png");
+
+	m_sprite = Sprite::createWithSpriteFrameName("knight_walk_00000.png");
+	m_sprite->setScale(0.5);
+	auto body = PhysicsBody::createBox(m_sprite->getContentSize() / 2, PHYSICSBODY_MATERIAL_DEFAULT);
+	body->setGravityEnable(false);
+	body->setCategoryBitmask(32);
+	body->setRotationEnable(false);
+	body->setCollisionBitmask(53);
+	m_sprite->setPhysicsBody(body);
+}
+
 void Knight::MoveRed(Vec2 vec)
 {
 	if (vec == Vec2::ZERO)
 	{
 		m_sprite->stopAllActions();
 	}
-	if (m_sprite->getActionByTag(TAG_ACTION_WALK))
+	else if (!m_sprite->getActionByTag(TAG_ACTION_WALK))
 	{
-		m_sprite->stopActionByTag(TAG_ACTION_WALK);
+		SetCurrentDirect(vec);
+
+		char actionName[MAX_LENGHT] = { 0 };
+		sprintf(actionName, "knight_walk_%d000", m_currentDirect);
+
+		m_time = m_distance / 70.0;
+		auto moveTo = MoveTo::create(m_time, vec);
+
+		count_repeat = m_time + 1;
+		auto action = Repeat::create(ActionKnight(actionName), count_repeat);
+
+		auto spaw = Spawn::create(moveTo, action, nullptr);
+		spaw->setTag(TAG_ACTION_WALK);
+		m_sprite->runAction(spaw);
 	}
-	SetCurrentDirect(vec);
+	
+}
 
-	char actionName[MAX_LENGHT] = { 0 };
-	sprintf(actionName, "knight_walk_%d000", m_currentDirect);
+void Knight::InitBlue()
+{
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("knight.plist", "knight.png");
 
-	m_time = m_distance / 70.0;
-	auto moveTo = MoveTo::create(m_time, vec);
-
-	count_repeat = m_time + 1;
-	auto action = Repeat::create(ActionKnight(actionName), count_repeat);
-
-	auto spaw = Spawn::create(moveTo, action, nullptr);
-	spaw->setTag(TAG_ACTION_WALK);
-	m_sprite->runAction(spaw);
+	m_sprite = Sprite::createWithSpriteFrameName("knight_walk_00000.png");
+	m_sprite->setScale(0.5);
+	auto body = PhysicsBody::createBox(m_sprite->getContentSize() / 2, PHYSICSBODY_MATERIAL_DEFAULT);
+	body->setGravityEnable(false);
+	body->setCategoryBitmask(16);
+	body->setRotationEnable(false);
+	body->setCollisionBitmask(61);
+	m_sprite->setPhysicsBody(body);
 }
 
 void Knight::Attack()
 {
-	char actionName[MAX_LENGHT] = { 0 };
-	sprintf(actionName, "knight_attack_%d000", m_currentDirect);
-	auto spaw = Spawn::create(ActionKnight(actionName), nullptr);
-	m_sprite->runAction(spaw);
+	if (m_sprite->getActionByTag(TAG_ACTION_WALK))
+	{
+		m_sprite->stopActionByTag(TAG_ACTION_WALK);
+
+		if (!m_sprite->getActionByTag(TAG_ACTION_ATTACK))
+		{
+			char actionName[MAX_LENGHT] = { 0 };
+			sprintf(actionName, "knight_attack_%d000", m_currentDirect);
+			auto spaw = Spawn::create(ActionKnight(actionName), nullptr);
+			spaw->setTag(TAG_ACTION_ATTACK);
+			m_sprite->runAction(spaw);
+		}		
+	}
+	
 }
 
 void Knight::SetPositionKnight(Vec2 vec)

@@ -11,8 +11,6 @@ private:
 	int m_currentDirect;
 	int m_lastDirect;
 
-	
-
 	Animate* ActionKnight(std::string actionName);
 
 	bool m_isSelected = false;
@@ -30,7 +28,6 @@ public:
 	void Move(Vec2 vec) override;
 	void Died() override;
 
-	void MoveRed(Vec2 vec);
 	void Attack() override;
 
 	void SetPositionKnight(Vec2 vec);
@@ -43,6 +40,13 @@ public:
 	void SetSelected(bool isSelected);
 
 	bool GetSelected();
+
+	//Knight Red
+	void InitRed();
+	void MoveRed(Vec2 vec);
+
+	//Knight Blue
+	void InitBlue();
 
 	static const int CURRENT_DIRECT_0 = 0;
 	static const int CURRENT_DIRECT_1 = CURRENT_DIRECT_0 + 1;

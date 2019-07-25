@@ -174,6 +174,27 @@ bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
 	auto spriteA = contact.getShapeA()->getBody();
 	auto spriteB = contact.getShapeB()->getBody();
 
+	/*if (spriteA->getCategoryBitmask() == 16 && spriteB->getCategoryBitmask() == 32
+		|| spriteA->getCategoryBitmask() == 32 && spriteB->getCategoryBitmask() == 16)
+	{
+		if (spriteA->getCategoryBitmask() == 16)
+		{
+			knight.at(spriteA->getGroup())->Attack();
+		}
+		else if (spriteA->getCategoryBitmask() == 32)
+		{
+			m_knightRed.at(spriteA->getGroup())->Attack();
+		}
+		else if (spriteB->getCategoryBitmask() == 16)
+		{
+			knight.at(spriteB->getGroup())->Attack();
+		}
+		else if (spriteB->getCategoryBitmask() == 32)
+		{
+			m_knightRed.at(spriteB->getGroup())->Attack();
+		}
+	}*/
+
 	// camera with map
 
 	auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
@@ -212,7 +233,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicLeft->setDynamic(false);
 	physicLeft->setCategoryBitmask(1);
-	physicLeft->setCollisionBitmask(31);
+	physicLeft->setCollisionBitmask(63);
 	nodeLeft->setPhysicsBody(physicLeft);
 	nodeLeft->setPosition(map->getPositionX() - 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeLeft);
@@ -225,7 +246,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicUp->setDynamic(false);
 	physicUp->setCategoryBitmask(1);
-	physicUp->setCollisionBitmask(31);
+	physicUp->setCollisionBitmask(63);
 	nodeUP->setPhysicsBody(physicUp);
 	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height + 5);
 	_layer2D->addChild(nodeUP);
@@ -237,7 +258,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicRight->setDynamic(false);
 	physicRight->setCategoryBitmask(1);
-	physicRight->setCollisionBitmask(31);
+	physicRight->setCollisionBitmask(63);
 	nodeRight->setPhysicsBody(physicRight);
 	nodeRight->setPosition(map->getContentSize().width + 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeRight);
@@ -249,7 +270,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicDown->setDynamic(false);
 	physicDown->setCategoryBitmask(1);
-	physicDown->setCollisionBitmask(31);
+	physicDown->setCollisionBitmask(63);
 	nodeDown->setPhysicsBody(physicDown);
 	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y - 5);
 	_layer2D->addChild(nodeDown);
@@ -293,11 +314,12 @@ void GamePlayScene::AddListener()
 	listener->onTouchEnded = CC_CALLBACK_2(GamePlayScene::OnTouchEnd, this);
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-	/*auto listenerMouse = EventListenerMouse::create();
-	listenerMouse->onMouseScroll = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerMouse, this);*/
+	//auto listenerMouse = EventListenerMouse::create();
+	//listenerMouse->onMouseScroll = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
+	//this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerMouse, this);
 
 	// add listen contact
+	
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -482,6 +504,7 @@ void GamePlayScene::CreateKnight()
 	createKnight->SetPositionKnight(newHallTown.at(0)->getSprite()->getPosition());
 	createKnight->SetSelected(false);
 	//createKnight->SetColor(BLUE);
+	createKnight->getSprite()->getPhysicsBody()->setGroup(knight.size());
 	knight.push_back(createKnight);
 }
 
@@ -534,8 +557,15 @@ void GamePlayScene::update(float dt)
 	}
 
 	// Check Knight
-	this->MoveAttack(m_knightRed,knight);
+	if (m_checkKnight)
+	{
 
+	}
+	else
+	{
+		this->MoveAttack(m_knightRed, knight);
+	}
+	
 	// code duoc
 
 	//gameSprite->runAction(mListAction[0]);
@@ -797,6 +827,7 @@ void GamePlayScene::AddKnightRed()
 		knightRed->getSprite()->setCameraMask(2);
 		//this->getContentSize()
 		knightRed->SetPositionKnight((Vec2)mapTop->getContentSize() *2 / 3 + mapTop->getPosition());
+		knightRed->getSprite()->getPhysicsBody()->setGroup(i);
 		m_knightRed.push_back(knightRed);
 		//log("%f %f", _layer2D->getContentSize().width, _layer2D->getContentSize().height);
 	}
@@ -814,11 +845,11 @@ Vec2 GamePlayScene::CheckRangerAttack(std::vector<Knight*> red, std::vector<Knig
 			float _distance = positionKnightRed.distance(positionKnightBlue);
 			if (_distance <= RANGER_ATTACK)
 			{
-				return positionKnightBlue;
+				//return positionKnightBlue;
 				//if (knightBlue->GetCurrentDirect() != knightBlue->GetLastDirect()) 
 				//{
-					//return Vec2((positionKnightBlue.x + positionKnightRed.x) / 2,
-						//(positionKnightBlue.y + positionKnightRed.y) / 2);
+					return Vec2((positionKnightBlue.x + positionKnightRed.x) / 2,
+						(positionKnightBlue.y + positionKnightRed.y) / 2);
 				//}
 				//return Vec2::ZERO;
 			}
@@ -838,11 +869,6 @@ void GamePlayScene::MoveAttack(std::vector<Knight*> red, std::vector<Knight*> bl
 			red->MoveRed(vec);
 		}
 	}
-}
-
-bool GamePlayScene::CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue)
-{
-	return false;
 }
 
 	

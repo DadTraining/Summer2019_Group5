@@ -84,7 +84,7 @@ public:
 	//knight Attack
 	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
-	bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
+	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
 	CREATE_FUNC(GamePlayScene);
 private:

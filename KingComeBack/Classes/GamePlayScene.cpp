@@ -701,10 +701,19 @@ void GamePlayScene::update(float dt)
 //	dot->setPosition(hero->getPositionHero().x-100, hero->getPositionHero().y+200);
 	HandleMinimap();
 	count_bullet += dt;
+	
 	if (count_bullet>0.4 && m_listScoutTowns.size()>0) {
 		for (auto a : m_listScoutTowns) {
+			if (abs(a->getSprite()->getPositionX() - hero->getSprite()->getPositionX())<200 &&
+				abs(a->getSprite()->getPositionY() - hero->getSprite()->getPositionY())<200
+				) {
+				log("a %f %f", a->getSprite()->getPositionX(), a->getSprite()->getPositionY());
+				log("hero %f %f", hero->getSprite()->getPositionX(), hero->getSprite()->getPositionY());
+				a->Update(count_bullet, hero);
+			}
+			
 
-			a->Update(count_bullet, hero);
+			
 
 		}
 		

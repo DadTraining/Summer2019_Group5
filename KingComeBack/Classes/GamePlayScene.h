@@ -55,13 +55,16 @@ public:
 	void AddSpriteUI();
 	void AddPopupHero();
 	void AddPopupHouse();
+	void AddHeroAndDragon();
 
 	void AddEventForPopupTownHall();
 	void AddEventForPopupScoutTown();
 
 	void CreateKnight();
 
-	void createLayerUI();
+	void CreateLayerUI();
+	void CreateChooseKnight();
+	void CreatePopupChooseKnight();
 
 	void update(float dt) override;
 
@@ -87,6 +90,7 @@ public:
 	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
+
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -126,6 +130,7 @@ private:
 	cocos2d::Animation * animaton;
 
 	std::vector<Knight *> knight;
+
 	Sprite* gameSprite;
 	Sprite * gameSpriteAttack;
 	CCCallFunc * callBackAttack;
@@ -157,6 +162,8 @@ private:
 	// Knight
 	std::vector<Knight*> m_knightRed;
 	std::vector<TownHall *> newHallTown;
+
 	bool m_checkKnight = false;
+
 };
 

@@ -92,6 +92,7 @@ Knight::~Knight()
 
 void Knight::Init(int id)
 {
+
 	if (id == TEAM_RED)
 	{
 		InitRed();
@@ -101,6 +102,7 @@ void Knight::Init(int id)
 		InitBlue();
 	}
 	m_currentDirect = 0;
+
 
 	SetColor(id);
 }

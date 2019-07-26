@@ -774,8 +774,6 @@ void GamePlayScene::createButton_Skill_2()
 }
 
 
-
-
 void GamePlayScene::miniMap()
 {
 	m_miniMap = Sprite::create("miniMap.png");
@@ -817,10 +815,6 @@ void GamePlayScene::HandleMinimap()
 	dot->setPosition( (hero->getPositionHero().x/condinatorBigMap.x)*(map_1->getContentSize().height) + condinatorMiniMap.x, ( hero->getPositionHero().y / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 	
 }
-
-
-
-
 
 
 void GamePlayScene::AddKnightRed()

@@ -14,7 +14,7 @@ MainHouse::~MainHouse()
 
 void MainHouse::Init(int id)
 {
-	m_sprite = Sprite::create("ScoutTown2D.png");
+	m_sprite = Sprite::create("HouseMain.png");
 	mainHouseOpacity = m_sprite->getOpacity();
 	m_sprite->setOpacity(30);
 	auto physicBody = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);

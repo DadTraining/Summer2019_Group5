@@ -1,7 +1,5 @@
 ﻿#include "Hero.h"
 
-
-
 Hero::Hero(Layer * _layer2D)
 {
 	screenSize = Director::getInstance()->getVisibleSize();

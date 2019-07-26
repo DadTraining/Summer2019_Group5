@@ -23,7 +23,6 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
 #include "GamePlayScene.h"
 #include "LogoScene.h"
 
@@ -100,9 +99,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = LoadingScene::createScene();
+    auto scene = GamePlayScene::createScene();
 
-    // run
+    // run 
     director->runWithScene(scene);
 
     return true;

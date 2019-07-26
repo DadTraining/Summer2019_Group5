@@ -14,7 +14,7 @@ StoreHouse::~StoreHouse()
 
 void StoreHouse::Init(int id)
 {
-	m_sprite = Sprite::create("ScoutTown2D.png");
+	m_sprite = Sprite::create("StoreHouse.png");
 	storeHouseOpacity = m_sprite->getOpacity();
 	m_sprite->setOpacity(30);
 	auto physicBody = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);

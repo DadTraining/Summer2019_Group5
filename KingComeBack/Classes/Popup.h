@@ -58,12 +58,21 @@ namespace UICustom {
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};
 
+	// class popup building house
 	class PopupHouse : public PopupDelegates
 	{
 	public:
 		static PopupHouse* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupHouse* createAsConfirmDialogue(const std::string &title, const std::string &msg,  const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
-		static PopupHouse* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
+		static PopupHouse* createAsConfirmDialogue(const std::string &title, const std::string &msg, 
+			const std::function<void()> &townHall, const std::function<void()> &scoutTown, 
+			const std::function<void()> &mainHouse, const std::function<void()> &storeHouse, 
+			const std::function<void()> &DecorateHouse, const std::function<void()> &YesFunc5, 
+			const std::function<void()> &YesFunc6);
+		static PopupHouse* create(const std::string &title, const std::string &msg,
+			cocos2d::Label *lbl, const std::function<void()> &townHall,
+			const std::function<void()> &scoutTown, const std::function<void()> &mainHouse
+			, const std::function<void()> &storeHouse, const std::function<void()> &DecorateHouse,
+			const std::function<void()> &YesFunc5, const std::function<void()> &YesFunc6);
 
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);

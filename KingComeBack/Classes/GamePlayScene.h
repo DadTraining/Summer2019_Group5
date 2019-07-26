@@ -8,10 +8,11 @@
 #include"Popup.h"
 #include"TownHall.h"
 #include"ScoutTown.h"
+#include"MainHouse.h"
+#include"HouseDecorate.h"
+#include"StoreHouse.h"
 #include "Hero.h"
-
 #include "Dragon.h"
-
 #include "Knight.h"
 
 
@@ -55,6 +56,9 @@ public:
 
 	void AddEventForPopupTownHall();
 	void AddEventForPopupScoutTown();
+	void AddEventForPopupMainHouse();
+	void AddEventForPopupDecorateHouse();
+	void AddEventForPopupStoreHouse();
 
 	void CreateKnight();
 
@@ -116,14 +120,16 @@ private:
 	Point touchCurrenPositon;
 
 	ScoutTown *newScoutTown;
-  
+	MainHouse *newMainHouse;
+	HouseDecorate *newDecorateHouse;
+	StoreHouse *newStoreHouse;
+
 	cocos2d::Animation * animaton;
 
-	std::vector<Knight *> knight;
 
 	Sprite* gameSprite;
 	Sprite * gameSpriteAttack;
-	CCCallFunc * callBackAttack;
+	//CCCallFunc * callBackAttack;
 	Vec2 tempTouch;
 	bool stateTouchHero = false;
 	
@@ -151,6 +157,8 @@ private:
 
 	// Knight
 	std::vector<Knight*> m_knightRead;
-	std::vector<TownHall *> newHallTown;
+	std::vector<TownHall *> containerHallTown;
+	std::vector<Knight *> knight;
+
 };
 

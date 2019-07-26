@@ -29,6 +29,8 @@ public:
 	void Died() override;
 
 	void Attack() override;
+	void StopAllAction();
+	void SetDynamic(bool dynamic);
 
 	void SetPositionKnight(Vec2 vec);
 	Point GetPositionKnight();

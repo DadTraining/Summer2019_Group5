@@ -169,37 +169,54 @@ void GamePlayScene::OnTouchEnd(Touch * touch, Event * unused_event)
 
 }
 
-bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
+bool GamePlayScene::onContactBegin(PhysicsContact & contact)
 {
 	auto spriteA = contact.getShapeA()->getBody();
 	auto spriteB = contact.getShapeB()->getBody();
 
-	/*if (spriteA->getCategoryBitmask() == 16 && spriteB->getCategoryBitmask() == 32
-		|| spriteA->getCategoryBitmask() == 32 && spriteB->getCategoryBitmask() == 16)
+	if (spriteA->getCollisionBitmask() == 61 && spriteB->getCollisionBitmask() == 53
+		|| spriteA->getCollisionBitmask() == 53 && spriteB->getCollisionBitmask() == 61)
 	{
-		if (spriteA->getCategoryBitmask() == 16)
+		m_checkKnight = true;
+		if (spriteA->getCollisionBitmask() == 61)
 		{
+			int num = spriteA->getGroup();
+			knight.at(spriteA->getGroup())->getSprite()->getPhysicsBody()->setDynamic(false);
 			knight.at(spriteA->getGroup())->Attack();
+			m_checkKnight = false;
 		}
-		else if (spriteA->getCategoryBitmask() == 32)
+		else if (spriteA->getCollisionBitmask() == 53)
 		{
+			int num = spriteA->getGroup();
+			//knight.at(spriteA->getGroup())->getSprite()->getPhysicsBody()->setDynamic(false);
 			m_knightRed.at(spriteA->getGroup())->Attack();
+			m_checkKnight = false;
 		}
-		else if (spriteB->getCategoryBitmask() == 16)
+		else if (spriteB->getCollisionBitmask() == 61)
 		{
+			//knight.at(spriteA->getGroup())->SetDynamic(false);
 			knight.at(spriteB->getGroup())->Attack();
+			m_checkKnight = false;
 		}
-		else if (spriteB->getCategoryBitmask() == 32)
+		else if (spriteB->getCollisionBitmask() == 53)
 		{
+			//knight.at(spriteA->getGroup())->SetDynamic(false);
 			m_knightRed.at(spriteB->getGroup())->Attack();
+			m_checkKnight = false;
 		}
-	}*/
+	}
 
 	// camera with map
 
-	auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
-	CC_ASSERT(body->getCategoryBitmask() == 0x04 || body->getCategoryBitmask() == 0x08);
+	/*auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
+	CC_ASSERT(body->getCategoryBitmask() == 0x04 || body->getCategoryBitmask() == 0x08);*/
 
+	return true;
+}
+
+bool GamePlayScene::onContactPreSolve(PhysicsContact & contact, PhysicsContactPreSolve & solve)
+{
+	///solve.setRestitution(0);
 	return true;
 }
 
@@ -321,7 +338,8 @@ void GamePlayScene::AddListener()
 	// add listen contact
 	
 	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::OnContactBegin, this);
+	contactListener->onContactBegin = CC_CALLBACK_1(GamePlayScene::onContactBegin, this);
+	contactListener->onContactPreSolve = CC_CALLBACK_1(GamePlayScene::onContactBegin, this);
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 void GamePlayScene::AddJoystick()
@@ -498,7 +516,7 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 void GamePlayScene::CreateKnight()
 {
-	auto createKnight = new Knight(_layer2D, BLUE);
+	auto createKnight = new Knight(_layer2D, TEAM_BLUE);
 	//knight->getSprite()->setCameraMask(2);
 
 	createKnight->SetPositionKnight(newHallTown.at(0)->getSprite()->getPosition());
@@ -557,11 +575,7 @@ void GamePlayScene::update(float dt)
 	}
 
 	// Check Knight
-	if (m_checkKnight)
-	{
-
-	}
-	else
+	if (!m_checkKnight)
 	{
 		this->MoveAttack(m_knightRed, knight);
 	}
@@ -823,7 +837,7 @@ void GamePlayScene::AddKnightRed()
 {
 	for (int i = 0; i < 10; i++)
 	{
-		Knight *knightRed = new Knight(_layer2D, RED);
+		Knight *knightRed = new Knight(_layer2D, TEAM_RED);
 		knightRed->getSprite()->setCameraMask(2);
 		//this->getContentSize()
 		knightRed->SetPositionKnight((Vec2)mapTop->getContentSize() *2 / 3 + mapTop->getPosition());
@@ -845,13 +859,13 @@ Vec2 GamePlayScene::CheckRangerAttack(std::vector<Knight*> red, std::vector<Knig
 			float _distance = positionKnightRed.distance(positionKnightBlue);
 			if (_distance <= RANGER_ATTACK)
 			{
-				//return positionKnightBlue;
-				//if (knightBlue->GetCurrentDirect() != knightBlue->GetLastDirect()) 
-				//{
+				return positionKnightBlue;
+				if (knightBlue->GetCurrentDirect() != knightBlue->GetLastDirect()) 
+				{
 					return Vec2((positionKnightBlue.x + positionKnightRed.x) / 2,
 						(positionKnightBlue.y + positionKnightRed.y) / 2);
-				//}
-				//return Vec2::ZERO;
+				}
+				return Vec2::ZERO;
 			}
 		}
 	}

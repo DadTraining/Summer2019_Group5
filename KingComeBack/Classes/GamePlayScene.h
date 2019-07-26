@@ -41,7 +41,9 @@ public:
 	bool OnTouchBegan(Touch *touch, Event *unused_event);
 	void OnTouchMove(Touch *touch, Event *unused_event);
 	void OnTouchEnd(Touch *touch, Event *unused_event);
-	bool OnContactBegin(PhysicsContact &contact);
+	bool onContactBegin(PhysicsContact &contact);
+	bool onContactPreSolve(PhysicsContact& contact,
+		PhysicsContactPreSolve& solve);
 
 	void AddMap();
 	void AddCameraUSER1();

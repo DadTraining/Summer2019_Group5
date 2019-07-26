@@ -92,11 +92,11 @@ Knight::~Knight()
 
 void Knight::Init(int id)
 {
-	if (id == RED)
+	if (id == TEAM_RED)
 	{
 		InitRed();
 	}
-	else if (id == BLUE)
+	else if (id == TEAM_BLUE)
 	{
 		InitBlue();
 	}
@@ -153,7 +153,14 @@ void Knight::InitRed()
 	body->setCategoryBitmask(32);
 	body->setRotationEnable(false);
 	body->setCollisionBitmask(53);
+	body->setContactTestBitmask(53);
+	body->getFirstShape()->setRestitution(10);
+	body->getShape(0)->setFriction(1);
+	body->getShape(0)->setMass(100);
+
+	//body->setDynamic(false);	
 	m_sprite->setPhysicsBody(body);
+	m_sprite->setColor(Color3B::RED);
 }
 
 void Knight::MoveRed(Vec2 vec)
@@ -193,6 +200,12 @@ void Knight::InitBlue()
 	body->setCategoryBitmask(16);
 	body->setRotationEnable(false);
 	body->setCollisionBitmask(61);
+	body->setContactTestBitmask(61);
+	body->getFirstShape()->setRestitution(1);
+	body->getShape(0)->setFriction(1);
+	body->getShape(0)->setMass(100);
+
+	//body->setDynamic(true);
 	m_sprite->setPhysicsBody(body);
 }
 
@@ -208,10 +221,20 @@ void Knight::Attack()
 			sprintf(actionName, "knight_attack_%d000", m_currentDirect);
 			auto spaw = Spawn::create(ActionKnight(actionName), nullptr);
 			spaw->setTag(TAG_ACTION_ATTACK);
-			m_sprite->runAction(spaw);
+			m_sprite->runAction(RepeatForever::create(spaw));
 		}		
 	}
 	
+}
+
+void Knight::StopAllAction()
+{
+	m_sprite->stopAllActions();
+}
+
+void Knight::SetDynamic(bool dynamic)
+{
+	m_sprite->getPhysicsBody()->setDynamic(dynamic);
 }
 
 void Knight::SetPositionKnight(Vec2 vec)

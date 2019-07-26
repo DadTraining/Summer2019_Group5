@@ -15,8 +15,8 @@
 
 #define ID_SOUND_SONTUNG 0
 
-#define BLUE 0
-#define RED 1
+#define TEAM_BLUE 0
+#define TEAM_RED 1
 #define RANGER_ATTACK 300
 
 #define TAG_ACTION_WALK 0

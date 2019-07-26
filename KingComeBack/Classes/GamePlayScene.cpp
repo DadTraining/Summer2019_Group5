@@ -181,7 +181,7 @@ bool GamePlayScene::onContactBegin(PhysicsContact & contact)
 		if (spriteA->getCollisionBitmask() == 61)
 		{
 			int num = spriteA->getGroup();
-			knight.at(spriteA->getGroup())->getSprite()->getPhysicsBody()->setDynamic(false);
+			//knight.at(spriteA->getGroup())->getSprite()->getPhysicsBody()->setDynamic(false);
 			knight.at(spriteA->getGroup())->Attack();
 			m_checkKnight = false;
 		}

@@ -183,8 +183,8 @@ bool GamePlayScene::OnContactBegin(PhysicsContact & contact)
 
 	// camera with map
 
-	auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
-	CC_ASSERT(body->getCategoryBitmask() == 0x04 || body->getCategoryBitmask() == 0x08);
+	//auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
+	//CC_ASSERT(body->getCategoryBitmask() == 0x04 || body->getCategoryBitmask() == 0x08);
 
 	return true;
 }
@@ -554,7 +554,6 @@ void GamePlayScene::update(float dt)
 	// code duoc
 
 	//gameSprite->runAction(mListAction[0]);
-
 //	log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
 	//log("velocity %f %f ", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
 	
@@ -681,6 +680,7 @@ void GamePlayScene::update(float dt)
 	}
 
 	if (leftJoystick->getVelocity().x == 0.0 && leftJoystick->getVelocity().y == 0.0 ) {
+		hero->getSprite()->stopAllActionsByTag(0);
 		for (int i = 0; i < 8; i++) {
 			count[i] = 0;
 		}
@@ -695,7 +695,7 @@ void GamePlayScene::update(float dt)
 		count_attack = 0.0;
 	}
 	
-
+	
 	
 	dot->setVisible(true);
 //	dot->setPosition(hero->getPositionHero().x-100, hero->getPositionHero().y+200);
@@ -712,16 +712,15 @@ void GamePlayScene::update(float dt)
 				a->Update(count_bullet, hero);
 			}
 			
-
-			
-
 		}
 		
-
 		count_bullet = 0;
 	}
-	
-	
+	//hero->setBlood(-dt);
+	if (hero->getBlood()->getBlood()<10) {
+		hero->diedHero(hero->getDirect());
+		hero->getBlood()->setBlood(1000);
+	}
 	
 }
 
@@ -730,6 +729,15 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 		hero->getAttack(STATE_ATTACK);
 		mCurrentTouch.x+=100;
 	}
+	if (mButtonSkill_2->getBoundingBox().containsPoint(mCurrentTouch)) {
+		hero->skillAnimation(_layer2D,1);
+		mCurrentTouch.x += 100;
+	}
+	if (mButtonSkill_1->getBoundingBox().containsPoint(mCurrentTouch)) {
+		hero->skillAnimation(_layer2D, 2);
+		mCurrentTouch.x += 100;
+	}
+	
 }
 
 

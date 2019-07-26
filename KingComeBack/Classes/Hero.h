@@ -1,6 +1,7 @@
 #pragma once
 #include "Person.h"
 #include "cocos2d.h"
+#include "Blood.h"
 #define DISTANCE_SKILL_1 100
 
 #define DISTANCE_SKILL_2 200
@@ -35,9 +36,20 @@ public:
 
 	Animation * createSkillAnimation( int begin, int end);
 
+	void diedHero(int direct);
+
+	Blood * getBlood();
+
+	void createBloodSprite(Layer *);
+
+
+
+
 private:
-	int BLOOD = 1000;
-	int MANA = 1000;
+	float BLOOD = 1000;
+	float MANA = 1000;
+	
+	Blood * blood;
 
 	const int BITMASK_LAYER_UI = 101;
 	Size screenSize;
@@ -46,7 +58,7 @@ private:
 	PhysicsBody * bodyA;
 	Vec2 origin;
 	int direct=0;
-	cocos2d::Action* mListAction[100];
+//	cocos2d::Action* mListAction[100];
 	Sprite * skill_1, *skill_2;
 
 	MoveTo * moveto;

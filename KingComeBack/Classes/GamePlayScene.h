@@ -166,5 +166,6 @@ private:
 	float count_attack = 0.0;
 	bool shoot = false;
 	Point postScountTower;
+	float countBlood;
 };
 

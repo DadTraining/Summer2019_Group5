@@ -28,12 +28,13 @@ Hero::Hero(Layer * _layer2D)
 	bodyA->setDynamic(true);
 	m_sprite->setPhysicsBody(bodyA);
 
+	Init(1);
 	//m_sprite->setCameraMask(2);
 	_layer2D->addChild(m_sprite,10);
 
 	
 
-//	Init(1);
+	
 }
 
 Hero::~Hero()
@@ -43,19 +44,9 @@ Hero::~Hero()
 void Hero::Init(int d)
 {
 
-	//init attack
-	for (int i = 0; i <= 7; i++) {
-	//	if (i==1||i==3||i==5||i==7) continue;
-		char buffer[20] = { 0 };
-		sprintf(buffer, "walk_%d000", i);
-		std::string str = buffer;
-		animaton = Hero::createAnimation(str, 9, 0.1f);
-		Animate* animate = Animate::create(animaton);
-		animate->retain();
+	blood = new Blood(1000.0, 1000.0, 1000.0);
 		
-		mListAction[i] = Repeat::create(animate, 1);
-		
-	}
+	
 
 }
 
@@ -284,3 +275,29 @@ Animation * Hero::createSkillAnimation(int begin, int end)
 
 	return animaton;
 }
+
+void Hero::diedHero(int directDied)
+{
+	char buffer[20] = { 0 };
+	sprintf(buffer, "death_%d000", directDied);
+	std::string str = buffer;
+
+	//m_sprite->runAction( mListAction[2] );
+	auto animaton = Hero::createAnimation(str, 7, 0.02f);
+	Animate* animate = Animate::create(animaton);
+	animate->retain();
+	m_sprite->stopAllActions();
+	m_sprite->runAction(Repeat::create(animate, 1));
+}
+
+Blood * Hero::getBlood()
+{
+	return blood;
+}
+
+void Hero::createBloodSprite(Layer * l)
+{
+
+}
+
+

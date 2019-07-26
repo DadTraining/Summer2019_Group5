@@ -8,20 +8,20 @@ Hero::Hero(Layer * _layer2D)
 	// test sprite
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("hero.plist", "hero.png");
 	
-	// Định nghĩa hằng. 
+
 	const int numberSprite = 4;
 	const int maxWord = 50;
 
-	// Tạo Sprite sử dụng hình ảnh đầu tiên là mysprite0.png. Ở đây Animation của mình sẽ dùng Sprite này làm Sprite đầu tiên.
+	
 	m_sprite = Sprite::createWithSpriteFrameName("walk_00000.png");
-	// Thiết lập vị trí của gameSprite tại vị trí (300, 300). Đây cũng chính là vị trí của Animation trên Screen.
+	
 	m_sprite->setScale(0.5);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
-	//Thêm gameSprite vào Scene.
+	
 	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
-	//bodyA->setContactTestBitmask(true);
+	
 	bodyA->setGravityEnable(false);
-	//bodyA->setContactTestBitmask(BITMASK_LAYER_UI);
+	
 	bodyA->setCategoryBitmask(8);
 	bodyA->setCollisionBitmask(21);
 	bodyA->setRotationEnable(false);
@@ -30,6 +30,8 @@ Hero::Hero(Layer * _layer2D)
 
 	//m_sprite->setCameraMask(2);
 	_layer2D->addChild(m_sprite,10);
+
+	
 
 //	Init(1);
 }
@@ -83,25 +85,19 @@ Animation * Hero::createAnimation(std::string frefixName, int pFrame, float dela
 	
 	float y = m_sprite->getPosition().y;
 
-	// Lặp để đọc numberSprite ảnh trong file format
 	for (int index = 0; index <= pFrame; index++)
 	{
 		
 		x += index;
 		y ;
 		char buffer[20] = { 0 };
-		// Lấy sprite frame name
+	
 		sprintf(buffer, "%d.png", index);
 
 		std::string str = frefixName + buffer;
 
-		// Tạo 1 khung, lấy ra từ bộ đệm SpriteFrameCache có tên là spriteFrameByName;
 		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
 		
-		//	auto frame = SpriteFrame::create(str, Rect(x, y, m_sprite->getContentSize().width, m_sprite->getContentSize().height));
-			// Push frame.
-		//	log("frame %s", frame->getRect().size);
-		//frame->setRect(Rect(x,y, m_sprite->getContentSize().width, m_sprite->getContentSize().height));
 		animFrames.pushBack(frame);
 		
 	}
@@ -129,18 +125,14 @@ void Hero::moveR(int directMove, int x , int y)
 	animate->retain();
 	m_sprite->stopAllActions();
 	auto moveto = MoveTo::create(1.5,Vec2( tempPositinSprite.x, tempPositinSprite.y));
+	moveto->setTag(0);
 	m_sprite->runAction(moveto);
 	
-	m_sprite->runAction(Repeat::create(animate, 2));
+	m_sprite->runAction(Repeat::create(animate, 1));
 
 
 //	m_sprite->setPosition(tempPositinSprite.x, tempPositinSprite.y);
 }
-
-
-
-//	m_sprite->setPosition(tempPositinSprite.x, tempPositinSprite.y);
-
 
 
 
@@ -172,4 +164,123 @@ void  Hero::getAttack(int directAttack)
 Vec2  Hero::getPositionHero()
 {
 	return  m_sprite->getPosition();
+}
+
+void Hero::skillAnimation( Layer* l, int type)
+{
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Skill.plist", "Skill.png");
+	switch (type)
+	{
+	case 1:
+	{
+		skill_1 = Sprite::createWithSpriteFrameName("skill1_064.png");
+		skill_1->setScale(1);
+		skill_1->setPosition(m_sprite->getPosition());
+		skill_1->setCameraMask(2);
+		l->addChild(skill_1);
+		auto animationSkill_1 = createSkillAnimation(64, 81);
+		Animate* animate_1 = Animate::create(animationSkill_1);
+		animate_1->retain();
+		m_sprite->stopAllActions();
+		skill_1->runAction(Repeat::create(animate_1, 1));
+		break;
+	}
+	case 2:
+	{
+		skill_2 = Sprite::createWithSpriteFrameName("skill1_093.png");
+		skill_2->setScale(1);
+		skill_2->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY()+50);
+		skill_2->setCameraMask(2);
+		l->addChild(skill_2);
+	//	skill_2->setVisible();
+
+		switch (direct)
+		{
+		case 0:
+			//skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() - DISTANCE_SKILL_1);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY() - DISTANCE_SKILL_2));
+			break;
+		case 1:
+			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() );
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
+			break;
+		case 2:
+			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() + DISTANCE_SKILL_1);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
+			break;
+		case 3:
+			//	skill_2->setPosition(m_sprite->getPositionX() , m_sprite->getPositionY() + DISTANCE_SKILL_1);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() + DISTANCE_SKILL_2));
+			break;
+		case 4:
+			//	skill_2->setPosition(m_sprite->getPositionX() - DISTANCE_SKILL_1, m_sprite->getPositionY() + DISTANCE_SKILL_1);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() - DISTANCE_SKILL_2, m_sprite->getPositionY() + DISTANCE_SKILL_2));
+			break;
+		case 5:
+			//	skill_2->setPosition(m_sprite->getPositionX() - DISTANCE_SKILL_1, m_sprite->getPositionY());
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() - DISTANCE_SKILL_2, m_sprite->getPositionY()));
+			break;
+		case 6:
+			//	skill_2->setPosition(m_sprite->getPositionX() - DISTANCE_SKILL_1 , m_sprite->getPositionY() - DISTANCE_SKILL_1);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() - DISTANCE_SKILL_2, m_sprite->getPositionY() - DISTANCE_SKILL_2));
+			break;
+		case 7:
+			//	skill_2->setPosition(m_sprite->getPositionX() , m_sprite->getPositionY() - DISTANCE_SKILL_1);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() - DISTANCE_SKILL_2));
+			break;
+
+		default:
+			break;
+		}
+
+		auto animationSkill_2 = createSkillAnimation(93, 108);
+
+		Animate* animate_2 = Animate::create(animationSkill_2);
+
+		animate_2->retain();
+		//	m_sprite->stopAllActions();
+
+		skill_2->runAction(moveto);
+
+		skill_2->runAction(Repeat::create(animate_2, 1));
+
+		break;
+		
+	}
+	default:
+		break;
+	}
+	
+
+	
+
+
+}
+
+Animation * Hero::createSkillAnimation(int begin, int end)
+{
+
+	Vector<SpriteFrame*> animFrames;
+
+
+	for (int index = begin; index <= end; index++)
+	{
+
+
+		char buffer[20] = { 0 };
+
+		sprintf(buffer, "%d.png", index);
+
+		std::string str = "skill1_0";
+		str = str + buffer;
+
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
+
+		animFrames.pushBack(frame);
+		//	str = "skill_0";
+
+	}
+	auto animaton = Animation::createWithSpriteFrames(animFrames, 0.1f);
+
+	return animaton;
 }

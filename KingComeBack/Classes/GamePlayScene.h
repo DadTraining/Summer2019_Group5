@@ -24,7 +24,7 @@ const float heightWall = 1;
 const int BITMASK_MAP = 100;
 const int BITMASK_LAYER_UI = 101;
 
-#define SPEED 165
+#define SPEED 100
 
 class GamePlayScene :public cocos2d::Scene
 {

@@ -44,7 +44,8 @@ public:
 
 	void handleBloodBar();
 
-
+	bool getState();
+	void setState(bool);
 
 
 private:
@@ -64,5 +65,7 @@ private:
 	Sprite * skill_1, *skill_2, *spriteBlood, *spriteMana, *spriteGreen;
 
 	MoveTo * moveto;
+
+	bool state = false;
 	
 };

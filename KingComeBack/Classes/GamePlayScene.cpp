@@ -132,7 +132,11 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 			k->Move(touchCurrenPositon);
 		}
 	}
-
+	if (hero->getState()) {
+		hero->getBlood()->reduceBlood(-100);
+		hero->handleBloodBar();
+	}
+	
 
 	return true;
 }
@@ -551,150 +555,20 @@ void GamePlayScene::update(float dt)
 
 	// code duoc
 
-	//gameSprite->runAction(mListAction[0]);
-//	log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
-	//log("velocity %f %f ", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
+
+	if (hero->getState()) {
+		handleJoystick();
+	}
 	
-	if (leftJoystick->getVelocity().x > 0.866 && leftJoystick->getVelocity().y > -0.5 && leftJoystick->getVelocity().y < 0.5) {
-		if (count[0] == 0) {
-		
-			hero->moveR(1, SPEED, 0);
-			hero->setDirect(1);
-		}
-		count[0]++;
-		if (count[0] > 50) {
-			count[0] = 0;
-
-			//log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
-		}
-		
-	}
-
-	if (leftJoystick->getVelocity().x > 0.6 && leftJoystick->getVelocity().x <= 0.8 && leftJoystick->getVelocity().y > 0.5 && leftJoystick->getVelocity().y <= 0.8666) {
-		
-			
-		
-			if (count[1] == 0) {
-				hero->moveR(2, SPEED, SPEED);
-				hero->setDirect(2);
-			}
-			count[1]++;
-			if (count[1]>50) {
-				count[1] = 0;
-
-			}
-
-	}
-
-	if (leftJoystick->getVelocity().y > 0.866 && leftJoystick->getVelocity().x > -0.5 && leftJoystick->getVelocity().x < 0.5) {
-		
-			if (count[2] == 0) {
-
-
-				hero->moveR(3, 0, SPEED);
-				hero->setDirect(3);
-			}
-			count[2]++;
-			if (count[2]>50) {
-				count[2] = 0;
-
-			}
-
-	}
-
-	if (leftJoystick->getVelocity().x < -0.6 && leftJoystick->getVelocity().x >= -0.8 && leftJoystick->getVelocity().y > 0.5 && leftJoystick->getVelocity().y <= 0.8666) {
-		
-		
-			if (count[3] == 0) {
-				hero->moveR(4, -SPEED, SPEED);
-				hero->setDirect(4);
-			}
-			count[3]++;
-			if (count[3]>50) {
-				count[3] = 0;
-
-			}
-	}
-
-	if (leftJoystick->getVelocity().x < -0.866 && leftJoystick->getVelocity().y > -0.5 && leftJoystick->getVelocity().y < 0.5) {
-		
-
-		
-
-			if (count[4] == 0) {
-				hero->moveR(5, -SPEED, 0);
-				hero->setDirect(5);
-			}
-			count[4]++;
-			if (count[4]>50) {
-				count[4] = 0;
-			}
-
-	}
-
-	if (leftJoystick->getVelocity().x <= -0.6 && leftJoystick->getVelocity().x >= -0.8 && leftJoystick->getVelocity().y < -0.5 && leftJoystick->getVelocity().y >= -0.8666) {
-		
-		
-			if (count[5] == 0) {
-				hero->moveR(6, -SPEED, -SPEED);
-				hero->setDirect(6);
-			}
-			count[5]++;
-			if (count[5]>50) {
-				count[5] = 0;
-
-			}
-
-	}
-
-
-	if (leftJoystick->getVelocity().y < -0.866 && leftJoystick->getVelocity().x > -0.5 && leftJoystick->getVelocity().x < 0.5) {
-		
-			if (count[6] == 0) {
-
-
-				hero->moveR(7, 0, -SPEED);
-				hero->setDirect(7);
-			}
-			count[6]++;
-			if (count[6]>50) {
-				count[6] = 0;
-			}
-	}
-
-
-	if (leftJoystick->getVelocity().x >= 0.6 && leftJoystick->getVelocity().x <= 0.8 && leftJoystick->getVelocity().y < -0.5 && leftJoystick->getVelocity().y >= -0.8666) {
-
-			if (count[7] == 0) {
-
-				hero->moveR(0, SPEED, -SPEED);
-				hero->setDirect(0);
-			}
-			count[7]++;
-			if (count[7]>50) {
-				count[7] = 0;
-
-			}
-	}
-
-	if (leftJoystick->getVelocity().x == 0.0 && leftJoystick->getVelocity().y == 0.0 ) {
-		hero->getSprite()->stopAllActionsByTag(0);
-		for (int i = 0; i < 8; i++) {
-			count[i] = 0;
-		}
-	}
 
 	joystickBase->updatePositions(dt);
 
 	//	spriteFocus->setPosition(gameSprite->getPosition().x , gameSprite->getPosition().y +50);
 	count_attack += dt;
-	if (count_attack > 1.0) {
+	if (count_attack > 1.0 && hero->getState() == true) {
 		heroAttack(hero->getDirect());
 		count_attack = 0.0;
 	}
-	
-	
-	
 	dot->setVisible(true);
 //	dot->setPosition(hero->getPositionHero().x-100, hero->getPositionHero().y+200);
 	HandleMinimap();
@@ -715,11 +589,20 @@ void GamePlayScene::update(float dt)
 		count_bullet = 0;
 	}
 	//hero->setBlood(-dt);
-	if (hero->getBlood()->getBlood()<10) {
+
+	if (hero->getBlood()->getBlood()<10 && hero->getState() == true) {
 		hero->diedHero(hero->getDirect());
-		hero->getBlood()->setBlood(1000);
+
+		hero->setState(false);
+		countRebirth = 0;
 	}
-	
+	countRebirth += dt;
+	if (countRebirth >10 && hero->getState()==false) {
+		hero->getBlood()->setBlood(1000);
+		hero->handleBloodBar();
+		hero->getSprite()->setPosition(200,200);
+		hero->setState(true);
+	}
 }
 
 void GamePlayScene::heroAttack(int STATE_ATTACK) {
@@ -825,6 +708,139 @@ void GamePlayScene::AddKnightRed()
 		m_knightRead.push_back(knightRed);
 		log("%f %f", _layer2D->getContentSize().width, _layer2D->getContentSize().height);
 	}
+}
+
+void GamePlayScene::handleJoystick()
+{
+	if (leftJoystick->getVelocity().x > 0.866 && leftJoystick->getVelocity().y > -0.5 && leftJoystick->getVelocity().y < 0.5) {
+		if (count[0] == 0) {
+
+			hero->moveR(1, SPEED, 0);
+			hero->setDirect(1);
+		}
+		count[0]++;
+		if (count[0] > 50) {
+			count[0] = 0;
+
+			//log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().x > 0.6 && leftJoystick->getVelocity().x <= 0.8 && leftJoystick->getVelocity().y > 0.5 && leftJoystick->getVelocity().y <= 0.8666) {
+
+
+
+		if (count[1] == 0) {
+			hero->moveR(2, SPEED, SPEED);
+			hero->setDirect(2);
+		}
+		count[1]++;
+		if (count[1]>50) {
+			count[1] = 0;
+
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().y > 0.866 && leftJoystick->getVelocity().x > -0.5 && leftJoystick->getVelocity().x < 0.5) {
+
+		if (count[2] == 0) {
+
+
+			hero->moveR(3, 0, SPEED);
+			hero->setDirect(3);
+		}
+		count[2]++;
+		if (count[2]>50) {
+			count[2] = 0;
+
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().x < -0.6 && leftJoystick->getVelocity().x >= -0.8 && leftJoystick->getVelocity().y > 0.5 && leftJoystick->getVelocity().y <= 0.8666) {
+
+
+		if (count[3] == 0) {
+			hero->moveR(4, -SPEED, SPEED);
+			hero->setDirect(4);
+		}
+		count[3]++;
+		if (count[3]>50) {
+			count[3] = 0;
+
+		}
+	}
+
+	if (leftJoystick->getVelocity().x < -0.866 && leftJoystick->getVelocity().y > -0.5 && leftJoystick->getVelocity().y < 0.5) {
+
+
+
+
+		if (count[4] == 0) {
+			hero->moveR(5, -SPEED, 0);
+			hero->setDirect(5);
+		}
+		count[4]++;
+		if (count[4]>50) {
+			count[4] = 0;
+		}
+
+	}
+
+	if (leftJoystick->getVelocity().x <= -0.6 && leftJoystick->getVelocity().x >= -0.8 && leftJoystick->getVelocity().y < -0.5 && leftJoystick->getVelocity().y >= -0.8666) {
+
+
+		if (count[5] == 0) {
+			hero->moveR(6, -SPEED, -SPEED);
+			hero->setDirect(6);
+		}
+		count[5]++;
+		if (count[5]>50) {
+			count[5] = 0;
+
+		}
+
+	}
+
+
+	if (leftJoystick->getVelocity().y < -0.866 && leftJoystick->getVelocity().x > -0.5 && leftJoystick->getVelocity().x < 0.5) {
+
+		if (count[6] == 0) {
+
+
+			hero->moveR(7, 0, -SPEED);
+			hero->setDirect(7);
+		}
+		count[6]++;
+		if (count[6]>50) {
+			count[6] = 0;
+		}
+	}
+
+
+	if (leftJoystick->getVelocity().x >= 0.6 && leftJoystick->getVelocity().x <= 0.8 && leftJoystick->getVelocity().y < -0.5 && leftJoystick->getVelocity().y >= -0.8666) {
+
+		if (count[7] == 0) {
+
+			hero->moveR(0, SPEED, -SPEED);
+			hero->setDirect(0);
+		}
+		count[7]++;
+		if (count[7]>50) {
+			count[7] = 0;
+
+		}
+	}
+
+	if (leftJoystick->getVelocity().x == 0.0 && leftJoystick->getVelocity().y == 0.0) {
+		hero->getSprite()->stopAllActionsByTag(0);
+		for (int i = 0; i < 8; i++) {
+			count[i] = 0;
+		}
+	}
+
 }
 
 

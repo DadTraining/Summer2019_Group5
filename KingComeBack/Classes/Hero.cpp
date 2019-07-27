@@ -32,7 +32,7 @@ Hero::Hero(Layer * _layer2D)
 	//m_sprite->setCameraMask(2);
 	_layer2D->addChild(m_sprite,10);
 
-	
+	state = true;
 
 	
 }
@@ -320,6 +320,16 @@ void Hero::handleBloodBar()
 {
 	float per = blood->getBlood()/1000;
 	spriteBlood->setScaleX(per);
+}
+
+bool Hero::getState()
+{
+	return state;
+}
+
+void Hero::setState(bool state)
+{
+	this->state = state;
 }
 
 

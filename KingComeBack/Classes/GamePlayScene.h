@@ -79,7 +79,7 @@ public:
 
 	void AddKnightRed();
 
-	
+	void handleJoystick();
 
 	
 
@@ -166,6 +166,7 @@ private:
 	float count_attack = 0.0;
 	bool shoot = false;
 	Point postScountTower;
-	float countBlood;
+	float countBlood, countRebirth =0.0;
+
 };
 

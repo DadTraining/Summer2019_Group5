@@ -50,7 +50,7 @@ bool GamePlayScene::init()
 
 	//code duoc
 	hero = new Hero(_layer2D);
-
+	
 
 
 	dragon = new Dragon(_layer2D);
@@ -69,7 +69,7 @@ bool GamePlayScene::init()
 
 	// add layer 
 	this->createLayerUI();
-
+	hero->createBloodSprite(_layerUI);
 	//Add Knight Red
 	AddKnightRed();
 
@@ -483,8 +483,6 @@ void GamePlayScene::AddEventForPopupScoutTown()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 		newScoutTown->getSprite()->setCameraMask(2);
 		postScountTower = _touch->getLocation() + camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
-		
-
 		this->getEventDispatcher()->removeEventListener(buildHouseListener);
 	};
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
@@ -748,7 +746,6 @@ void GamePlayScene::createButtonAttack()
 	mButtonAttack->setScale(0.5);
 	mButtonAttack->setPosition(screenSize.width *0.92  , screenSize.height * 0.18  );
 	_layerUI->addChild(mButtonAttack,10);
-
 
 }
 

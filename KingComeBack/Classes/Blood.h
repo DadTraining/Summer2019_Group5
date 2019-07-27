@@ -11,9 +11,7 @@ public:
 	float getMana();
 	void setGreen(float);
 	float getGreen();
-
-	void changeBlood( float );
-
+	void reduceBlood( float );
 
 private:
 	float m_blood ;

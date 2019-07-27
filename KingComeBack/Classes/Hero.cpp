@@ -297,7 +297,29 @@ Blood * Hero::getBlood()
 
 void Hero::createBloodSprite(Layer * l)
 {
+	spriteBlood = Sprite::create("bloodBar.png");
+	spriteBlood->setAnchorPoint(Vec2(0,0));
+	spriteBlood->setPosition(322,97);
+	l->addChild(spriteBlood,10);
 
+	spriteMana = Sprite::create("bloodBar.png");
+	
+
+	spriteMana->setAnchorPoint(Vec2(0, 0));
+	spriteMana->setPosition(322, 70);
+	l->addChild(spriteMana, 10);
+
+	spriteGreen = Sprite::create("bloodBar.png");
+
+	spriteGreen->setAnchorPoint(Vec2(0, 0));
+	spriteGreen->setPosition(322, 38);
+	l->addChild(spriteGreen, 10);
+}
+
+void Hero::handleBloodBar()
+{
+	float per = blood->getBlood()/1000;
+	spriteBlood->setScaleX(per);
 }
 
 

@@ -20,6 +20,10 @@ Blood::Blood(float b, float m , float g)
 	this->m_mana = m;
 }
 
+Blood::~Blood()
+{
+}
+
 void Blood::setBlood(float b)
 {
 	this->m_blood += b;
@@ -50,7 +54,7 @@ float Blood::getGreen()
 	return 	this->m_green;
 }
 
-void Blood::changeBlood(float db)
+void Blood::reduceBlood(float db)
 {
 	this->m_blood += db;
 }

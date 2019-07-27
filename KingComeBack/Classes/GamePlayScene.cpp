@@ -111,13 +111,11 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 		+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
 	for (auto k : knight)
 	{
-		if (k != nullptr)
+		if (k != nullptr && k->GetSelected() == true)
 		{
 			k->Move(touchCurrenPositon);
 		}
 	}
-
-
 	return true;
 }
 
@@ -617,7 +615,7 @@ void GamePlayScene::CreatePopupChooseKnight()
 	labelSumKnight = Label::create();
 	labelSumKnight->setString(std::to_string(knight.size()));
 
-	auto labelSum = Label::createWithTTF("Sum: ", "fonts/arial.ttf", 20);
+	auto labelSum = Label::createWithTTF("Sum: ", "fonts/arial.ttf", 13);
 	auto labelChoose = Label::createWithTTF("Choose: ", "fonts/arial.ttf", 30);
 	auto popupChooseKnight = UICustom::PopupChooseKnight::create("Choose knight", "", labelSumKnight, labelSum
 		,labelChoose ,labelChooseKnight,
@@ -635,17 +633,25 @@ void GamePlayScene::AddToChooseKnight()
 	{
 		stringChooseKnight = std::to_string(chooseKnight);
 		labelChooseKnight->setString(stringChooseKnight);
+		for (int i = 0; i < chooseKnight; i++)
+		{
+			knight.at(i)->SetSelected(true);
+		}
 	}
+
 }
 
 void GamePlayScene::SubToChooseKnight()
 {
-
 	int chooseKnight = std::stoi(stringChooseKnight) - 1;
 	if (chooseKnight >= 0)
 	{
 		stringChooseKnight = std::to_string(chooseKnight);
 		labelChooseKnight->setString(stringChooseKnight);
+		for (int i = chooseKnight; i < knight.size(); i++)
+		{
+			knight.at(i)->SetSelected(false);
+		}
 	}
 }
 
@@ -720,7 +726,6 @@ void GamePlayScene::update(float dt)
 		count[0]++;
 		if (count[0] > 50) {
 			count[0] = 0;
-
 			//log("JOYSTIK %f %f", leftJoystick->getVelocity().x, leftJoystick->getVelocity().y);
 		}
 		

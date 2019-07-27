@@ -13,7 +13,7 @@ Hero::Hero(Layer * _layer2D)
 	// Tạo Sprite sử dụng hình ảnh đầu tiên là mysprite0.png. Ở đây Animation của mình sẽ dùng Sprite này làm Sprite đầu tiên.
 	m_sprite = Sprite::createWithSpriteFrameName("walk_00000.png");
 	// Thiết lập vị trí của gameSprite tại vị trí (300, 300). Đây cũng chính là vị trí của Animation trên Screen.
-	m_sprite->setScale(0.5);
+	m_sprite->setScale(0.8);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 	//Thêm gameSprite vào Scene.
 	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);

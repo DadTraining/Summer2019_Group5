@@ -4,7 +4,7 @@
 HouseDecorate::HouseDecorate(Layer* scene, int id)
 {
 	this->Init(id);
-	scene->addChild(m_sprite);
+	scene->addChild(m_sprite, 10);
 
 }
 
@@ -18,11 +18,15 @@ void HouseDecorate::Init(int id)
 	m_sprite = Sprite::create("HouseDecorate.png");
 	decorateHouseOpacity = m_sprite->getOpacity();
 	m_sprite->setOpacity(30);
-	auto physicBody = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	
+	MyBodyParser::getInstance()->parseJsonFile("HouseDecorate.json");
+	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "HouseDecorateBody", PhysicsMaterial(0, 0, 0));
+
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
-	physicBody->setCollisionBitmask(25);
+	physicBody->setCollisionBitmask(125);
+
 	m_sprite->setPhysicsBody(physicBody);
 
 	this->LoadingBuild();

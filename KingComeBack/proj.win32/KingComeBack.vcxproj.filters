@@ -10,81 +10,111 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\BuidingHouse">
+      <UniqueIdentifier>{7341111e-efdf-4d0d-a65c-30a951b9a099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameScene">
+      <UniqueIdentifier>{150d949e-3086-493a-9052-479e971ca6e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\LayerUI">
+      <UniqueIdentifier>{54602965-ad0f-447e-9ffe-127bfeca52ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Layer2D">
+      <UniqueIdentifier>{b50cdaf7-e438-4f60-b6fa-33731a71b8d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\StoreHouse.cpp">
+      <Filter>src\BuidingHouse</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\MainHouse.cpp">
+      <Filter>src\BuidingHouse</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GamePlayScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SneakyButton.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SneakyButtonSkinnedBase.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SneakyJoystick.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SneakyJoystickSkinnedBase.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\VisibleRect.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Home.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Human.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Item.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MyObject.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Person.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Popup.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\ResourceManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\ResourceNature.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\ScoutTown.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\HouseDecorate.cpp">
+      <Filter>src\BuidingHouse</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\TownHall.cpp">
-      <Filter>src</Filter>
+      <Filter>src\BuidingHouse</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameSetting.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\ScoutTown.cpp">
+      <Filter>src\BuidingHouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>src\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GamePlayScene.cpp">
+      <Filter>src\GameScene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\LoadingScene.cpp">
-      <Filter>src</Filter>
+      <Filter>src\GameScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MainMenuScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MenuScene.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\LogoScene.cpp">
+      <Filter>src\GameScene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\SettingScene.cpp">
-      <Filter>src</Filter>
+      <Filter>src\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainMenuScene.cpp">
+      <Filter>src\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MenuScene.cpp">
+      <Filter>src\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\VisibleRect.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SneakyJoystickSkinnedBase.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SneakyJoystick.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SneakyButtonSkinnedBase.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SneakyButton.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Item.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameSetting.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Popup.cpp">
+      <Filter>src\LayerUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Dragon.cpp">
+      <Filter>src\Layer2D</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Hero.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Home.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Human.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Knight.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MyObject.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Person.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ResourceManager.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ResourceNature.cpp">
+      <Filter>src\Layer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MyBodyParser.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,76 +122,97 @@
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\StoreHouse.h">
+      <Filter>src\BuidingHouse</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\MainHouse.h">
+      <Filter>src\BuidingHouse</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GamePlayScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SneakyButton.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SneakyButtonSkinnedBase.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SneakyJoystick.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SneakyJoystickSkinnedBase.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\VisibleRect.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Defines.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Home.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Human.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Item.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MyObject.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Person.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Popup.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\ResourceManager.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\ResourceNature.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\ScoutTown.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\HouseDecorate.h">
+      <Filter>src\BuidingHouse</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TownHall.h">
-      <Filter>src</Filter>
+      <Filter>src\BuidingHouse</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameSetting.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\ScoutTown.h">
+      <Filter>src\BuidingHouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GamePlayScene.h">
+      <Filter>src\GameScene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LoadingScene.h">
-      <Filter>src</Filter>
+      <Filter>src\GameScene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MenuScene.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\LogoScene.h">
+      <Filter>src\GameScene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SettingScene.h">
-      <Filter>src</Filter>
+      <Filter>src\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenuScene.h">
+      <Filter>src\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MenuScene.h">
+      <Filter>src\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\VisibleRect.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SneakyJoystickSkinnedBase.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SneakyJoystick.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SneakyButtonSkinnedBase.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SneakyButton.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Item.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameSetting.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Popup.h">
+      <Filter>src\LayerUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Defines.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Dragon.h">
+      <Filter>src\Layer2D</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Hero.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Home.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Human.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Knight.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MyObject.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Person.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ResourceManager.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ResourceNature.h">
+      <Filter>src\Layer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MyBodyParser.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -240,9 +240,7 @@ namespace UICustom {
 			lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
 
-
 			if (mainHouse) {
-
 				MenuItemImage *houseMain = MenuItemImage::create(IMAGEPATH::HOUSE_MAIN_BUTTON, IMAGEPATH::HOUSE_MAIN_BUTTON_PRESS, [=](Ref *sender) {
 					mainHouse();
 					node->dismiss(true);
@@ -351,8 +349,7 @@ namespace UICustom {
 				node->addChild(menu, 2);
 
 				menu->alignItemsInColumns(4, 4, 4, 4, 4, 4);
-				menu->setPosition(winSize.width * 3 / 4.4, winSize.height / 1.9); //- lbl->getContentSize().height / 2 - 75);
-
+				menu->setPosition(winSize.width * 3 / 4.4, winSize.height / 1.9);
 
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
@@ -518,7 +515,6 @@ namespace UICustom {
 			labelChoose->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
 			labelChoose->enableShadow(Color4B::BLACK, Size(0, -2));
 			if (add) {
-
 				// menu knight
 				//MenuItemImage *knightItem = MenuItemImage::create(IMAGEPATH::KNIHT_ITEM, IMAGEPATH::KNIHT_ITEM, [=](Ref *sender) {
 				//	knight();

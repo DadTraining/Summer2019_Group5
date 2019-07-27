@@ -80,6 +80,7 @@ void Knight::Init(int id)
 
 	m_sprite = Sprite::createWithSpriteFrameName("knight_walk_00000.png");
 	m_sprite->setScale(0.8);
+
 	auto body = PhysicsBody::createBox(m_sprite->getContentSize() / 2, PHYSICSBODY_MATERIAL_DEFAULT);
 	body->setGravityEnable(false);
 	body->setCategoryBitmask(16);

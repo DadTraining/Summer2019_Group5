@@ -377,7 +377,6 @@ void GamePlayScene::AddButtonPopUpHouse()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			this->AddPopupHouse();
-
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -600,7 +599,9 @@ void GamePlayScene::update(float dt)
 	if (countRebirth >10 && hero->getState()==false) {
 		hero->getBlood()->setBlood(1000);
 		hero->handleBloodBar();
+	
 		hero->getSprite()->setPosition(200,200);
+		hero->getAttack(1);
 		hero->setState(true);
 	}
 }

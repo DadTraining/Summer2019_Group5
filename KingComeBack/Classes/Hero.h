@@ -61,7 +61,7 @@ private:
 	PhysicsBody * bodyA;
 	Vec2 origin;
 	int direct=0;
-//	cocos2d::Action* mListAction[100];
+
 	Sprite * skill_1, *skill_2, *spriteBlood, *spriteMana, *spriteGreen;
 
 	MoveTo * moveto;

@@ -106,9 +106,14 @@ namespace UICustom {
 	{
 	public:
 		static PopupChooseKnight* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupChooseKnight* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
-		static PopupChooseKnight* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
-
+		static PopupChooseKnight* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()>& add, 
+			const std::function<void()>& sub,
+			const std::function<void()>& knight);
+		
+		static PopupChooseKnight* create(const std::string &title, const std::string &msg, cocos2d::Label *intSum,
+			cocos2d::Label *labelSum, cocos2d::Label *labelChoose, cocos2d::Label *intChoose,
+			const std::function<void()>& add, const std::function<void()>& sub,
+			const std::function<void()>& knight);
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};

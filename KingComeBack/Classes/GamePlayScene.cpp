@@ -1,5 +1,5 @@
 #include"GamePlayScene.h"
-
+#include<string.h>
 GamePlayScene::GamePlayScene()
 {
 }
@@ -432,6 +432,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 			hallTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 			hallTown->getSprite()->setCameraMask(2);
+	
 			containerHallTown.push_back(hallTown);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
 
@@ -592,12 +593,13 @@ void GamePlayScene::CreateChooseKnight()
 {
 	auto button = ui::Button::create("itemKnight.png", "itemKnight.png");
 	button->setScale(0.5);
-	button->setPosition(Vec2(screenSize.width * 0.9, screenSize.height * 0.85));
+	button->setPosition(Vec2(screenSize.width * 0.93, screenSize.height * 0.85));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			this->CreatePopupChooseKnight();
+
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -610,14 +612,50 @@ void GamePlayScene::CreateChooseKnight()
 
 void GamePlayScene::CreatePopupChooseKnight()
 {
-	auto popupChooseKnight = UICustom::PopupChooseKnight::createAsConfirmDialogue("Choose knight", "", [=]() {
-		
-	});
+	labelChooseKnight = Label::create();
+	labelChooseKnight->setString(stringChooseKnight);
+	labelSumKnight = Label::create();
+	labelSumKnight->setString(std::to_string(knight.size()));
+
+	auto labelSum = Label::createWithTTF("Sum: ", "fonts/arial.ttf", 20);
+	auto labelChoose = Label::createWithTTF("Choose: ", "fonts/arial.ttf", 30);
+	auto popupChooseKnight = UICustom::PopupChooseKnight::create("Choose knight", "", labelSumKnight, labelSum
+		,labelChoose ,labelChooseKnight,
+		CC_CALLBACK_0(GamePlayScene::AddToChooseKnight, this),
+		CC_CALLBACK_0(GamePlayScene::SubToChooseKnight, this),
+		CC_CALLBACK_0(GamePlayScene::ChooseKnight, this)
+	);
 	_layerUI->addChild(popupChooseKnight);
+}
+
+void GamePlayScene::AddToChooseKnight()
+{
+	int chooseKnight = std::stoi(stringChooseKnight) + 1;
+	if (chooseKnight <= knight.size())
+	{
+		stringChooseKnight = std::to_string(chooseKnight);
+		labelChooseKnight->setString(stringChooseKnight);
+	}
+}
+
+void GamePlayScene::SubToChooseKnight()
+{
+
+	int chooseKnight = std::stoi(stringChooseKnight) - 1;
+	if (chooseKnight >= 0)
+	{
+		stringChooseKnight = std::to_string(chooseKnight);
+		labelChooseKnight->setString(stringChooseKnight);
+	}
+}
+
+void GamePlayScene::ChooseKnight()
+{
 }
 
 void GamePlayScene::update(float dt)
 {
+
 	if (newScoutTown != nullptr)
 	{
 		newScoutTown->Update(dt);

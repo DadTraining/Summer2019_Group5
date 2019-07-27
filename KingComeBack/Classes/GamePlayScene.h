@@ -65,6 +65,9 @@ public:
 	void CreateLayerUI();
 	void CreateChooseKnight();
 	void CreatePopupChooseKnight();
+	void AddToChooseKnight();
+	void SubToChooseKnight();
+	void ChooseKnight();
 
 	void update(float dt) override;
 
@@ -113,12 +116,16 @@ private:
 	static const int indexCamera = 4;
 	static const int indexJoystick = 3;
 	static const int indexLayerUI = 2;
+	std::string stringChooseKnight = "0";
+	Label *labelChooseKnight;
+	Label *labelSumKnight;
 
 	Vec2 positionWeapons;
 
 	Size mapContentSize;
 	Point touchCurrenPositon;
 
+	// house
 	ScoutTown *newScoutTown;
 	MainHouse *newMainHouse;
 	HouseDecorate *newDecorateHouse;

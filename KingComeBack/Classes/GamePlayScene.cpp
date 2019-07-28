@@ -679,9 +679,9 @@ void GamePlayScene::miniMap()
 	_layerUI->addChild(map_1, 11);
 
 
-	dot = Sprite::create("dot.png");
+	dot = Sprite::create("dotHero.png");
 	//Sprite*  minimapSprite = Sprite::create("minimap.png");
-	dot->setScale(0.002);
+	dot->setScale(0.01);
 	//minimapSprite->setScale(0.3);
 	//minimapSprite->setPosition(50*screenSize.width / (2 * 256), 820*screenSize.height  / (2*512));
 	dot->setAnchorPoint(Vec2(0.5, 0.5));

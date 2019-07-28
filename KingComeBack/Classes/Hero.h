@@ -47,13 +47,13 @@ public:
 	bool getState();
 	void setState(bool);
 
+	float getDamage();
+	void setDamage(float d);
+	void reduceDamage(float dentaDamage);
 
 private:
-	float BLOOD = 1000;
-	float MANA = 1000;
 	
 	Blood * blood;
-
 	const int BITMASK_LAYER_UI = 101;
 	Size screenSize;
 	cocos2d::Animation * animaton;
@@ -67,5 +67,7 @@ private:
 	MoveTo * moveto;
 
 	bool state = false;
+
+	float damage = 100;
 	
 };

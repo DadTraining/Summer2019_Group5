@@ -72,15 +72,12 @@ void Hero::Died()
 Animation * Hero::createAnimation(std::string frefixName, int pFrame, float delay)
 {
 	Vector<SpriteFrame*> animFrames;
-	float x = m_sprite -> getPosition().x;
-	
-	float y = m_sprite->getPosition().y;
+
 
 	for (int index = 0; index <= pFrame; index++)
 	{
 		
-		x += index;
-		y ;
+	
 		char buffer[20] = { 0 };
 	
 		sprintf(buffer, "%d.png", index);
@@ -330,6 +327,21 @@ bool Hero::getState()
 void Hero::setState(bool state)
 {
 	this->state = state;
+}
+
+float Hero::getDamage()
+{
+	return damage;
+}
+
+void Hero::setDamage(float d)
+{
+	this->damage = d;
+}
+
+void Hero::reduceDamage(float dentaDamage)
+{
+	this->damage += dentaDamage;
 }
 
 

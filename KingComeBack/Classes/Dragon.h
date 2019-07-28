@@ -1,29 +1,14 @@
 #pragma once
 #include "Person.h"
 #include "cocos2d.h"
-class Dragon : public Person {
+class Dragon  : public MyObject{
 public:
 	Dragon(Layer * _layer2D);
 	~Dragon();
-	void Init( int ) override;
-	void Attack() override;
-	void Update( float) override;
-	void Move(Vec2 vec) override;
-	void Died()override;
-	Animation* createAnimation(std::string frefixName, int pFrame, float delay);
+	void Init(int) override;
+	void Died() override;
+	Animation* createAnimation(std::string frefixName, int pFrame, int delay);
 	
-
-	void moveR(int, int, int);
-	
-
-	int getDirect();
-
-	void setDirect(int);
-
-	void getAttack(int);
-
-	Vec2  getPositionHero();
-
 private:
 	const int BITMASK_LAYER_UI = 101;
 	Size screenSize;
@@ -32,6 +17,4 @@ private:
 	PhysicsBody * bodyA;
 	Vec2 origin;
 	int direct=0;
-	cocos2d::Action* mListAction[100];
-	
 };

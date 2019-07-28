@@ -26,7 +26,7 @@ Blood::~Blood()
 
 void Blood::setBlood(float b)
 {
-	this->m_blood += b;
+	this->m_blood = b;
 }
 
 float Blood::getBlood()

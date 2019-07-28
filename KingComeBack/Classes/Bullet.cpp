@@ -3,8 +3,8 @@
 
 Bullet::Bullet(Layer * _layer2D)
 {
-	m_sprite = Sprite::create("dot.png");
-	m_sprite->setScale(0.002);
+	m_sprite = Sprite::create("bullet.png");
+	m_sprite->setScale(0.08);
 	m_sprite->setCameraMask(2);
 	//m_sprite->setPosition(p);
 	m_sprite->setVisible(false);

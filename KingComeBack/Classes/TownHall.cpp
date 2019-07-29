@@ -41,12 +41,12 @@ void TownHall::LoadingBuild()
 {
 	loadingBar = Sprite::create("loadingBarHouse.png");
 	loadingBar->setAnchorPoint(Vec2(0, 0.5));
-	loadingBar->setPosition(m_sprite->getPosition().x * 2, m_sprite->getPosition().y / 2);
+	loadingBar->setPosition(m_sprite->getPosition().x * 2 + m_sprite->getContentSize().width / 2, m_sprite->getPosition().y / 2);
 	loadingBar->setScaleX(0);
 	m_sprite->addChild(loadingBar, 1);
 	loadingBarBg = Sprite::create("loadingBarBgHouse.png");
 	loadingBarBg->setAnchorPoint(Vec2(0, 0.5));
-	loadingBarBg->setPosition(m_sprite->getPosition().x * 2 , m_sprite->getPosition().y / 2);
+	loadingBarBg->setPosition(m_sprite->getPosition().x * 2 + m_sprite->getContentSize().width / 2, m_sprite->getPosition().y / 2);
 	m_sprite->addChild(loadingBarBg, 0);
 }
 

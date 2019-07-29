@@ -1,10 +1,7 @@
 #pragma once
 #include"cocos2d.h"
-#include"SneakyButton.h"
-#include"SneakyButtonSkinnedBase.h"
 #include"SneakyJoystickSkinnedBase.h"
 #include"ui/CocosGUI.h"
-#include"VisibleRect.h"
 #include"Popup.h"
 #include"TownHall.h"
 #include"ScoutTown.h"
@@ -14,6 +11,7 @@
 #include "Hero.h"
 #include "Dragon.h"
 #include "Knight.h"
+#include"HudGold.h"
 
 
 USING_NS_CC;
@@ -47,6 +45,7 @@ public:
 	void AddCameraUSER2();
 	void AddListener();
 	void AddJoystick();
+	void AddHudGoldMessage();
 	void AddButtonPopUpHero();
 	void AddButtonPopUpHouse();
 	void AddSpriteUI();
@@ -68,7 +67,6 @@ public:
 	void AddToChooseKnight();
 	void SubToChooseKnight();
 	void ChooseKnight();
-
 	void update(float dt) override;
 
 	void heroAttack(int);
@@ -92,7 +90,7 @@ public:
 	CREATE_FUNC(GamePlayScene);
 private:
 	Size screenSize;
-	TMXTiledMap *map, *mapTop;
+	TMXTiledMap *map, *mapTop, *mapRight, *mapTopRight;
 	Size sizeWall;
 	float m_scaleX;
 	float m_scaleY;
@@ -166,6 +164,6 @@ private:
 	std::vector<Knight*> m_knightRead;
 	std::vector<TownHall *> containerHallTown;
 	std::vector<Knight *> knight;
-
+	std::vector<Item *> menuItem;
 };
 

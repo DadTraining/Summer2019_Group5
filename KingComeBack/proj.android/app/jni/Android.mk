@@ -13,7 +13,6 @@ LOCAL_MODULE_FILENAME := libMyGame
 
 LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/AppDelegate.cpp \
-                   $(LOCAL_PATH)/../../../Classes/HelloWorldScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/GamePlayScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/Hero.cpp \
 				   $(LOCAL_PATH)/../../../Classes/Home.cpp \
@@ -32,12 +31,13 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
 				   $(LOCAL_PATH)/../../../Classes/ResourceManager.cpp \
 				   $(LOCAL_PATH)/../../../Classes/ResourceNature.cpp \
 				   $(LOCAL_PATH)/../../../Classes/ScoutTown.cpp \
-				   $(LOCAL_PATH)/../../../Classes/SneakyButton.cpp \
-				   $(LOCAL_PATH)/../../../Classes/SneakyButtonSkinnedBase.cpp \
+				   $(LOCAL_PATH)/../../../Classes/HouseDecorate.cpp \
+				   $(LOCAL_PATH)/../../../Classes/HudGold.cpp \
+				   $(LOCAL_PATH)/../../../Classes/MainHouse.cpp \
+				   $(LOCAL_PATH)/../../../Classes/StoreHouse.cpp \
 				   $(LOCAL_PATH)/../../../Classes/SneakyJoystick.cpp \
 				   $(LOCAL_PATH)/../../../Classes/SneakyJoystickSkinnedBase.cpp \
 				   $(LOCAL_PATH)/../../../Classes/TownHall.cpp \
-				   $(LOCAL_PATH)/../../../Classes/VisibleRect.cpp \
 				   $(LOCAL_PATH)/../../../Classes/Dragon.cpp \
 				   $(LOCAL_PATH)/../../../Classes/Knight.cpp
 

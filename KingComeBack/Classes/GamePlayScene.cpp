@@ -29,6 +29,8 @@ bool GamePlayScene::init()
 	newStoreHouse = nullptr;
 	newMainHouse = nullptr;
 	//newHallTown = nullptr;
+
+
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
 
@@ -172,26 +174,33 @@ void GamePlayScene::AddMap()
 	map = TMXTiledMap::create("map.tmx");
 	map->setAnchorPoint(Vec2(0, 0));
 	map->setPosition(this->getPosition());
-	//map->setScale(m_scale);
 	_layer2D->addChild(map);
 
 	//get contensize big map
 	condinatorBigMap = Vec2(map->getContentSize().height, map->getContentSize().width);
 	
-
-
 	// Map top
 	mapTop = TMXTiledMap::create("mapTop.tmx");
 	mapTop->setAnchorPoint(Vec2(0, 0));
 	mapTop->setPositionY(map->getContentSize().height);
-	//mapTop->setScale(m_scale);
 	_layer2D->addChild(mapTop);
 
+	//Map right
+	mapRight = TMXTiledMap::create("mapLeft.tmx");
+	mapRight->setAnchorPoint(Vec2(0, 0));
+	mapRight->setPositionX(map->getContentSize().width);
+	_layer2D->addChild(mapRight);
+
+	//Map right top
+	mapTopRight = TMXTiledMap::create("mapRightTop.tmx");
+	mapTopRight->setAnchorPoint(Vec2(0, 0));
+	mapTopRight->setPosition(map->getContentSize().width, map->getContentSize().height);
+	_layer2D->addChild(mapTopRight);
+
 	auto sizeMapHeight = Size(10, map->getContentSize().height + mapTop->getContentSize().height);
-	auto sizeMapUp = Size(map->getContentSize().width, 10);
+	auto sizeMapUp = Size(map->getContentSize().width * 2, 10);
+	
 	// add physic for map left
-
-
 	auto nodeLeft = Node::create();
 	auto physicLeft = PhysicsBody::createBox(sizeMapHeight,
 		PHYSICSBODY_MATERIAL_DEFAULT);
@@ -199,7 +208,7 @@ void GamePlayScene::AddMap()
 	physicLeft->setCategoryBitmask(1);
 	physicLeft->setCollisionBitmask(31);
 	nodeLeft->setPhysicsBody(physicLeft);
-	nodeLeft->setPosition(map->getPositionX() - 10, sizeMapHeight.height / 2);
+	nodeLeft->setPosition(map->getPositionX() + 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeLeft);
 
 
@@ -212,7 +221,7 @@ void GamePlayScene::AddMap()
 	physicUp->setCategoryBitmask(1);
 	physicUp->setCollisionBitmask(31);
 	nodeUP->setPhysicsBody(physicUp);
-	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height + 5);
+	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height - 5);
 	_layer2D->addChild(nodeUP);
 
 	// add physic for map right
@@ -224,7 +233,7 @@ void GamePlayScene::AddMap()
 	physicRight->setCategoryBitmask(1);
 	physicRight->setCollisionBitmask(31);
 	nodeRight->setPhysicsBody(physicRight);
-	nodeRight->setPosition(map->getContentSize().width + 10, sizeMapHeight.height / 2);
+	nodeRight->setPosition(map->getContentSize().width * 2 - 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeRight);
 
 	// add physic for map down
@@ -236,7 +245,7 @@ void GamePlayScene::AddMap()
 	physicDown->setCategoryBitmask(1);
 	physicDown->setCollisionBitmask(31);
 	nodeDown->setPhysicsBody(physicDown);
-	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y - 5);
+	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y + 5);
 	_layer2D->addChild(nodeDown);
 }
 
@@ -319,6 +328,14 @@ void GamePlayScene::AddJoystick()
 	_layerUI->addChild(joystickBase, 10);
 }
 
+void GamePlayScene::AddHudGoldMessage()
+{
+	auto PosHudGold = Vec2(screenSize.width / 2, screenSize.height/ 2);
+	//HudGold *hudGold = HudGold::createLayer("gold", PosHudGold, Color3B::WHITE, Size(10, 10), Vec2(0.5, 0.5));
+	//_layerUI->addChild(hudGold,20);
+	//hudGold->setCameraMask(8);
+}
+
 void GamePlayScene::AddButtonPopUpHero()
 {
 	auto button = ui::Button::create("backpack.png", "backpack_press.png");
@@ -343,7 +360,7 @@ void GamePlayScene::AddButtonPopUpHero()
 void GamePlayScene::AddButtonPopUpHouse()
 {
 	auto button = ui::Button::create("ButtonShop.png", "ButtonShop_press.png");
-	button->setTitleText("House");
+	//button->setTitleText("House");
 	button->setScale(m_scaleX * 0.3, m_scaleX * 0.3);
 	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9.5));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
@@ -351,7 +368,6 @@ void GamePlayScene::AddButtonPopUpHouse()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			this->AddPopupHouse();
-
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -366,7 +382,6 @@ void GamePlayScene::AddSpriteUI()
 {
 	auto containerForSpriteUI = Node::create();
 	auto sprite = Sprite::create("UI.png");
-	//sprite->setScale(1);
 	sprite->setPosition(screenSize / 2);
 	m_scaleX = screenSize.width / sprite->getContentSize().width;
 	m_scaleY = screenSize.height / sprite->getContentSize().height;
@@ -379,7 +394,7 @@ void GamePlayScene::AddSpriteUI()
 
 void GamePlayScene::AddPopupHero()
 {
-	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"hero", "",[=]() {
+	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"hero", "", menuItem, [=]() {
 
 	});
 	_layerUI->addChild(popUpHero, 10);
@@ -580,18 +595,17 @@ void GamePlayScene::CreateLayerUI()
 	//Add feature for UI;
 	this->AddSpriteUI();
 	this->CreateChooseKnight();
-	//Add joystick
 	this->AddJoystick();
 	this->AddButtonPopUpHero();
 	this->AddButtonPopUpHouse();
-
+	this->AddHudGoldMessage();
 }
 
 void GamePlayScene::CreateChooseKnight()
 {
 	auto button = ui::Button::create("itemKnight.png", "itemKnight.png");
 	button->setScale(0.5);
-	button->setPosition(Vec2(screenSize.width * 0.93, screenSize.height * 0.85));
+	button->setPosition(Vec2(screenSize.width * 0.935, screenSize.height * 0.85));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -654,7 +668,6 @@ void GamePlayScene::SubToChooseKnight()
 		}
 	}
 }
-
 void GamePlayScene::ChooseKnight()
 {
 }
@@ -804,7 +817,6 @@ void GamePlayScene::update(float dt)
 			}
 
 	}
-
 
 	if (leftJoystick->getVelocity().y < -0.866 && leftJoystick->getVelocity().x > -0.5 && leftJoystick->getVelocity().x < 0.5) {
 		

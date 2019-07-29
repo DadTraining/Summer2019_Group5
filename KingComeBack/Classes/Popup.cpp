@@ -316,11 +316,12 @@ namespace UICustom {
 	{
 		return nullptr;
 	}
-	PopupHero * PopupHero::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, const std::function<void()>& YesFunc)
+	PopupHero * PopupHero::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, std::vector<Item *> menuItem, const std::function<void()>& YesFunc)
 	{
-		return create(layer, title, msg, NULL, YesFunc);
+		return create(layer, title, msg, NULL, menuItem, YesFunc);
 	}
-	PopupHero * PopupHero::create(Layer *layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, const std::function<void()>& YesFunc)
+	PopupHero * PopupHero::create(Layer *layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, 
+		std::vector<Item *> menuItem,const std::function<void()>& YesFunc)
 	{
 		PopupHero *node = new (std::nothrow)PopupHero();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -334,22 +335,31 @@ namespace UICustom {
 			lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
 
+			int heightBag = 6;
+			int widthBag = 4;
+			int id = 0;
+			int ID = 9;
+
+			float posWidth = winSize.width / 2.5;
+			float posHeight = winSize.height / 1.54;
+
 			if (YesFunc) {
-				Vector<MenuItem *> menuItemImage;
-				for (size_t i = 0; i < 24; i++)
+				Item *itemHp = new Item(node, 7);
+				menuItem.push_back(itemHp);
+				Item *itemMp = new Item(node, 8);
+				menuItem.push_back(itemMp);
+
+				for (int i = 0; i < menuItem.size(); i++)
 				{
+					menuItem.at(i)->getButton()->setPosition(Vec2(posWidth, posHeight));
+					posWidth += 35;
 
-					auto item = new Item(layer, 2);
-
-					menuItemImage.pushBack(item->getMenuItemImage());
+					if (i % 4 == 0 && i > 0)
+					{
+						posWidth = winSize.width / 2.5;
+						posHeight -= 35;
+					}
 				}
-
-				Menu *menu = Menu::createWithArray(menuItemImage);
-
-				node->addChild(menu, 2);
-
-				menu->alignItemsInColumns(4, 4, 4, 4, 4, 4);
-				menu->setPosition(winSize.width * 3 / 4.4, winSize.height / 1.9);
 
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
@@ -373,6 +383,7 @@ namespace UICustom {
 		_bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
 		_bg->setScale9Enabled(true);
 		//_bg->setContentSize(size);
+		//_bg->setVisible(false);
 
 		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_HERO);
 		//_bg->addChild(fill);

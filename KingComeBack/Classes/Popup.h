@@ -1,11 +1,3 @@
-//
-//  Popup.h
-//  dreamWeek
-//
-//  Created by Bilal Mirza on 07/08/2017.
-//
-//
-
 #ifndef Popup_h
 #define Popup_h
 
@@ -62,7 +54,7 @@ namespace UICustom {
 	{
 	public:
 		static PopupHouse* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupHouse* createAsConfirmDialogue(const std::string &title, const std::string &msg,  const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
+		static PopupHouse* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
 		static PopupHouse* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
 
 	private:

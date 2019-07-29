@@ -9,6 +9,7 @@ class Knight : public Person
 {
 private:
 	int m_currentDirect;
+
 	int m_lastDirect;
 
 	Animate* ActionKnight(std::string actionName);

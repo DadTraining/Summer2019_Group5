@@ -1,11 +1,3 @@
-//
-//  Popup.cpp
-//  dreamWeek
-//
-//  Created by Bilal Mirza on 07/08/2017.
-//
-//
-
 #include "Popup.h"
 //#include "PopupRepo.h"
 
@@ -413,7 +405,7 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 
-				Menu *menu = Menu::create(knight, noButton , NULL);
+				Menu *menu = Menu::create(knight, noButton, NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);

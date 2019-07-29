@@ -1,3 +1,5 @@
+
+#pragma once
 #ifndef __SNEAKY_BUTTON_H__
 #define __SNEAKY_BUTTON_H__
 

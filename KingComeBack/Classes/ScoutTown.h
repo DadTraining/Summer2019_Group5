@@ -4,6 +4,9 @@
 #include "Defines.h"
 #include "ui/CocosGUI.h"
 
+#include "Bullet.h"
+#include "Knight.h"
+
 USING_NS_CC;
 
 class ScoutTown : public Home
@@ -17,10 +20,18 @@ public:
 	void LoadingBuild() override;
 	void Update(float dt) override;
 
+	void Shoot(Knight *);
+	void Update(float dt, Knight* h);
+
+
 private:
 	float m_dame;
 	Sprite *loadingBar;
 	Sprite *loadingBarBg;
 	GLubyte scoutTownOpacity;
+
+	std::vector < Bullet * > m_listBullets;
+
+
 };
 

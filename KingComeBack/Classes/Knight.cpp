@@ -1,7 +1,6 @@
 #include "Knight.h"
 #include "Defines.h"
 
-
 void Knight::SetCurrentDirect(Vec2 vec)
 {
 	direct = Vec2(m_sprite->getPosition(), vec);
@@ -103,13 +102,12 @@ void Knight::Init(int id)
 	}
 	m_currentDirect = 0;
 
-
 	SetColor(id);
 }
 
 void Knight::Update(float dt)
 {
-	//Attack();
+
 }
 
 void Knight::Move(Vec2 vec)
@@ -208,11 +206,14 @@ void Knight::InitBlue()
 	body->getShape(0)->setMass(100);
 
 	//body->setDynamic(true);
-	m_sprite->setPhysicsBody(body);
+	m_sprite->setPhysicsBody(body);	
 }
+
+
 
 void Knight::Attack()
 {
+
 	if (m_sprite->getActionByTag(TAG_ACTION_WALK))
 	{
 		m_sprite->stopActionByTag(TAG_ACTION_WALK);

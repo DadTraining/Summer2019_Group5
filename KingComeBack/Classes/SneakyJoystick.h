@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __SNEAKY_JOYSTICK_H__
 #define __SNEAKY_JOYSTICK_H__
 

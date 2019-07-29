@@ -9,11 +9,19 @@
 #include"TownHall.h"
 #include"ScoutTown.h"
 #include "Hero.h"
+
 #include "Defines.h"
+
 
 #include "Dragon.h"
 
 #include "Knight.h"
+
+
+#include "Bullet.h"
+
+#include "dotMiniMap.h"
+
 
 
 USING_NS_CC;
@@ -23,7 +31,10 @@ const float heightWall = 1;
 const int BITMASK_MAP = 100;
 const int BITMASK_LAYER_UI = 101;
 
+
 #define SPEED 65
+
+
 
 
 class GamePlayScene :public cocos2d::Scene
@@ -41,9 +52,11 @@ public:
 	bool OnTouchBegan(Touch *touch, Event *unused_event);
 	void OnTouchMove(Touch *touch, Event *unused_event);
 	void OnTouchEnd(Touch *touch, Event *unused_event);
+
 	bool onContactBegin(PhysicsContact &contact);
 	bool onContactPreSolve(PhysicsContact& contact,
 		PhysicsContactPreSolve& solve);
+
 
 	void AddMap();
 	void AddCameraUSER1();
@@ -55,16 +68,20 @@ public:
 	void AddSpriteUI();
 	void AddPopupHero();
 	void AddPopupHouse();
-	void AddHeroAndDragon();
+
+//	void AddHeroAndDragon();
+
 
 	void AddEventForPopupTownHall();
 	void AddEventForPopupScoutTown();
 
 	void CreateKnight();
 
+
 	void CreateLayerUI();
 	void CreateChooseKnight();
 	void CreatePopupChooseKnight();
+
 
 	void update(float dt) override;
 
@@ -80,6 +97,7 @@ public:
 	
 	void HandleMinimap();
 
+
 	void createBullet();
 
 	void handleBullet(Vec2);
@@ -90,6 +108,12 @@ public:
 	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
+
+
+
+	void handleJoystick();
+
+	
 
 
 	CREATE_FUNC(GamePlayScene);
@@ -154,16 +178,32 @@ private:
 
 	Dragon * dragon;
 
-	Sprite * bullet;
 
-	MoveTo * moveToBullet;
+	Bullet * bullet;
+
+	
 	
 
 	// Knight
 	std::vector<Knight*> m_knightRed;
+	bool m_checkKnight = false;
+
+
 	std::vector<TownHall *> newHallTown;
 
-	bool m_checkKnight = false;
+	std::vector < Bullet * > m_listBullets;
+
+	std::vector < ScoutTown * > m_listScoutTowns;
+
+	float count_bullet =0;
+
+	float count_attack = 0.0;
+	bool shoot = false;
+	Point postScountTower;
+	float countBlood, countRebirth =0.0;
+
+	dotMiniMap * dotHero;
+
 
 };
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef __JOYSTICK_SKINNED_H__
 #define __JOYSTICK_SKINNED_H__
 

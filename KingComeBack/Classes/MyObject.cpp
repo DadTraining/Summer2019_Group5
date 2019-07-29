@@ -13,3 +13,6 @@ Sprite * MyObject::getSprite()
 {
 	return m_sprite;
 }
+
+
+

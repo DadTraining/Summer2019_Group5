@@ -3,7 +3,17 @@
 ScoutTown::ScoutTown(Layer* scene, int id)
 {
 	this->Init(id);
+
+	
 	scene->addChild(m_sprite);
+
+	//bullet = new Bullet(scene);
+
+	for (int i = 0; i < 2; i++)
+	{
+		Bullet *m_bullet1 = new Bullet(scene);
+		this->m_listBullets.push_back(m_bullet1);
+	}
 
 }
 
@@ -25,6 +35,7 @@ void ScoutTown::Init(int id)
 	m_sprite->setPhysicsBody(physicBody);
 
 	this->LoadingBuild();
+
 }
 
 void ScoutTown::Died()
@@ -66,4 +77,36 @@ void ScoutTown::Update(float dt)
 			loadingBar = nullptr;
 		}
 	}
+
+
+	
+	
 }
+
+void ScoutTown::Shoot(Knight * monster)
+{
+	for (auto b : m_listBullets) {
+		if (b->getSprite()->isVisible()!=true)
+		{
+			b->getSprite()->setVisible(true);
+			b->getSprite()->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height / 2);
+			b->Move(monster);
+			break;
+		}
+	}
+	
+}
+
+void ScoutTown::Update(float dt, Knight * h)
+{
+	
+	
+	
+		Shoot(h);
+	
+	
+}
+
+
+
+

@@ -576,7 +576,6 @@ void GamePlayScene::update(float dt)
 		handleJoystick();
 	}
 	
-
 	joystickBase->updatePositions(dt);
 
 	//	spriteFocus->setPosition(gameSprite->getPosition().x , gameSprite->getPosition().y +50);
@@ -598,7 +597,7 @@ void GamePlayScene::update(float dt)
 					) {
 
 					a->Update(count_bullet, b);
-					
+			
 				}
 			}
 			
@@ -629,8 +628,12 @@ void GamePlayScene::update(float dt)
 void GamePlayScene::heroAttack(int STATE_ATTACK) {
 	if (mButtonAttack->getBoundingBox().containsPoint(mCurrentTouch)) {
 		hero->getAttack(STATE_ATTACK);
-		dragon->getBlood()->reduceBlood(-hero->getDamage());
-		dragon->handleBloodBar();
+		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+			dragon->getBlood()->reduceBlood(-hero->getDamage());
+			dragon->handleBloodBar();
+		}
+		
 		mCurrentTouch.x+=100;
 	}
 	if (mButtonSkill_2->getBoundingBox().containsPoint(mCurrentTouch)) {

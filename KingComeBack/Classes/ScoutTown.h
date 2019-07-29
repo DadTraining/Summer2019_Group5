@@ -4,7 +4,7 @@
 #include "Defines.h"
 #include "ui/CocosGUI.h"
 #include "Bullet.h"
-
+#include "Knight.h"
 USING_NS_CC;
 
 class ScoutTown : public Home
@@ -17,8 +17,8 @@ public:
 	void Attack();
 	void LoadingBuild() override;
 	void Update(float dt) override;
-	void Shoot(Hero *);
-	void Update(float dt, Hero* h);
+	void Shoot(Knight *);
+	void Update(float dt, Knight* h);
 
 
 private:

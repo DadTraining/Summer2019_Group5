@@ -30,7 +30,7 @@ bool GamePlayScene::init()
 	sizeWall = Vec2(3.0f, 3.0f);
 
 
-	condinatorMiniMap = Vec2(screenSize.width*1/20, screenSize.height*8/10);
+
 
 	condinatorMiniMap = Vec2(screenSize.width * 1 / 20, screenSize.height * 8 / 10);
 
@@ -108,7 +108,7 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 	log("Hero position %f %f", hero->getPositionHero().x , hero->getPositionHero().y);
 	log("camera %f %f", camera -> getPosition().x + touch->getLocation().x ,  camera->getPosition().y + touch->getLocation().y);
 
-	log("dot %f %f", dot->getPosition().x, dot->getPosition().y);
+//	log("dot %f %f", dot->getPosition().x, dot->getPosition().y);
 
 	log("touch Location: %f, %f", touch->getLocation().x, touch->getLocation().y);
 
@@ -133,7 +133,7 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 		}
 	}
 	if (hero->getState()) {
-		hero->getBlood()->reduceBlood(-100);
+	//	hero->getBlood()->reduceBlood(-100);
 		hero->handleBloodBar();
 	}
 	
@@ -448,6 +448,15 @@ void GamePlayScene::AddEventForPopupTownHall()
 			auto HallTown = new TownHall(_layer2D, 2);
 			HallTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+			//code duoc
+			auto dotHallTown = new dotMiniMap(_layerUI, 1);
+			//code duoc
+			dotHallTown->getSprite()->setPosition((HallTown->getSprite()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) + condinatorMiniMap.x, (HallTown->getSprite()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
+
+			dotHallTown->VisiableDot(true);
+			//
+
+
 			HallTown->getSprite()->setCameraMask(2);
 			newHallTown.push_back(HallTown);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
@@ -481,9 +490,17 @@ void GamePlayScene::AddEventForPopupScoutTown()
 	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyScoutTown->setVisible(false);
 		newScoutTown = new ScoutTown(_layer2D, 2);
+		
 		m_listScoutTowns.push_back(newScoutTown);
 		newScoutTown->getSprite()->setPosition(_touch->getLocation()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+		//code duoc
+		auto dotScoutTown = new dotMiniMap(_layerUI, 2);
+		//code duoc
+		dotScoutTown->getSprite()->setPosition((newScoutTown->getSprite()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) + condinatorMiniMap.x, (newScoutTown->getSprite()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
+
+		dotScoutTown->VisiableDot(true);
+		//
 		newScoutTown->getSprite()->setCameraMask(2);
 		postScountTower = _touch->getLocation() + camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
 		this->getEventDispatcher()->removeEventListener(buildHouseListener);
@@ -568,20 +585,23 @@ void GamePlayScene::update(float dt)
 		heroAttack(hero->getDirect());
 		count_attack = 0.0;
 	}
-	dot->setVisible(true);
+	dotHero->VisiableDot(true);
 //	dot->setPosition(hero->getPositionHero().x-100, hero->getPositionHero().y+200);
 	HandleMinimap();
 	count_bullet += dt;
 	
-	if (count_bullet>0.4 && m_listScoutTowns.size()>0) {
+	if (count_bullet>0.4 && m_listScoutTowns.size()>0 && m_knightRead.size()>0) {
 		for (auto a : m_listScoutTowns) {
-			if (abs(a->getSprite()->getPositionX() - hero->getSprite()->getPositionX())<200 &&
-				abs(a->getSprite()->getPositionY() - hero->getSprite()->getPositionY())<200
-				) {
-				log("a %f %f", a->getSprite()->getPositionX(), a->getSprite()->getPositionY());
-				log("hero %f %f", hero->getSprite()->getPositionX(), hero->getSprite()->getPositionY());
-				a->Update(count_bullet, hero);
+			for (auto b: knight) {
+				if (abs(a->getSprite()->getPositionX() - b->getSprite()->getPositionX())<200 &&
+					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
+					) {
+
+					a->Update(count_bullet, b);
+					
+				}
 			}
+			
 			
 		}
 		
@@ -609,6 +629,8 @@ void GamePlayScene::update(float dt)
 void GamePlayScene::heroAttack(int STATE_ATTACK) {
 	if (mButtonAttack->getBoundingBox().containsPoint(mCurrentTouch)) {
 		hero->getAttack(STATE_ATTACK);
+		dragon->getBlood()->reduceBlood(-hero->getDamage());
+		dragon->handleBloodBar();
 		mCurrentTouch.x+=100;
 	}
 	if (mButtonSkill_2->getBoundingBox().containsPoint(mCurrentTouch)) {
@@ -678,22 +700,14 @@ void GamePlayScene::miniMap()
 	//_layerUI->addChild(minimapSprite,11);
 	_layerUI->addChild(map_1, 11);
 
+	dotHero = new dotMiniMap(_layerUI, 0);
 
-	dot = Sprite::create("dotHero.png");
-	//Sprite*  minimapSprite = Sprite::create("minimap.png");
-	dot->setScale(0.01);
-	//minimapSprite->setScale(0.3);
-	//minimapSprite->setPosition(50*screenSize.width / (2 * 256), 820*screenSize.height  / (2*512));
-	dot->setAnchorPoint(Vec2(0.5, 0.5));
-	dot->setPosition(screenSize.width * 0.05 / 2.0, screenSize.height * 9 / 10);
-	//_layerUI->addChild(minimapSprite,11);
-	_layerUI->addChild(dot, 11);
-	dot->setVisible(false);
+
 }
 
 void GamePlayScene::HandleMinimap()
 {
-	dot->setPosition( (hero->getPositionHero().x/condinatorBigMap.x)*(map_1->getContentSize().height) + condinatorMiniMap.x, ( hero->getPositionHero().y / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
+	dotHero->getSprite()->setPosition( (hero->getPositionHero().x/condinatorBigMap.x)*(map_1->getContentSize().height) + condinatorMiniMap.x, ( hero->getPositionHero().y / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 	
 }
 

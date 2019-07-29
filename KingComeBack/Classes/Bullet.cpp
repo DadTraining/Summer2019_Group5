@@ -66,7 +66,7 @@ void Bullet::Update(float dt)
 	m_sprite->runAction(sq);
 }
 
-void Bullet::Move(Hero * h)
+void Bullet::Move(Knight * h)
 {
 	ccBezierConfig bezier;
 	bezier.controlPoint_1 = Point(m_sprite->getPositionX(), m_sprite->getPositionY() + 100);

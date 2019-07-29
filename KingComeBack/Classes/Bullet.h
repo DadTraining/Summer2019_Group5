@@ -1,6 +1,7 @@
 #pragma once
 #include "MyObject.h"
 #include "Hero.h"
+#include "Knight.h"
 class Bullet : public MyObject{
 public:
 	Bullet(Layer * _layer2D);
@@ -16,7 +17,7 @@ public:
 	void setEndPoint(Vec2 p3);
 	void Update(float dt);
 
-	void Move(Hero * h);
+	void Move(Knight * h);
 
 private:
 	cocos2d::ccBezierConfig bezier;

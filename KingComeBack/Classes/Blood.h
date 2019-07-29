@@ -1,4 +1,5 @@
-
+#pragma once
+#include "cocos2d.h"
 class Blood {
 public:
 	Blood(float);

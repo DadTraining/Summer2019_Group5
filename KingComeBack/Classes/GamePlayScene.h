@@ -16,6 +16,8 @@
 
 #include "Bullet.h"
 
+#include "dotMiniMap.h"
+
 
 USING_NS_CC;
 const float wigthWall = 1;
@@ -167,6 +169,8 @@ private:
 	bool shoot = false;
 	Point postScountTower;
 	float countBlood, countRebirth =0.0;
+
+	dotMiniMap * dotHero;
 
 };
 

@@ -7,6 +7,7 @@ Dragon::Dragon(Layer * _layer2D)
 	screenSize = Director::getInstance()->getVisibleSize();
 	// test sprite
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("dragon.plist", "dragon.png");
+	spriteBlood = Sprite::create("loadingBarHouse.png");
 	
 	// Định nghĩa hằng. 
 	const int numberSprite = 4;
@@ -17,6 +18,10 @@ Dragon::Dragon(Layer * _layer2D)
 	// Thiết lập vị trí của gameSprite tại vị trí (300, 300). Đây cũng chính là vị trí của Animation trên Screen.
 	m_sprite->setScale(1.5);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
+
+	spriteBlood->setAnchorPoint(Vec2(0,0));
+	spriteBlood->setPosition(Vec2(m_sprite ->getPositionX(), m_sprite ->getPositionY()+100));
+	blood = new Blood(1000);
 	//Thêm gameSprite vào Scene.
 	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
 	//bodyA->setContactTestBitmask(true);
@@ -29,6 +34,7 @@ Dragon::Dragon(Layer * _layer2D)
 	m_sprite->setPhysicsBody(bodyA);
 
 	//m_sprite->setCameraMask(2);
+	_layer2D->addChild(spriteBlood, 10);
 	_layer2D->addChild(m_sprite,10);
 
 
@@ -80,6 +86,16 @@ Animation * Dragon::createAnimation(std::string frefixName, int begin, int  end 
 
 	animFrames.clear();
 	return animatonFunc;
+}
+
+Blood* Dragon::getBlood()
+{
+	return blood;
+}
+
+void Dragon::handleBloodBar()
+{
+	spriteBlood->setScaleX(blood->getBlood()/1000);
 }
 
 

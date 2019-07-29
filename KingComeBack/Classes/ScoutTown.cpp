@@ -81,7 +81,7 @@ void ScoutTown::Update(float dt)
 	
 }
 
-void ScoutTown::Shoot(Hero * monster)
+void ScoutTown::Shoot(Knight * monster)
 {
 	for (auto b : m_listBullets) {
 		if (b->getSprite()->isVisible()!=true)
@@ -95,7 +95,7 @@ void ScoutTown::Shoot(Hero * monster)
 	
 }
 
-void ScoutTown::Update(float dt, Hero * h)
+void ScoutTown::Update(float dt, Knight * h)
 {
 	
 	

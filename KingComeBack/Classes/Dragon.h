@@ -3,6 +3,9 @@
 #include "cocos2d.h"
 
 #include "Blood.h"
+
+#define Distance 200
+#define Fire 100
 class Dragon  : public MyObject{
 public:
 	Dragon(Layer * _layer2D);
@@ -12,6 +15,14 @@ public:
 	Animation* createAnimation(std::string frefixName, int pFrame, int delay);
 	Blood * getBlood();
 	void handleBloodBar();
+	
+	void createFire(Layer * _layer2D);
+
+	void dragonMove(int direct);
+
+	void dragonFire(int direct);
+
+	void updatePositionloodBar();
 	
 
 private:
@@ -24,6 +35,6 @@ private:
 	int direct=0;
 
 	Blood * blood;
-	Sprite * spriteBlood;
+	Sprite * spriteBlood, *fire;
 
 };

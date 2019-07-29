@@ -197,7 +197,7 @@ private:
 
 	float count_bullet =0;
 
-	float count_attack = 0.0;
+	float count_attack = 0.0, count_dragon =0.0, count_dragon_fire=0.0 ;
 	bool shoot = false;
 	Point postScountTower;
 	float countBlood, countRebirth =0.0;

@@ -26,8 +26,6 @@ void Bullet::Died()
 
 void Bullet::Shoot(Vec2 p3)
 {
-	
-
 }
 
 void Bullet::stopHide()

@@ -675,11 +675,24 @@ void GamePlayScene::update(float dt)
 
 
 	// code duoc
-
+	count_dragon += dt;
+	count_dragon_fire += dt;
+	if (count_dragon>7) {
+		dragon->dragonMove(hero->getDirect());
+		dragon->createFire(_layerUI);
+		if (count_dragon_fire>14) {
+			dragon->dragonFire(hero->getDirect());
+			count_dragon_fire = 0;
+	}
+		
+		count_dragon = 0;
+	}
 
 	if (hero->getState()) {
 		handleJoystick();
 	}
+
+	dragon->updatePositionloodBar();
 	
 	joystickBase->updatePositions(dt);
 
@@ -737,6 +750,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
 			dragon->getBlood()->reduceBlood(-hero->getDamage());
 			dragon->handleBloodBar();
+			
 		}
 		
 		mCurrentTouch.x+=100;
@@ -904,6 +918,8 @@ void GamePlayScene::handleJoystick()
 
 			hero->moveR(1, SPEED, 0);
 			hero->setDirect(1);
+
+		//	dragon->dragonMove(1);
 		}
 		count[0]++;
 		if (count[0] > 50) {
@@ -921,6 +937,7 @@ void GamePlayScene::handleJoystick()
 		if (count[1] == 0) {
 			hero->moveR(2, SPEED, SPEED);
 			hero->setDirect(2);
+		//	dragon->dragonMove(2);
 		}
 		count[1]++;
 		if (count[1]>50) {
@@ -937,6 +954,7 @@ void GamePlayScene::handleJoystick()
 
 			hero->moveR(3, 0, SPEED);
 			hero->setDirect(3);
+			//dragon->dragonMove(3);
 		}
 		count[2]++;
 		if (count[2]>50) {
@@ -952,6 +970,7 @@ void GamePlayScene::handleJoystick()
 		if (count[3] == 0) {
 			hero->moveR(4, -SPEED, SPEED);
 			hero->setDirect(4);
+			//dragon->dragonMove(4);
 		}
 		count[3]++;
 		if (count[3]>50) {
@@ -968,6 +987,7 @@ void GamePlayScene::handleJoystick()
 		if (count[4] == 0) {
 			hero->moveR(5, -SPEED, 0);
 			hero->setDirect(5);
+		//	dragon->dragonMove(5);
 		}
 		count[4]++;
 		if (count[4]>50) {
@@ -982,6 +1002,7 @@ void GamePlayScene::handleJoystick()
 		if (count[5] == 0) {
 			hero->moveR(6, -SPEED, -SPEED);
 			hero->setDirect(6);
+		//	dragon->dragonMove(6);
 		}
 		count[5]++;
 		if (count[5]>50) {
@@ -999,6 +1020,7 @@ void GamePlayScene::handleJoystick()
 
 			hero->moveR(7, 0, -SPEED);
 			hero->setDirect(7);
+		//	dragon->dragonMove(7);
 		}
 		count[6]++;
 		if (count[6]>50) {

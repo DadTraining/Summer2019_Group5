@@ -102,12 +102,21 @@ void Knight::Init(int id)
 	}
 	m_currentDirect = 0;
 
+	Blood *b = new Blood(m_sprite, 1000);
+	//AddBlood();
+
 	SetColor(id);
 }
 
 void Knight::Update(float dt)
 {
-
+	static float count = 1;
+	if (count >= 1)
+	{
+		Attack();
+		count = 0;
+	}
+	count += dt;
 }
 
 void Knight::Move(Vec2 vec)
@@ -134,12 +143,25 @@ void Knight::Move(Vec2 vec)
 	spaw->setTag(TAG_ACTION_WALK);
 	m_sprite->runAction(spaw);
 
-	
-
 }
 
 void Knight::Died()
 {
+}
+
+void Knight::AddBlood()
+{
+	auto blood_bg = Sprite::create("Sprites/Loading/loading.png");
+	blood_bg->setPositionY(m_sprite->getContentSize().height + 10);
+	blood_bg->setPositionX(m_sprite->getContentSize().width / 2);
+	blood_bg->setScale(0.3);
+
+	auto blood = Sprite::create("Sprites/Loading/progress.png");
+	blood->setPosition(blood_bg->getPosition());
+	blood->setScale(0.3);
+
+	m_sprite->addChild(blood_bg, 100);
+	m_sprite->addChild(blood, 101);
 }
 
 void Knight::InitRed()
@@ -154,9 +176,11 @@ void Knight::InitRed()
 	body->setRotationEnable(false);
 	body->setCollisionBitmask(53);
 	body->setContactTestBitmask(53);
-	body->getFirstShape()->setRestitution(10);
+	body->setRotationEnable(false);
+
+	/*body->getFirstShape()->setRestitution(10);
 	body->getShape(0)->setFriction(1);
-	body->getShape(0)->setMass(100);
+	body->getShape(0)->setMass(100);*/
 
 	//body->setDynamic(false);	
 	m_sprite->setPhysicsBody(body);
@@ -171,6 +195,8 @@ void Knight::MoveRed(Vec2 vec)
 	}
 	else if (!m_sprite->getActionByTag(TAG_ACTION_WALK))
 	{
+		m_sprite->getPhysicsBody()->setDynamic(true);
+		//StopActionWalk();
 		SetCurrentDirect(vec);
 
 		char actionName[MAX_LENGHT] = { 0 };
@@ -185,6 +211,7 @@ void Knight::MoveRed(Vec2 vec)
 		auto spaw = Spawn::create(moveTo, action, nullptr);
 		spaw->setTag(TAG_ACTION_WALK);
 		m_sprite->runAction(spaw);
+		//m_sprite->getActionManager()->
 	}
 	
 }
@@ -201,9 +228,10 @@ void Knight::InitBlue()
 	body->setRotationEnable(false);
 	body->setCollisionBitmask(61);
 	body->setContactTestBitmask(61);
-	body->getFirstShape()->setRestitution(1);
+	body->setRotationEnable(false);
+	/*body->getFirstShape()->setRestitution(1);
 	body->getShape(0)->setFriction(1);
-	body->getShape(0)->setMass(100);
+	body->getShape(0)->setMass(100);*/
 
 	//body->setDynamic(true);
 	m_sprite->setPhysicsBody(body);	
@@ -213,18 +241,22 @@ void Knight::InitBlue()
 
 void Knight::Attack()
 {
-
+	m_sprite->getPhysicsBody()->setDynamic(false);
 	if (m_sprite->getActionByTag(TAG_ACTION_WALK))
 	{
+		//Action * ac1 = m_sprite->getActionByTag(TAG_ACTION_WALK);
 		m_sprite->stopActionByTag(TAG_ACTION_WALK);
 
+		//Action * ac = m_sprite->getActionByTag(TAG_ACTION_ATTACK);
 		if (!m_sprite->getActionByTag(TAG_ACTION_ATTACK))
 		{
 			char actionName[MAX_LENGHT] = { 0 };
 			sprintf(actionName, "knight_attack_%d000", m_currentDirect);
-			auto spaw = Spawn::create(ActionKnight(actionName), nullptr);
-			spaw->setTag(TAG_ACTION_ATTACK);
-			m_sprite->runAction(RepeatForever::create(spaw));
+			auto action = ActionKnight(actionName);
+			//auto action = RepeatForever::create(ActionKnight(actionName));
+			action->setTag(TAG_ACTION_ATTACK);
+
+			m_sprite->runAction(action);
 		}		
 	}
 	
@@ -240,6 +272,16 @@ void Knight::SetDynamic(bool dynamic)
 	m_sprite->getPhysicsBody()->setDynamic(dynamic);
 }
 
+void Knight::StopActionWalk()
+{
+	m_sprite->stopActionByTag(TAG_ACTION_WALK);
+}
+
+void Knight::StopActonAttack()
+{
+	m_sprite->stopActionByTag(TAG_ACTION_ATTACK);
+}
+
 void Knight::SetPositionKnight(Vec2 vec)
 {
 	m_sprite->setPosition(vec);
@@ -248,6 +290,11 @@ void Knight::SetPositionKnight(Vec2 vec)
 Point Knight::GetPositionKnight()
 {
 	return m_sprite->getPosition();
+}
+
+Size Knight::GetConTentSize()
+{
+	return m_sprite->getContentSize();
 }
 
 void Knight::SetSelected(bool isSelected)

@@ -4,6 +4,7 @@
 
 
 
+
 Blood::Blood(Sprite * m_sprite, float m_input)
 {
 	this->m_blood = m_input;
@@ -11,6 +12,7 @@ Blood::Blood(Sprite * m_sprite, float m_input)
 	spriteBlood->setAnchorPoint(Vec2(0,0));
 	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height);
 	m_sprite->addChild(spriteBlood,12);
+
 }
 
 Blood::Blood(float m_input, float m)

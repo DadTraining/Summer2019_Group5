@@ -2,6 +2,7 @@
 
 #include "cocos2d.h"
 #include "Person.h"
+#include "Blood.h"
 
 USING_NS_CC;
 
@@ -28,13 +29,17 @@ public:
 	void Update(float dt) override;
 	void Move(Vec2 vec) override;
 	void Died() override;
+	void AddBlood();
 
 	void Attack() override;
 	void StopAllAction();
 	void SetDynamic(bool dynamic);
+	void StopActionWalk();
+	void StopActonAttack();
 
 	void SetPositionKnight(Vec2 vec);
 	Point GetPositionKnight();
+	Size GetConTentSize();
 	void SetCurrentDirect(Vec2 vec);
 	int GetCurrentDirect();
 	void SetLastDirect(int vec);

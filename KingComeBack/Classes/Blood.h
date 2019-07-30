@@ -23,5 +23,7 @@ private:
 	float m_mana ;
 	float m_green ;
 	Sprite * spriteBlood;
+
 	bool state;
+
 };

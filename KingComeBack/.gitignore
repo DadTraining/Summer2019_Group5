@@ -222,6 +222,12 @@ proj.win32/Debug.*/
 
 proj.win32/Release.*/
 
+proj.win32/KingComeBack.VC.db
+
+proj.win32/ipch/
+
+proj.win32/KingComeBack.VC.VC.opendb
+
 
 
 # others

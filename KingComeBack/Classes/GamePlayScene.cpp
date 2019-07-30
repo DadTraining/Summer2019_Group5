@@ -192,44 +192,6 @@ bool GamePlayScene::onContactBegin(PhysicsContact & contact)
 	auto spriteA = contact.getShapeA()->getBody();
 	auto spriteB = contact.getShapeB()->getBody();
 
-
-	if (spriteA->getCollisionBitmask() == 61 && spriteB->getCollisionBitmask() == 53
-		|| spriteA->getCollisionBitmask() == 53 && spriteB->getCollisionBitmask() == 61)
-	{
-		m_checkKnight = true;
-		if (spriteA->getCollisionBitmask() == 61)
-		{
-			int num = spriteA->getGroup();
-			//knight.at(spriteA->getGroup())->getSprite()->getPhysicsBody()->setDynamic(false);
-			knight.at(spriteA->getGroup())->Attack();
-			m_checkKnight = false;
-		}
-		else if (spriteA->getCollisionBitmask() == 53)
-		{
-			int num = spriteA->getGroup();
-			//knight.at(spriteA->getGroup())->getSprite()->getPhysicsBody()->setDynamic(false);
-			m_knightRed.at(spriteA->getGroup())->Attack();
-			m_checkKnight = false;
-		}
-		else if (spriteB->getCollisionBitmask() == 61)
-		{
-			//knight.at(spriteA->getGroup())->SetDynamic(false);
-			knight.at(spriteB->getGroup())->Attack();
-			m_checkKnight = false;
-		}
-		else if (spriteB->getCollisionBitmask() == 53)
-		{
-			//knight.at(spriteA->getGroup())->SetDynamic(false);
-			m_knightRed.at(spriteB->getGroup())->Attack();
-			m_checkKnight = false;
-		}
-	}
-
-	// camera with map
-
-	/*auto body = (spriteA->getCategoryBitmask() == 0x04 || spriteA->getCategoryBitmask() == 0x08) ? spriteA : spriteB;
-	CC_ASSERT(body->getCategoryBitmask() == 0x04 || body->getCategoryBitmask() == 0x08);*/
-
 	return true;
 }
 
@@ -665,10 +627,7 @@ void GamePlayScene::update(float dt)
 
 
 	// Check Knight
-	if (!m_checkKnight)
-	{
-		this->MoveAttack(m_knightRed, knight);
-	}
+	this->MoveAttack(m_knightRed, knight);
 	
 
 

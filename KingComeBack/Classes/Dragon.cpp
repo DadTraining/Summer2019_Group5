@@ -15,7 +15,11 @@ Dragon::Dragon(Layer * _layer2D)
 	m_sprite->setScale(1.5);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 
-	blood = new Blood(m_sprite,1000);
+
+	spriteBlood->setAnchorPoint(Vec2(0,0));
+	spriteBlood->setPosition(Vec2(m_sprite ->getPositionX(), m_sprite ->getPositionY()+100));
+	blood = new Blood(m_sprite, 1000);
+
 
 	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
 	

@@ -33,9 +33,6 @@ Hero::Hero(Layer * _layer2D)
 	_layer2D->addChild(m_sprite,10);
 
 	state = true;
-
-	
-
 }
 
 Hero::~Hero()
@@ -44,7 +41,7 @@ Hero::~Hero()
 
 void Hero::Init(int d)
 {
-	blood = new Blood(1000.0, 1000.0);
+	blood = new Blood(1000.0,1000.0);
 	damage = new Damage(20, 50, 100);		
 }
 

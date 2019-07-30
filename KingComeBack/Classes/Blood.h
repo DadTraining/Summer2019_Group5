@@ -14,16 +14,17 @@ public:
 	void setGreen(float);
 	float getGreen();
 	void reduceBlood( float );
-	bool stateSprite();
+	bool isDie();
 	void handleBar();
 
 private:
-	float m_input;
+	float m_bloodMax;
 	float m_blood ;
 	float m_mana ;
 	float m_green ;
 	Sprite * spriteBlood;
 
 	bool state;
+	bool isDragon = false;
 
 };

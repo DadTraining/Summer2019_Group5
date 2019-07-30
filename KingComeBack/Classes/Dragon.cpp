@@ -8,17 +8,15 @@ Dragon::Dragon(Layer * _layer2D)
 	// test sprite
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("dragon.plist", "dragon.png");
 
-	
-
 	m_sprite = Sprite::createWithSpriteFrameName("_dragon_000.png");
 
 	m_sprite->setScale(1.5);
-	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
+	//m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 
 
 //	spriteBlood->setAnchorPoint(Vec2(0,0));
 //	spriteBlood->setPosition(Vec2(m_sprite ->getPositionX(), m_sprite ->getPositionY()+100));
-	blood = new Blood(m_sprite, 1000);
+	
 
 
 	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
@@ -31,11 +29,14 @@ Dragon::Dragon(Layer * _layer2D)
 	bodyA->setDynamic(true);
 	m_sprite->setPhysicsBody(bodyA);
 
-	m_sprite->setCameraMask(2);
+	//m_sprite->setCameraMask(2);
 
 	//_layer2D->addChild(spriteBlood, 10);
+//	m_sprite->setPosition(Vec2(screenSize.width/2, screenSize.height/2));
 	_layer2D->addChild(m_sprite,10);
+	blood = new Blood(m_sprite, 1000);
 
+	damage = new Damage(100);
 
 	Animate* animate = Animate::create(createAnimation("_dragon_00", 0,120));
 
@@ -98,7 +99,7 @@ void Dragon::createFire(Layer * _layer2D)
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("fire.plist", "fire.png");
 	fire = Sprite::createWithSpriteFrameName("red00.png");
 	fire->setPosition(m_sprite->getPosition());
-//	fire->setCameraMask(2);
+	fire->setCameraMask(2);
 	fire->setVisible(false);
 	_layer2D->addChild(fire);
 }
@@ -147,7 +148,6 @@ void Dragon::dragonMove(int direct)
 		break;
 	}
 	
-
 	animate->retain();
 	m_sprite->stopAllActions();
 	m_sprite->runAction(Repeat::create(animate,1));
@@ -196,6 +196,11 @@ void Dragon::dragonFire(int direct)
 void Dragon::updatePositionloodBar()
 {
 //	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + 100);
+}
+
+Damage * Dragon::getDamage()
+{
+	return damage;
 }
 
 

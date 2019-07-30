@@ -21,7 +21,6 @@ public:
 	void Attack();
 	void LoadingBuild() override;
 	void Update(float dt) override;
-
 	void Shoot(Knight *);
 	void Update(float dt, Knight* h);
 
@@ -37,7 +36,6 @@ private:
 	GLubyte scoutTownOpacity;
 	Blood *blood;
 	std::vector < Bullet * > m_listBullets;
-
 
 	Damage *d;
 

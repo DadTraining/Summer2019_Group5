@@ -3,7 +3,7 @@
 ScoutTown::ScoutTown(Layer* scene, int id)
 {
 	this->Init(id);
-	blood = new Blood(m_sprite, 500);
+	blood = new Blood(m_sprite, 400);
 	d = new Damage(10);
 	scene->addChild(m_sprite);
 

@@ -668,11 +668,17 @@ void GamePlayScene::update(float dt)
 					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
 					) {
 					a->Update(count_bullet, b);
+
 					b->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
 					if (b->getBlood()->isDie()) {
 						b->getSprite()->setVisible(false);
+						b->getSprite()->setPosition(0,2000);
 					}
-					//a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
+					a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
+					if (a->getBlood()->isDie()) {
+						a->getSprite()->setVisible(false);
+						a->getSprite()->setPosition(2000,0);
+					}
 				}
 			}
 			
@@ -746,6 +752,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 	
 	if (dragon->getBlood()->isDie()==true) {
 		dragon->getSprite()->setVisible(false);
+		dragon->getSprite()->setPosition(Vec2(2000,0));
 	}
 }
 
@@ -1032,6 +1039,7 @@ void GamePlayScene::handleJoystick()
 
 void GamePlayScene::handleDragonVsHero()
 {
+	if (dragon->getBlood()->isDie() == true) { return; }
 	switch (hero->getDirect())
 	{
 	case 0:

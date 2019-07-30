@@ -2,9 +2,13 @@
 #include "Blood.h"
 
 
-Blood::Blood(float b)
+Blood::Blood(Sprite * m_sprite, float b)
 {
 	this->m_blood = b;
+	spriteBlood = Sprite::create("loadingBarHouse.png");
+	spriteBlood->setAnchorPoint(Vec2(0,0));
+	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height);
+	m_sprite->addChild(spriteBlood);
 }
 
 Blood::Blood(float b, float m)

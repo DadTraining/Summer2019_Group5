@@ -4,22 +4,54 @@ Item::Item()
 {
 }
 
-Item::Item(Layer * layer, int ID)
+Item::Item(int ID)
 {
 	this->Init(ID); 
-	if (ID == HP)
+	
+	//layer->addChild(m_button,5);
+	//m_button->setCameraMask(4);
+}
+
+Item::~Item()
+{
+
+}
+
+void Item::Init(int ID)
+{
+
+	screenSize = Director::getInstance()->getVisibleSize();
+
+	if (ID == ID_HP)
 	{
 		m_button = ui::Button::create("potionRed.png", "");
 	}
-	else if (ID == MP)
+	else if (ID == ID_MP)
 	{
 		m_button = ui::Button::create("potionBlue.png", "");
 	}
-	else if (ID == WEAPON)
+	else if (ID == ID_WEAPON)
 	{
-		m_button = ui::Button::create("sword.png", "sword_press");
+		m_button = ui::Button::create("sword.png", "");
+		m_dame = 100;
+	}
+	else if (ID == ID_HELMET)
+	{
+		m_button = ui::Button::create("helmet.png", "");
+		m_hp = 200;
+		m_mp = 100;
+	}
+	else if (ID == ID_ARMOR)
+	{
+		m_button = ui::Button::create("armor.png", "");
+		m_armor = 10;
+	}
+	if (ID == ID_ARMOR || ID == ID_WEAPON || ID == ID_HELMET)
+	{
+		m_itemAttribute = rand() % 3 + 1;
 	}
 	m_state = ID_STATE_HOME;
+
 	m_button->addTouchEventListener([=](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -32,53 +64,29 @@ Item::Item(Layer * layer, int ID)
 			break;
 		}
 	});
-	layer->addChild(m_button,5);
-	//m_button->setCameraMask(4);
-}
-
-Item::~Item()
-{
-
-}
-
-void Item::Init(int ID)
-{
-	screenSize = Director::getInstance()->getVisibleSize();
-	switch (ID)
-	{
-	case 0:
-		m_itemAttribute = ID_ITEM_STRENGTH;
-		m_dame = 100;
-		break;
-	case 1:
-		m_itemAttribute = ID_ITEM_AGILITY;
-		m_dame = 98;
-		break;
-	case 2:
-		m_itemAttribute = ID_ITEM_INTELIGENT;
-		m_dame = 120;
-		break;
-	default:
-		break;
-	}
 }
 
 void Item::Died()
 {
 
 }
-int Item::SetState(int state)
+int Item::GetState()
 {
-	m_state = state;
 	return m_state;
 }
-
-void Item::SetPosition(Ref *ref)
+void Item::SetState(int state)
 {
-	if (m_state == ID_STATE_EQUIPMENT)
-	{
-		this->m_sprite->setPosition(screenSize.width / 1.8, screenSize.height / 2);
-	}
+	m_state = state;
+}
+
+Vec2 Item::getPrePosition()
+{
+	return prePosition;
+}
+
+void Item::setPrePosition(Vec2 _pos)
+{
+	prePosition = _pos;
 }
 
 ui::Button * Item::getButton()
@@ -93,8 +101,7 @@ void Item::retain()
 
 void Item::ItemIsClick(int id_equip)
 {
-	auto prePosition = m_button->getPosition();
-	if (id_equip == WEAPON)
+	if (id_equip == ID_WEAPON)
 	{
 		if (m_state == ID_STATE_HOME)
 		{
@@ -103,7 +110,34 @@ void Item::ItemIsClick(int id_equip)
 		}
 		else if (m_state == ID_STATE_EQUIPMENT)
 		{
-
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	if (id_equip == ID_HELMET)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.7, screenSize.height / 1.5));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	if (id_equip == ID_ARMOR)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.7, screenSize.height / 1.81));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
 		}
 	}
 }

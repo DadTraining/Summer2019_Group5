@@ -37,9 +37,11 @@ bool GamePlayScene::init()
 	condinatorMiniMap = Vec2(screenSize.width * 1 / 20, screenSize.height * 8 / 10);
 	pause = DelayTime::create(20);
 	
-
 	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, true);
 	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
+	
+	// create item
+	this->CreateItem();
 
 	//Create Layer for map and camera
 	this->createLayer2D();
@@ -63,12 +65,11 @@ bool GamePlayScene::init()
 	this->CreateLayerUI();
 
 	//Add Knight Red
-	AddKnightRed();
+	this->AddKnightRed();
 
 	//code duoc
 	createButtonAttack();
 	createButton_Skill_1();
-
 	createButton_Skill_2();
 
 	miniMap();
@@ -338,11 +339,12 @@ void GamePlayScene::AddHudGoldMessage()
 
 void GamePlayScene::AddButtonPopUpHero()
 {
+
 	auto button = ui::Button::create("backpack.png", "backpack_press.png");
 	button->setTitleText("Hero");
 	button->setScale(m_scaleX * 0.3, m_scaleY * 0.3);
 	button->setPosition(Vec2(screenSize.width / 1.65, screenSize.height / 9.5));
-	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type){
+	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
@@ -354,6 +356,7 @@ void GamePlayScene::AddButtonPopUpHero()
 			break;
 		}
 	});
+
 	_layerUI->addChild(button, 10);
 }
 
@@ -445,7 +448,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 			hallTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 			hallTown->getSprite()->setCameraMask(2);
-	
+			//m_sprite->getPhysicsBody()->setGroup(i);
 			containerHallTown.push_back(hallTown);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
 
@@ -510,6 +513,7 @@ void GamePlayScene::AddEventForPopupMainHouse()
 		newMainHouse->getSprite()->setPosition(_touch->getLocation()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 		newMainHouse->getSprite()->setCameraMask(2);
+		
 		this->getEventDispatcher()->removeEventListener(buildHouseListener);
 	};
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
@@ -576,6 +580,29 @@ void GamePlayScene::AddEventForPopupStoreHouse()
 		this->getEventDispatcher()->removeEventListener(buildHouseListener);
 	};
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+}
+
+void GamePlayScene::CreateItem()
+{
+	Item *itemHp = new Item(ID_HP);
+	itemHp->getButton()->retain();
+	menuItem.push_back(itemHp);
+
+	Item *itemMp = new Item(ID_MP);
+	itemMp->getButton()->retain();
+	menuItem.push_back(itemMp);
+
+	Item *itemWepon = new Item(ID_WEAPON);
+	itemWepon->getButton()->retain();
+	menuItem.push_back(itemWepon);
+
+	Item *itemHelmet = new Item(ID_HELMET);
+	itemHelmet->getButton()->retain();
+	menuItem.push_back(itemHelmet);
+
+	Item *itemArmor = new Item(ID_ARMOR);
+	itemArmor->getButton()->retain();
+	menuItem.push_back(itemArmor);
 }
 
 void GamePlayScene::CreateKnight()
@@ -709,13 +736,11 @@ void GamePlayScene::update(float dt)
 				{
 					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [&]() {
 						auto createKnight = new Knight(_layer2D, 2);
-						//knight->getSprite()->setCameraMask(2);
 						createKnight->SetPositionKnight(hallTown->getSprite()->getPosition());
 						knight.push_back(createKnight);
 					});
 					_layer2D->addChild(popup);
 					return true;
-					//CC_CALLBACK_0(GamePlayScene::CreateKnight, this));
 				}
 				return false;
 			};

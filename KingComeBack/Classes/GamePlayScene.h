@@ -50,6 +50,7 @@ public:
 	void AddButtonPopUpHouse();
 	void AddSpriteUI();
 	void AddPopupHero();
+	//void AddListenPopupHero();
 	void AddPopupHouse();
 	void AddHeroAndDragon();
 
@@ -59,6 +60,7 @@ public:
 	void AddEventForPopupDecorateHouse();
 	void AddEventForPopupStoreHouse();
 
+	void CreateItem();
 	void CreateKnight();
 
 	void CreateLayerUI();

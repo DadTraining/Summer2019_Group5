@@ -13,6 +13,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "Item.h"
+#include "Defines.h"
 
 /*
 -Displays a popup
@@ -84,9 +85,9 @@ namespace UICustom {
 	public:
 		static PopupHero* createAsMessage(const std::string &title, const std::string &msg);
 		static PopupHero* createAsConfirmDialogue(Layer *layer, const std::string &title, const std::string &msg, 
-			std::vector<Item *> menuItem, const std::function<void()> &YesFunc);
+			std::vector<Item *> &menuItem, const std::function<void()> &YesFunc);
 		static PopupHero* create(Layer *layer, const std::string &title, const std::string &msg, 
-			cocos2d::Label *lbl, std::vector<Item *> menuItem,const std::function<void()> &YesFunc);
+			cocos2d::Label *lbl, std::vector<Item *> &menuItem,const std::function<void()> &YesFunc);
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};

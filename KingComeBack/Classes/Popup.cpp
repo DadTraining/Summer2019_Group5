@@ -316,12 +316,13 @@ namespace UICustom {
 	{
 		return nullptr;
 	}
-	PopupHero * PopupHero::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, std::vector<Item *> menuItem, const std::function<void()>& YesFunc)
+	PopupHero * PopupHero::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, 
+		std::vector<Item *> &menuItem, const std::function<void()>& YesFunc)
 	{
 		return create(layer, title, msg, NULL, menuItem, YesFunc);
 	}
 	PopupHero * PopupHero::create(Layer *layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, 
-		std::vector<Item *> menuItem,const std::function<void()>& YesFunc)
+		std::vector<Item *> &menuItem,const std::function<void()>& YesFunc)
 	{
 		PopupHero *node = new (std::nothrow)PopupHero();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -340,27 +341,44 @@ namespace UICustom {
 			int id = 0;
 			int ID = 9;
 
-			float posWidth = winSize.width / 2.5;
-			float posHeight = winSize.height / 1.54;
+			float posWidth = winSize.width / 2.55;
+			float posHeight = winSize.height / 1.50;
 
 			if (YesFunc) {
-				Item *itemHp = new Item(node, 7);
-				menuItem.push_back(itemHp);
-				Item *itemMp = new Item(node, 8);
-				menuItem.push_back(itemMp);
 
+				// remove when out of popup
 				for (int i = 0; i < menuItem.size(); i++)
 				{
-					menuItem.at(i)->getButton()->setPosition(Vec2(posWidth, posHeight));
-					posWidth += 35;
-
-					if (i % 4 == 0 && i > 0)
+					if (menuItem.at(i)->checkAddchild == true)
 					{
-						posWidth = winSize.width / 2.5;
-						posHeight -= 35;
+						menuItem.at(i)->getButton()->removeFromParent();
+						menuItem.at(i)->checkAddchild = false;
+					}
+					if (menuItem.at(i)->checkAddchild == false)
+					{
+						node->addChild(menuItem.at(i)->getButton(), 2);
+						menuItem.at(i)->checkAddchild = true;
 					}
 				}
 
+				for (int i = 0; i < menuItem.size(); i++)
+				{
+					if (menuItem.at(i)->GetState() == ID_STATE_HOME)
+					{
+						menuItem.at(i)->getButton()->setPosition(Vec2(posWidth, posHeight));
+						posWidth += menuItem.at(i)->getButton()->getContentSize().width;
+						menuItem.at(i)->setPrePosition(menuItem.at(i)->getButton()->getPosition());
+						if ((i + 1)% 4 == 0 && i > 0)
+						{
+							posWidth = winSize.width / 2.55;
+							posHeight -= menuItem.at(i)->getButton()->getContentSize().height;
+						}
+					}
+
+				}
+
+				Button *equip = ui::Button::create();
+				equip->setTitleText("Equiped");
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}

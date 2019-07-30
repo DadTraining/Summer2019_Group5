@@ -3,7 +3,7 @@
 MainHouse::MainHouse(Layer* scene, int id)
 {
 	this->Init(id);
-	scene->addChild(m_sprite);
+	scene->addChild(m_button, 10);
 
 }
 
@@ -14,16 +14,18 @@ MainHouse::~MainHouse()
 
 void MainHouse::Init(int id)
 {
-	m_sprite = Sprite::create("ScoutTown2D.png");
-	mainHouseOpacity = m_sprite->getOpacity();
-	m_sprite->setOpacity(30);
-	auto physicBody = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	m_button = ui::Button::create("HouseMain.png", "");
+	mainHouseOpacity = m_button->getOpacity();
+	m_button->setOpacity(30);
+	
+	MyBodyParser::getInstance()->parseJsonFile("PhysicsBodyMainHouse.json");
+	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_button, "MainHouseBody", PhysicsMaterial(0, 0, 0));
+
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
-	physicBody->setCollisionBitmask(25);
-	m_sprite->setPhysicsBody(physicBody);
-
+	physicBody->setCollisionBitmask(125);
+	m_button->setPhysicsBody(physicBody);
 	this->LoadingBuild();
 }
 
@@ -41,13 +43,13 @@ void MainHouse::LoadingBuild()
 {
 	loadingBar = Sprite::create("loadingBarHouse.png");
 	loadingBar->setAnchorPoint(Vec2(0, 0.5));
-	loadingBar->setPosition(m_sprite->getPosition().x / 2, m_sprite->getPosition().y / 2);
+	loadingBar->setPosition(m_button->getPosition().x / 2 + m_button->getContentSize().width / 4, m_button->getPosition().y / 2);
 	loadingBar->setScaleX(0);
-	m_sprite->addChild(loadingBar, 1);
+	m_button->addChild(loadingBar, 1);
 	loadingBarBg = Sprite::create("loadingBarBgHouse.png");
 	loadingBarBg->setAnchorPoint(Vec2(0, 0.5));
-	loadingBarBg->setPosition(m_sprite->getPosition() / 2);
-	m_sprite->addChild(loadingBarBg, 0);
+	loadingBarBg->setPosition(m_button->getPosition().x / 2 + m_button->getContentSize().width / 4, m_button->getPosition().y / 2);
+	m_button->addChild(loadingBarBg, 0);
 }
 
 void MainHouse::Update(float dt)
@@ -59,10 +61,10 @@ void MainHouse::Update(float dt)
 		loadingBar->setScaleX(percent);
 		if (percent >= 1.0f)
 		{
-			m_sprite->setOpacity(mainHouseOpacity);
+			m_button->setOpacity(mainHouseOpacity);
 			loadingBar->removeFromParentAndCleanup(true);
 			loadingBarBg->removeFromParentAndCleanup(true);
-			m_sprite->getPhysicsBody()->setDynamic(false);
+			m_button->getPhysicsBody()->setDynamic(false);
 			loadingBar = nullptr;
 		}
 	}

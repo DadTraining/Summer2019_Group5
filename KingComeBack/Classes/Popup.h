@@ -5,6 +5,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "Item.h"
+#include "Defines.h"
 
 /*
 -Displays a popup
@@ -50,12 +51,22 @@ namespace UICustom {
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};
 
+	// class popup building house
 	class PopupHouse : public PopupDelegates
 	{
 	public:
 		static PopupHouse* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupHouse* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
-		static PopupHouse* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc, const std::function<void()> &YesFunc1);
+
+		static PopupHouse* createAsConfirmDialogue(const std::string &title, const std::string &msg, 
+			const std::function<void()> &townHall, const std::function<void()> &scoutTown, 
+			const std::function<void()> &mainHouse, const std::function<void()> &storeHouse, 
+			const std::function<void()> &DecorateHouse, const std::function<void()> &YesFunc5, 
+			const std::function<void()> &YesFunc6);
+		static PopupHouse* create(const std::string &title, const std::string &msg,
+			cocos2d::Label *lbl, const std::function<void()> &townHall,
+			const std::function<void()> &scoutTown, const std::function<void()> &mainHouse
+			, const std::function<void()> &storeHouse, const std::function<void()> &DecorateHouse,
+			const std::function<void()> &YesFunc5, const std::function<void()> &YesFunc6);
 
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
@@ -66,9 +77,10 @@ namespace UICustom {
 	{
 	public:
 		static PopupHero* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupHero* createAsConfirmDialogue(Layer *layer, const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
-		static PopupHero* create(Layer *layer, const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
-
+		static PopupHero* createAsConfirmDialogue(Layer *layer, const std::string &title, const std::string &msg, 
+			std::vector<Item *> &menuItem, const std::function<void()> &YesFunc);
+		static PopupHero* create(Layer *layer, const std::string &title, const std::string &msg, 
+			cocos2d::Label *lbl, std::vector<Item *> &menuItem,const std::function<void()> &YesFunc);
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};
@@ -89,9 +101,14 @@ namespace UICustom {
 	{
 	public:
 		static PopupChooseKnight* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupChooseKnight* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()> &YesFunc);
-		static PopupChooseKnight* create(const std::string &title, const std::string &msg, cocos2d::Label *lbl, const std::function<void()> &YesFunc);
-
+		static PopupChooseKnight* createAsConfirmDialogue(const std::string &title, const std::string &msg, const std::function<void()>& add, 
+			const std::function<void()>& sub,
+			const std::function<void()>& knight);
+		
+		static PopupChooseKnight* create(const std::string &title, const std::string &msg, cocos2d::Label *intSum,
+			cocos2d::Label *labelSum, cocos2d::Label *labelChoose, cocos2d::Label *intChoose,
+			const std::function<void()>& add, const std::function<void()>& sub,
+			const std::function<void()>& knight);
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};

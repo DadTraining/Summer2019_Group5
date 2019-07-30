@@ -156,7 +156,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Dragon.cpp" />
     <ClCompile Include="..\Classes\GamePlayScene.cpp" />
     <ClCompile Include="..\Classes\GameSetting.cpp" />
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\Hero.cpp" />
     <ClCompile Include="..\Classes\Home.cpp" />
     <ClCompile Include="..\Classes\HouseDecorate.cpp" />
@@ -168,6 +167,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\MainHouse.cpp" />
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\MenuScene.cpp" />
+    <ClCompile Include="..\Classes\MyBodyParser.cpp" />
     <ClCompile Include="..\Classes\MyObject.cpp" />
     <ClCompile Include="..\Classes\Person.cpp" />
     <ClCompile Include="..\Classes\Popup.cpp" />
@@ -177,13 +177,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\ScoutTown.cpp" />
     <ClCompile Include="..\Classes\SettingScene.cpp" />
     <ClCompile Include="..\Classes\Skill.cpp" />
-    <ClCompile Include="..\Classes\SneakyButton.cpp" />
-    <ClCompile Include="..\Classes\SneakyButtonSkinnedBase.cpp" />
     <ClCompile Include="..\Classes\SneakyJoystick.cpp" />
     <ClCompile Include="..\Classes\SneakyJoystickSkinnedBase.cpp" />
     <ClCompile Include="..\Classes\StoreHouse.cpp" />
     <ClCompile Include="..\Classes\TownHall.cpp" />
-    <ClCompile Include="..\Classes\VisibleRect.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -196,7 +193,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Dragon.h" />
     <ClInclude Include="..\Classes\GamePlayScene.h" />
     <ClInclude Include="..\Classes\GameSetting.h" />
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Hero.h" />
     <ClInclude Include="..\Classes\Home.h" />
     <ClInclude Include="..\Classes\HouseDecorate.h" />
@@ -208,6 +204,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\MainHouse.h" />
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\MenuScene.h" />
+    <ClInclude Include="..\Classes\MyBodyParser.h" />
     <ClInclude Include="..\Classes\MyObject.h" />
     <ClInclude Include="..\Classes\Person.h" />
     <ClInclude Include="..\Classes\Popup.h" />
@@ -217,13 +214,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\ScoutTown.h" />
     <ClInclude Include="..\Classes\SettingScene.h" />
     <ClInclude Include="..\Classes\Skill.h" />
-    <ClInclude Include="..\Classes\SneakyButton.h" />
-    <ClInclude Include="..\Classes\SneakyButtonSkinnedBase.h" />
     <ClInclude Include="..\Classes\SneakyJoystick.h" />
     <ClInclude Include="..\Classes\SneakyJoystickSkinnedBase.h" />
     <ClInclude Include="..\Classes\StoreHouse.h" />
     <ClInclude Include="..\Classes\TownHall.h" />
-    <ClInclude Include="..\Classes\VisibleRect.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

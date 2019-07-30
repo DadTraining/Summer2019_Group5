@@ -1,5 +1,5 @@
 #include"GamePlayScene.h"
-
+#include<string.h>
 GamePlayScene::GamePlayScene()
 {
 }
@@ -25,7 +25,12 @@ bool GamePlayScene::init()
 		return false;
 	}
 	newScoutTown = nullptr;
+	newDecorateHouse = nullptr;
+	newStoreHouse = nullptr;
+	newMainHouse = nullptr;
 	//newHallTown = nullptr;
+
+
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
 
@@ -37,9 +42,11 @@ bool GamePlayScene::init()
 
 	pause = DelayTime::create(20);
 	
-
 	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, true);
 	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
+	
+	// create item
+	this->CreateItem();
 
 	//Create Layer for map and camera
 	this->createLayer2D();
@@ -75,12 +82,11 @@ bool GamePlayScene::init()
 	hero->createBloodSprite(_layerUI);
 
 	//Add Knight Red
-	AddKnightRed();
+	this->AddKnightRed();
 
 	//code duoc
 	createButtonAttack();
 	createButton_Skill_1();
-
 	createButton_Skill_2();
 
 	miniMap();
@@ -122,7 +128,7 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 		+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
 	for (auto k : knight)
 	{
-		if (k != nullptr)
+		if (k != nullptr && k->GetSelected() == true)
 		{
 			k->Move(touchCurrenPositon);
 		}
@@ -192,6 +198,7 @@ bool GamePlayScene::onContactPreSolve(PhysicsContact & contact, PhysicsContactPr
 	///solve.setRestitution(0);
 
 	return true;
+
 }
 
 void GamePlayScene::AddMap()
@@ -199,26 +206,33 @@ void GamePlayScene::AddMap()
 	map = TMXTiledMap::create("map.tmx");
 	map->setAnchorPoint(Vec2(0, 0));
 	map->setPosition(this->getPosition());
-	//map->setScale(m_scale);
 	_layer2D->addChild(map);
 
 	//get contensize big map
 	condinatorBigMap = Vec2(map->getContentSize().height, map->getContentSize().width);
 	
-
-
 	// Map top
 	mapTop = TMXTiledMap::create("mapTop.tmx");
 	mapTop->setAnchorPoint(Vec2(0, 0));
 	mapTop->setPositionY(map->getContentSize().height);
-	//mapTop->setScale(m_scale);
 	_layer2D->addChild(mapTop);
 
+	//Map right
+	mapRight = TMXTiledMap::create("mapLeft.tmx");
+	mapRight->setAnchorPoint(Vec2(0, 0));
+	mapRight->setPositionX(map->getContentSize().width);
+	_layer2D->addChild(mapRight);
+
+	//Map right top
+	mapTopRight = TMXTiledMap::create("mapRightTop.tmx");
+	mapTopRight->setAnchorPoint(Vec2(0, 0));
+	mapTopRight->setPosition(map->getContentSize().width, map->getContentSize().height);
+	_layer2D->addChild(mapTopRight);
+
 	auto sizeMapHeight = Size(10, map->getContentSize().height + mapTop->getContentSize().height);
-	auto sizeMapUp = Size(map->getContentSize().width, 10);
+	auto sizeMapUp = Size(map->getContentSize().width * 2, 10);
+	
 	// add physic for map left
-
-
 	auto nodeLeft = Node::create();
 	auto physicLeft = PhysicsBody::createBox(sizeMapHeight,
 		PHYSICSBODY_MATERIAL_DEFAULT);
@@ -228,7 +242,7 @@ void GamePlayScene::AddMap()
 	physicLeft->setCollisionBitmask(63);
 
 	nodeLeft->setPhysicsBody(physicLeft);
-	nodeLeft->setPosition(map->getPositionX() - 10, sizeMapHeight.height / 2);
+	nodeLeft->setPosition(map->getPositionX() + 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeLeft);
 
 
@@ -243,7 +257,7 @@ void GamePlayScene::AddMap()
 	physicUp->setCollisionBitmask(63);
 
 	nodeUP->setPhysicsBody(physicUp);
-	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height + 5);
+	nodeUP->setPosition(map->getContentSize().width /2 , sizeMapHeight.height - 5);
 	_layer2D->addChild(nodeUP);
 
 	// add physic for map right
@@ -257,7 +271,7 @@ void GamePlayScene::AddMap()
 	physicRight->setCollisionBitmask(63);
 
 	nodeRight->setPhysicsBody(physicRight);
-	nodeRight->setPosition(map->getContentSize().width + 10, sizeMapHeight.height / 2);
+	nodeRight->setPosition(map->getContentSize().width * 2 - 10, sizeMapHeight.height / 2);
 	_layer2D->addChild(nodeRight);
 
 	// add physic for map down
@@ -271,7 +285,7 @@ void GamePlayScene::AddMap()
 	physicDown->setCollisionBitmask(63);
 
 	nodeDown->setPhysicsBody(physicDown);
-	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y - 5);
+	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y + 5);
 	_layer2D->addChild(nodeDown);
 }
 
@@ -336,7 +350,8 @@ void GamePlayScene::AddJoystick()
 
 	joystickBack = Sprite::create("res/joystick-back.png");
 	joystick = Sprite::create("res/stick.png");
-
+	joystickBack->setOpacity(100);
+	joystick->setOpacity(120);
 	joystickBase->setBackgroundSprite(joystickBack);
 	joystickBase->setThumbSprite(joystick);
 
@@ -353,13 +368,22 @@ void GamePlayScene::AddJoystick()
 	_layerUI->addChild(joystickBase, 10);
 }
 
+void GamePlayScene::AddHudGoldMessage()
+{
+	auto PosHudGold = Vec2(screenSize.width / 2, screenSize.height/ 2);
+	//HudGold *hudGold = HudGold::createLayer("gold", PosHudGold, Color3B::WHITE, Size(10, 10), Vec2(0.5, 0.5));
+	//_layerUI->addChild(hudGold,20);
+	//hudGold->setCameraMask(8);
+}
+
 void GamePlayScene::AddButtonPopUpHero()
 {
+
 	auto button = ui::Button::create("backpack.png", "backpack_press.png");
 	button->setTitleText("Hero");
 	button->setScale(m_scaleX * 0.3, m_scaleY * 0.3);
 	button->setPosition(Vec2(screenSize.width / 1.65, screenSize.height / 9.5));
-	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type){
+	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
@@ -371,13 +395,14 @@ void GamePlayScene::AddButtonPopUpHero()
 			break;
 		}
 	});
+
 	_layerUI->addChild(button, 10);
 }
 
 void GamePlayScene::AddButtonPopUpHouse()
 {
 	auto button = ui::Button::create("ButtonShop.png", "ButtonShop_press.png");
-	button->setTitleText("House");
+	//button->setTitleText("House");
 	button->setScale(m_scaleX * 0.3, m_scaleX * 0.3);
 	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9.5));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
@@ -385,7 +410,6 @@ void GamePlayScene::AddButtonPopUpHouse()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			this->AddPopupHouse();
-
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -413,7 +437,7 @@ void GamePlayScene::AddSpriteUI()
 
 void GamePlayScene::AddPopupHero()
 {
-	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"hero", "",[=]() {
+	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"hero", "", menuItem, [=]() {
 
 	});
 	_layerUI->addChild(popUpHero, 10);
@@ -422,8 +446,12 @@ void GamePlayScene::AddPopupHero()
 void GamePlayScene::AddPopupHouse()
 {
 	auto popupHouse = UICustom::PopupHouse::createAsConfirmDialogue("House", "",
+		CC_CALLBACK_0(GamePlayScene::AddEventForPopupMainHouse, this),
 		CC_CALLBACK_0(GamePlayScene::AddEventForPopupTownHall, this),
-		CC_CALLBACK_0(GamePlayScene::AddEventForPopupScoutTown, this)
+		CC_CALLBACK_0(GamePlayScene::AddEventForPopupStoreHouse, this),
+		CC_CALLBACK_0(GamePlayScene::AddEventForPopupScoutTown, this),
+		CC_CALLBACK_0(GamePlayScene::AddEventForPopupDecorateHouse, this),
+		NULL, NULL
 		);
 	_layerUI->addChild(popupHouse, 10);
 }
@@ -458,22 +486,55 @@ void GamePlayScene::AddEventForPopupTownHall()
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHallTown->setVisible(false);
 
-			auto HallTown = new TownHall(_layer2D, 2);
-			HallTown->getSprite()->setPosition(_touch->getLocation()
+			static auto hallTown = new TownHall(_layer2D, 2);
+			hallTown->GetButton()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-
+				
 			//code duoc
 			auto dotHallTown = new dotMiniMap(_layerUI, 1);
 			//code duoc
-			dotHallTown->getSprite()->setPosition((HallTown->getSprite()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) + condinatorMiniMap.x, (HallTown->getSprite()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
+			dotHallTown->getSprite()->setPosition((hallTown->GetButton()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) +
+			condinatorMiniMap.x, (hallTown->GetButton()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 
 			dotHallTown->VisiableDot(true);
 			//
 
-			HallTown->getSprite()->setCameraMask(2);
-			newHallTown.push_back(HallTown);
+			hallTown->GetButton()->setCameraMask(2);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
 
+			hallTown->GetButton()->setCameraMask(2);
+
+			m_position_house.push_back(hallTown->GetButton()->getPosition());
+			//hallTown->GetButton()->setTag(m_position_house.size() - 1);
+			//hallTown->GetButton()->_ID = m_position_house.size() - 1;
+			hallTown->GetButton()->setTag(m_position_house.size() - 1);
+			//hallTown->GetButton()->getPhysicsBody()->setGroup(m_position_house.size() - 1);
+	
+			hallTown->GetButton()->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
+				switch (type)
+				{
+					case cocos2d::ui::Widget::TouchEventType::BEGAN:
+					{
+						
+						auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [&]() {
+						auto createKnight = new Knight(_layer2D, TEAM_BLUE);
+						//auto btn = ((ui::Button*)sender);
+						//Vec2 vec = m_position_house.at();
+						createKnight->SetPositionKnight(hallTown->GetButton()->getPosition() + createKnight->GetConTentSize());
+						knight.push_back(createKnight);
+					});
+					_layer2D->addChild(popup);
+					}
+						break;
+					case cocos2d::ui::Widget::TouchEventType::ENDED:
+						break;
+					default:
+						break;
+				}
+
+				});
+			this->getEventDispatcher()->removeEventListener(buildHouseListener);
+			containerHallTown.push_back(hallTown);
 		};
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 }
@@ -522,13 +583,130 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 }
 
+void GamePlayScene::AddEventForPopupMainHouse()
+{
+	//Add house copy
+	auto copyMainHouse = Sprite::create("HouseMain.png");
+	copyMainHouse->setOpacity(50);
+	_layerUI->addChild(copyMainHouse);
+
+	//Add event touch
+	auto buildHouseListener = EventListenerTouchOneByOne::create();
+
+	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+
+		copyMainHouse->setPosition(_touch->getLocation());
+		return true;
+	};
+
+	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+		copyMainHouse->setPosition(_touch->getLocation());
+	};
+
+	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+		copyMainHouse->setVisible(false);
+		newMainHouse = new MainHouse(_layer2D, 2);
+		newMainHouse->GetButton()->setPosition(_touch->getLocation()
+			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+		newMainHouse->GetButton()->setCameraMask(2);
+		this->getEventDispatcher()->removeEventListener(buildHouseListener);
+	};
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+}
+
+void GamePlayScene::AddEventForPopupDecorateHouse()
+{
+	//Add house copy
+	auto copyHouseDecorate = Sprite::create("HouseDecorate.png");
+	copyHouseDecorate->setOpacity(50);
+	_layerUI->addChild(copyHouseDecorate);
+
+	//Add event touch
+	auto buildHouseListener = EventListenerTouchOneByOne::create();
+
+	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+
+		copyHouseDecorate->setPosition(_touch->getLocation());
+		return true;
+	};
+
+	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+		copyHouseDecorate->setPosition(_touch->getLocation());
+	};
+
+	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+		copyHouseDecorate->setVisible(false);
+		newDecorateHouse = new HouseDecorate(_layer2D, 2);
+		newDecorateHouse->getSprite()->setPosition(_touch->getLocation()
+			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+		newDecorateHouse->getSprite()->setCameraMask(2);
+		this->getEventDispatcher()->removeEventListener(buildHouseListener);
+	};
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+}
+
+void GamePlayScene::AddEventForPopupStoreHouse()
+{
+
+	//Add house copy
+	auto copyStoreHouse = Sprite::create("StoreHouse.png");
+	copyStoreHouse->setOpacity(50);
+	_layerUI->addChild(copyStoreHouse);
+
+	//Add event touch
+	auto buildHouseListener = EventListenerTouchOneByOne::create();
+
+	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+
+		copyStoreHouse->setPosition(_touch->getLocation());
+		return true;
+	};
+
+	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+		copyStoreHouse->setPosition(_touch->getLocation());
+	};
+
+	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+		copyStoreHouse->setVisible(false);
+		newStoreHouse = new StoreHouse(_layer2D, 2);
+		newStoreHouse->getSprite()->setPosition(_touch->getLocation()
+			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+		newStoreHouse->getSprite()->setCameraMask(2);
+		this->getEventDispatcher()->removeEventListener(buildHouseListener);
+	};
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+}
+
+void GamePlayScene::CreateItem()
+{
+	Item *itemHp = new Item(ID_HP);
+	itemHp->getButton()->retain();
+	menuItem.push_back(itemHp);
+
+	Item *itemMp = new Item(ID_MP);
+	itemMp->getButton()->retain();
+	menuItem.push_back(itemMp);
+
+	Item *itemWepon = new Item(ID_WEAPON);
+	itemWepon->getButton()->retain();
+	menuItem.push_back(itemWepon);
+
+	Item *itemHelmet = new Item(ID_HELMET);
+	itemHelmet->getButton()->retain();
+	menuItem.push_back(itemHelmet);
+
+	Item *itemArmor = new Item(ID_ARMOR);
+	itemArmor->getButton()->retain();
+	menuItem.push_back(itemArmor);
+}
+
 void GamePlayScene::CreateKnight()
 {
 
 	auto createKnight = new Knight(_layer2D, TEAM_BLUE);
 	//knight->getSprite()->setCameraMask(2);
 
-	createKnight->SetPositionKnight(newHallTown.at(0)->getSprite()->getPosition());
+	createKnight->SetPositionKnight(containerHallTown.at(0)->getSprite()->getPosition());
 	createKnight->SetSelected(false);
 	//createKnight->SetColor(BLUE);
 	createKnight->getSprite()->getPhysicsBody()->setGroup(knight.size());
@@ -545,27 +723,26 @@ void GamePlayScene::CreateLayerUI()
 	this->addChild(_layerUI, 10);
 	_layerUI->setCameraMask((unsigned short)CameraFlag::USER2);
 
-
-	//Add featurefo UI;
+	//Add feature for UI;
 	this->AddSpriteUI();
 	this->CreateChooseKnight();
-	//Add joystick
 	this->AddJoystick();
 	this->AddButtonPopUpHero();
 	this->AddButtonPopUpHouse();
-
+	this->AddHudGoldMessage();
 }
 
 void GamePlayScene::CreateChooseKnight()
 {
 	auto button = ui::Button::create("itemKnight.png", "itemKnight.png");
 	button->setScale(0.5);
-	button->setPosition(Vec2(screenSize.width * 0.95, screenSize.height * 0.9));
+	button->setPosition(Vec2(screenSize.width * 0.935, screenSize.height * 0.85));
 	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			this->CreatePopupChooseKnight();
+
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -578,43 +755,87 @@ void GamePlayScene::CreateChooseKnight()
 
 void GamePlayScene::CreatePopupChooseKnight()
 {
-	auto popupChooseKnight = UICustom::PopupChooseKnight::createAsConfirmDialogue("Choose knight", "", [=]() {});
+	labelChooseKnight = Label::create();
+	labelChooseKnight->setString(stringChooseKnight);
+	labelSumKnight = Label::create();
+	labelSumKnight->setString(std::to_string(knight.size()));
+
+	auto labelSum = Label::createWithTTF("Sum: ", "fonts/arial.ttf", 13);
+	auto labelChoose = Label::createWithTTF("Choose: ", "fonts/arial.ttf", 30);
+	auto popupChooseKnight = UICustom::PopupChooseKnight::create("Choose knight", "", labelSumKnight, labelSum
+		,labelChoose ,labelChooseKnight,
+		CC_CALLBACK_0(GamePlayScene::AddToChooseKnight, this),
+		CC_CALLBACK_0(GamePlayScene::SubToChooseKnight, this),
+		CC_CALLBACK_0(GamePlayScene::ChooseKnight, this)
+	);
 	_layerUI->addChild(popupChooseKnight);
 
 }
 
+void GamePlayScene::AddToChooseKnight()
+{
+	int chooseKnight = std::stoi(stringChooseKnight) + 1;
+	if (chooseKnight <= knight.size())
+	{
+		stringChooseKnight = std::to_string(chooseKnight);
+		labelChooseKnight->setString(stringChooseKnight);
+		for (int i = 0; i < chooseKnight; i++)
+		{
+			knight.at(i)->SetSelected(true);
+		}
+	}
+
+}
+
+void GamePlayScene::SubToChooseKnight()
+{
+	int chooseKnight = std::stoi(stringChooseKnight) - 1;
+	if (chooseKnight >= 0)
+	{
+		stringChooseKnight = std::to_string(chooseKnight);
+		labelChooseKnight->setString(stringChooseKnight);
+		for (int i = chooseKnight; i < knight.size(); i++)
+		{
+			knight.at(i)->SetSelected(false);
+		}
+	}
+}
+void GamePlayScene::ChooseKnight()
+{
+}
+
 void GamePlayScene::update(float dt)
 {
+
 	if (newScoutTown != nullptr)
 	{
 		newScoutTown->Update(dt);
 
 	}
-	for (auto hallTown : newHallTown)
+	if (newMainHouse != nullptr)
 	{
-		if (hallTown != nullptr)
-		{
-			hallTown->Update(dt);
-		}
-		if (hallTown != nullptr && hallTown->loadingBar == nullptr && createListenerForTownHall == true)
-		{
-			createListenerForTownHall = false;
-			auto listenerTownHall = EventListenerTouchOneByOne::create();
-			listenerTownHall->onTouchBegan = [=](Touch *touch, Event *_event)
-			{
-				if (hallTown->getSprite()->getBoundingBox().containsPoint(touch->getLocation()
-					+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2))
-				{
-					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "",
-						CC_CALLBACK_0(GamePlayScene::CreateKnight, this));
-					_layer2D->addChild(popup);
-					return true;
-				}
-				return false;
-			};
-			this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTownHall, this);
-		}
+		newMainHouse->Update(dt);
 	}
+	if (newDecorateHouse != nullptr)
+	{
+		newDecorateHouse->Update(dt);
+	}
+	if (newStoreHouse != nullptr)
+	{
+		newStoreHouse->Update(dt);
+	}
+	if (containerHallTown.size() > 0)
+	{
+		for (int i = 0; i < containerHallTown.size(); i++)
+		{
+			if (containerHallTown.at(i) != nullptr)
+			{
+				containerHallTown.at(i)->Update(dt);
+			}
+		}
+	}	
+
+
 
 
 
@@ -646,9 +867,11 @@ void GamePlayScene::update(float dt)
 		handleJoystick();
 	}
 
+
 	//dragon->updatePositionloodBar();
 	
 	joystickBase->updatePositions(dt);
+
 
 	//	spriteFocus->setPosition(gameSprite->getPosition().x , gameSprite->getPosition().y +50);
 	count_attack += dt;
@@ -681,7 +904,6 @@ void GamePlayScene::update(float dt)
 					}
 				}
 			}
-			
 			
 		}
 		

@@ -1,26 +1,37 @@
 #pragma once
 #include "ResourceManager.h"
 #include "MyObject.h"
-#define ID_ITEM_STRENGTH 1
-#define ID_ITEM_AGILITY 2
-#define ID_ITEM_INTELIGENT 3
-#define ID_STATE_HOME 4
-#define ID_STATE_WAREHOUSE 5
-#define ID_STATE_EQUIPMENT 6
+#include "ui\CocosGUI.h"
+#include "Defines.h"
 
 class Item : public MyObject{
 private:
 	Size screenSize;
 	int m_itemAttribute;
+	float m_mp;
+	float m_hp;
 	float m_dame;
+	float m_armor;
+	float m_speedAttack;
 	int m_state;
-	MenuItemImage *menuItemImage;
+	ui::Button *m_button;
+	Vec2 prePosition;
 public:
-	Item(Layer* layer, int ID);
+	Item();
+	Item(int ID);
 	~Item();
 	void Init(int ID);
 	void Died();
-	int SetState(int state);
-	void SetPosition(Ref *ref);
-	MenuItemImage *getMenuItemImage();
+
+	int GetState();
+	void SetState(int state);
+	Vec2 getPrePosition();
+	void setPrePosition(Vec2 _pos);
+
+	ui::Button *getButton();
+
+	void retain();
+	void ItemIsClick(int id_equip);
+
+	bool checkAddchild = false;
 };

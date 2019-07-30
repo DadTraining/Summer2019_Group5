@@ -9,44 +9,53 @@ TownHall ::~TownHall()
 TownHall::TownHall(Layer* _layer, int id)
 {
 	this->Init(id);
-	blood = new Blood(m_sprite, 1000);
-	_layer->addChild(m_sprite, 10);
+
+	//blood = new Blood(m_sprite, 1000);
+	_layer->addChild(m_button, 10);
 }
 
 void TownHall::Init(int id)
 {
-	//this->m_sprite = ResourceManager::GetInstance()->GetSpriteById(id);
+	//this->m_button = ResourceManager::GetInstance()->GetSpriteById(id);
 
-	m_sprite = Sprite::create("HallTown.png");
-	hallTownOpacity = m_sprite->getOpacity();
-	m_sprite->setOpacity(30);
+	m_button = ui::Button::create("HallTown.png", "");
+	hallTownOpacity = m_button->getOpacity();
+	m_button->setOpacity(30);
 
-	auto physicBody = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	MyBodyParser::getInstance()->parseJsonFile("HouseDecorate.json");
+	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_button, "HouseDecorateBody", PhysicsMaterial(0, 0, 0));
+
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
-	physicBody->setCollisionBitmask(25);
+	physicBody->setCollisionBitmask(125);
 
-	m_sprite->setPhysicsBody(physicBody);
+	auto blood = Sprite::create("loadingBarHouse.png");
+	float x = m_button->getPosition().x + m_button->getContentSize().width / 4;
+	float y = m_button->getPosition().y + m_button->getContentSize().height;
+	blood->setPosition(Vec2(x, y));
+	m_button->addChild(blood);
+
+	m_button->setPhysicsBody(physicBody);
 	this->LoadingBuild();
 }
 
 void TownHall::Died()
 {
-	m_sprite->removeFromParentAndCleanup(true);
+	m_button->removeFromParentAndCleanup(true);
 }
 
 void TownHall::LoadingBuild()
 {
 	loadingBar = Sprite::create("loadingBarHouse.png");
 	loadingBar->setAnchorPoint(Vec2(0, 0.5));
-	loadingBar->setPosition(m_sprite->getPosition().x * 2, m_sprite->getPosition().y / 2);
+	loadingBar->setPosition(m_button->getPosition().x * 2 + m_button->getContentSize().width / 4, m_button->getPosition().y / 2);
 	loadingBar->setScaleX(0);
-	m_sprite->addChild(loadingBar, 1);
+	m_button->addChild(loadingBar, 1);
 	loadingBarBg = Sprite::create("loadingBarBgHouse.png");
 	loadingBarBg->setAnchorPoint(Vec2(0, 0.5));
-	loadingBarBg->setPosition(m_sprite->getPosition().x * 2 , m_sprite->getPosition().y / 2);
-	m_sprite->addChild(loadingBarBg, 0);
+	loadingBarBg->setPosition(m_button->getPosition().x * 2 + m_button->getContentSize().width / 4, m_button->getPosition().y / 2);
+	m_button->addChild(loadingBarBg, 0);
 }
 
 void TownHall::Update(float dt)
@@ -58,8 +67,8 @@ void TownHall::Update(float dt)
 		loadingBar->setScaleX(percent);
 		if (percent >= 1.0f)
 		{
-			m_sprite->setOpacity(hallTownOpacity);
-			m_sprite->getPhysicsBody()->setDynamic(false);
+			m_button->setOpacity(hallTownOpacity);
+			m_button->getPhysicsBody()->setDynamic(false);
 
 			loadingBar->removeFromParentAndCleanup(true);
 			loadingBarBg->removeFromParentAndCleanup(true);
@@ -75,7 +84,7 @@ void TownHall::CreateKnight()
 
 bool TownHall::OnTouchBegin(Touch * touch, Event * unused_event)
 {
-	if (m_sprite->getBoundingBox().containsPoint(touch->getLocation()))
+	if (m_button->getBoundingBox().containsPoint(touch->getLocation()))
 	{
 		auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [=]()
 		{

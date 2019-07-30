@@ -1,21 +1,18 @@
 #pragma once
 #include"cocos2d.h"
-#include"SneakyButton.h"
-#include"SneakyButtonSkinnedBase.h"
 #include"SneakyJoystickSkinnedBase.h"
 #include"ui/CocosGUI.h"
-#include"VisibleRect.h"
 #include"Popup.h"
 #include"TownHall.h"
 #include"ScoutTown.h"
+#include"MainHouse.h"
+#include"HouseDecorate.h"
+#include"StoreHouse.h"
 #include "Hero.h"
-
 #include "Defines.h"
-
-
 #include "Dragon.h"
-
 #include "Knight.h"
+#include"HudGold.h"
 
 
 #include "Bullet.h"
@@ -63,10 +60,12 @@ public:
 	void AddCameraUSER2();
 	void AddListener();
 	void AddJoystick();
+	void AddHudGoldMessage();
 	void AddButtonPopUpHero();
 	void AddButtonPopUpHouse();
 	void AddSpriteUI();
 	void AddPopupHero();
+	//void AddListenPopupHero();
 	void AddPopupHouse();
 
 //	void AddHeroAndDragon();
@@ -74,14 +73,20 @@ public:
 
 	void AddEventForPopupTownHall();
 	void AddEventForPopupScoutTown();
+	void AddEventForPopupMainHouse();
+	void AddEventForPopupDecorateHouse();
+	void AddEventForPopupStoreHouse();
 
+	void CreateItem();
 	void CreateKnight();
 
 
 	void CreateLayerUI();
 	void CreateChooseKnight();
 	void CreatePopupChooseKnight();
-
+	void AddToChooseKnight();
+	void SubToChooseKnight();
+	void ChooseKnight();
 
 	void update(float dt) override;
 
@@ -117,7 +122,7 @@ public:
 	CREATE_FUNC(GamePlayScene);
 private:
 	Size screenSize;
-	TMXTiledMap *map, *mapTop;
+	TMXTiledMap *map, *mapTop, *mapRight, *mapTopRight;
 	Size sizeWall;
 	float m_scaleX;
 	float m_scaleY;
@@ -141,21 +146,28 @@ private:
 	static const int indexCamera = 4;
 	static const int indexJoystick = 3;
 	static const int indexLayerUI = 2;
+	std::string stringChooseKnight = "0";
+	Label *labelChooseKnight;
+	Label *labelSumKnight;
 
 	Vec2 positionWeapons;
 
 	Size mapContentSize;
 	Point touchCurrenPositon;
 
+	// house
 	ScoutTown *newScoutTown;
-  
+	MainHouse *newMainHouse;
+	HouseDecorate *newDecorateHouse;
+	StoreHouse *newStoreHouse;
+	std::vector<Vec2> m_position_house;
+
 	cocos2d::Animation * animaton;
 
-	std::vector<Knight *> knight;
 
 	Sprite* gameSprite;
 	Sprite * gameSpriteAttack;
-	CCCallFunc * callBackAttack;
+	//CCCallFunc * callBackAttack;
 	Vec2 tempTouch;
 	bool stateTouchHero = false;
 	
@@ -187,7 +199,6 @@ private:
 	bool m_checkKnight = false;
 
 
-	std::vector<TownHall *> newHallTown;
 
 	std::vector < Bullet * > m_listBullets;
 
@@ -202,6 +213,8 @@ private:
 
 	dotMiniMap * dotHero;
 
-
+	std::vector<TownHall *> containerHallTown;
+	std::vector<Knight *> knight;
+	std::vector<Item *> menuItem;
 };
 

@@ -1,7 +1,5 @@
 ﻿#include "Hero.h"
 
-
-
 Hero::Hero(Layer * _layer2D)
 {
 	screenSize = Director::getInstance()->getVisibleSize();
@@ -13,8 +11,9 @@ Hero::Hero(Layer * _layer2D)
 
 	
 	m_sprite = Sprite::createWithSpriteFrameName("walk_00000.png");
-	
-	m_sprite->setScale(0.5);
+
+	// Thiết lập vị trí của gameSprite tại vị trí (300, 300). Đây cũng chính là vị trí của Animation trên Screen.
+	m_sprite->setScale(0.8);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 	
 	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);

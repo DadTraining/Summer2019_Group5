@@ -36,9 +36,6 @@
     <ClCompile Include="..\Classes\GameSetting.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Hero.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -96,12 +93,6 @@
     <ClCompile Include="..\Classes\SettingScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\SneakyButton.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SneakyButtonSkinnedBase.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\SneakyJoystick.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -114,13 +105,13 @@
     <ClCompile Include="..\Classes\TownHall.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\VisibleRect.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Damage.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Skill.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MyBodyParser.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -150,9 +141,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameSetting.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Hero.h">
@@ -212,12 +200,6 @@
     <ClInclude Include="..\Classes\SettingScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\SneakyButton.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SneakyButtonSkinnedBase.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\SneakyJoystick.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -230,13 +212,13 @@
     <ClInclude Include="..\Classes\TownHall.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\VisibleRect.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Damage.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Skill.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MyBodyParser.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

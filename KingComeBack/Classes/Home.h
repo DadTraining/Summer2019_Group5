@@ -1,6 +1,8 @@
 #pragma once
 #include "cocos2d.h"
 #include "Human.h"
+#include"MyBodyParser.h"
+#include"ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -13,7 +15,9 @@ public:
 	virtual void Died() = 0;
 	virtual void LoadingBuild() = 0;
 	virtual void Update(float dt) = 0;
-private:
-
+	void SetButton(ui::Button *_button);
+	ui::Button *GetButton();
+protected :
+	ui::Button *m_button;
 };
 

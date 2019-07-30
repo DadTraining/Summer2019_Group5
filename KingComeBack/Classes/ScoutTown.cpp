@@ -20,20 +20,22 @@ ScoutTown::ScoutTown(Layer* scene, int id)
 ScoutTown::~ScoutTown()
 {
 	delete this;
-}  
+}
 
 void ScoutTown::Init(int id)
 {
 	m_sprite = Sprite::create("ScoutTown2D.png");
 	scoutTownOpacity = m_sprite->getOpacity();
 	m_sprite->setOpacity(30);
-	auto physicBody = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+
+	MyBodyParser::getInstance()->parseJsonFile("ScoutTown.json");
+	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "ScoutTownBody", PhysicsMaterial(0, 0, 0));
+
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
-	physicBody->setCollisionBitmask(25);
+	physicBody->setCollisionBitmask(125);
 	m_sprite->setPhysicsBody(physicBody);
-
 	this->LoadingBuild();
 
 }
@@ -57,7 +59,7 @@ void ScoutTown::LoadingBuild()
 	m_sprite->addChild(loadingBar, 1);
 	loadingBarBg = Sprite::create("loadingBarBgHouse.png");
 	loadingBarBg->setAnchorPoint(Vec2(0, 0.5));
-	loadingBarBg->setPosition(m_sprite->getPosition() / 2);
+	loadingBarBg->setPosition(m_sprite->getPosition().x / 2, m_sprite->getPosition().y / 2);
 	m_sprite->addChild(loadingBarBg, 0);
 }
 

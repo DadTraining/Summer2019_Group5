@@ -1,88 +1,143 @@
 #include "Item.h"
 
-Item::Item(Layer * layer, int ID)
+Item::Item()
+{
+}
+
+Item::Item(int ID)
 {
 	this->Init(ID); 
-
-	menuItemImage = MenuItemImage::create("axe.png", "axe.png", [&](Ref *ref) {
-
-		//menuItemImage->setPosition(- screenSize.width / 2, 90);
-		//menuItemImage->setCameraMask(4);
-		menuItemImage->setVisible(false);
-		auto itemEquip = MenuItemImage::create("axe.png", "axe.png", [&](Ref *ref) {
-			menuItemImage->setVisible(true);
-
-			//itemEquip->setVisible(false);
-		});
-		auto menu = Menu::create(itemEquip, NULL);
-		menu->setPosition(screenSize / 2);
-		auto node = Node::create();
-		node->addChild(menu);
-		layer->addChild(node);
-		//log("MenuItemImage Position: %f, %f", menuItemImage->getPosition().x, menuItemImage->getPositionY());
-	});
-	m_state = ID_STATE_WAREHOUSE;
-
-	//layer->addChild(menuItemImage);
-	//auto listenerItem = EventListenerTouchOneByOne::create();
-	//listenerItem->onTouchBegan = [=](Touch *_touch, Event *_event) {
-	//	if (this->getSprite()->getBoundingBox().containsPoint(_touch->getLocation()))
-	//	{
-	//		this->SetPosition();
-	//		return true;
-	//	}
-	//	return false;
-	//};
-	//scene->getEventDispatcher.
+	
+	//layer->addChild(m_button,5);
+	//m_button->setCameraMask(4);
 }
 
 Item::~Item()
 {
+
 }
 
 void Item::Init(int ID)
 {
+
 	screenSize = Director::getInstance()->getVisibleSize();
 
-	switch (ID)
+	if (ID == ID_HP)
 	{
-	case 0:
-		m_itemAttribute = ID_ITEM_STRENGTH;
-		m_dame = 100;
-		break;
-	case 1:
-		m_itemAttribute = ID_ITEM_AGILITY;
-		m_dame = 98;
-		break;
-	case 2:
-		m_itemAttribute = ID_ITEM_INTELIGENT;
-		m_dame = 120;
-		break;
-	default:
-		break;
+		m_button = ui::Button::create("potionRed.png", "");
 	}
+	else if (ID == ID_MP)
+	{
+		m_button = ui::Button::create("potionBlue.png", "");
+	}
+	else if (ID == ID_WEAPON)
+	{
+		m_button = ui::Button::create("sword.png", "");
+		m_dame = 100;
+	}
+	else if (ID == ID_HELMET)
+	{
+		m_button = ui::Button::create("helmet.png", "");
+		m_hp = 200;
+		m_mp = 100;
+	}
+	else if (ID == ID_ARMOR)
+	{
+		m_button = ui::Button::create("armor.png", "");
+		m_armor = 10;
+	}
+	if (ID == ID_ARMOR || ID == ID_WEAPON || ID == ID_HELMET)
+	{
+		m_itemAttribute = rand() % 3 + 1;
+	}
+	m_state = ID_STATE_HOME;
 
+	m_button->addTouchEventListener([=](Ref *sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			this->ItemIsClick(ID);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
+	});
 }
 
 void Item::Died()
 {
-}
 
-int Item::SetState(int state)
+}
+int Item::GetState()
 {
-	m_state = state;
 	return m_state;
 }
-
-void Item::SetPosition(Ref *ref)
+void Item::SetState(int state)
 {
-	if (m_state == ID_STATE_EQUIPMENT)
-	{
-		this->m_sprite->setPosition(screenSize.width / 1.8, screenSize.height / 2);
-	}
+	m_state = state;
 }
 
-MenuItemImage * Item::getMenuItemImage()
+Vec2 Item::getPrePosition()
 {
-	return menuItemImage;
+	return prePosition;
+}
+
+void Item::setPrePosition(Vec2 _pos)
+{
+	prePosition = _pos;
+}
+
+ui::Button * Item::getButton()
+{
+	return m_button;
+}
+
+void Item::retain()
+{
+	delete this;
+}
+
+void Item::ItemIsClick(int id_equip)
+{
+	if (id_equip == ID_WEAPON)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.85, screenSize.height / 1.81));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	if (id_equip == ID_HELMET)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.7, screenSize.height / 1.5));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	if (id_equip == ID_ARMOR)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.7, screenSize.height / 1.81));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
 }

@@ -24,6 +24,7 @@ public:
 
 	Sprite *loadingBar;
 
+	bool isSelected = false;
 
 private:
 	int id_home;

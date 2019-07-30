@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "Home.h"
 #include "Popup.h"
+#include "Blood.h"
 
 USING_NS_CC;
 
@@ -28,4 +29,6 @@ private:
 	int id_home;
 	Sprite *loadingBarBg;
 	GLubyte hallTownOpacity;
+
+	Blood * blood;
 };

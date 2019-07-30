@@ -680,7 +680,7 @@ void GamePlayScene::update(float dt)
 	if (count_dragon>7) {
 		dragon->dragonMove(hero->getDirect());
 		dragon->createFire(_layerUI);
-		if (count_dragon_fire>14) {
+		if (count_dragon_fire>7) {
 			dragon->dragonFire(hero->getDirect());
 			count_dragon_fire = 0;
 	}

@@ -1,7 +1,8 @@
 #pragma once
 #include "Person.h"
 #include "cocos2d.h"
-
+#include "Damage.h"
+#include "Skill.h"
 #include "Blood.h"
 #define DISTANCE_SKILL_1 100
 
@@ -73,7 +74,7 @@ private:
 
 	bool state = false;
 
-	float damage = 100;
+	Damage * damage;
 
 	
 };

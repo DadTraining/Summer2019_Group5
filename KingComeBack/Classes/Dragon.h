@@ -1,7 +1,6 @@
 #pragma once
 #include "Person.h"
 #include "cocos2d.h"
-
 #include "Blood.h"
 
 #define Distance 200

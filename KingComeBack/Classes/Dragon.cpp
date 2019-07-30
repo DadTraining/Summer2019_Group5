@@ -8,16 +8,14 @@ Dragon::Dragon(Layer * _layer2D)
 	// test sprite
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("dragon.plist", "dragon.png");
 
-	spriteBlood = Sprite::create("loadingBarHouse.png");
+	
 
 	m_sprite = Sprite::createWithSpriteFrameName("_dragon_000.png");
 
 	m_sprite->setScale(1.5);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 
-	spriteBlood->setAnchorPoint(Vec2(0,0));
-	spriteBlood->setPosition(Vec2(m_sprite ->getPositionX(), m_sprite ->getPositionY()+100));
-	blood = new Blood(1000);
+	blood = new Blood(m_sprite,1000);
 
 	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
 	
@@ -25,13 +23,13 @@ Dragon::Dragon(Layer * _layer2D)
 
 	bodyA->setCategoryBitmask(16);
 	bodyA->setCollisionBitmask(5);
-
+	bodyA->setRotationEnable(false);
 	bodyA->setDynamic(true);
 	m_sprite->setPhysicsBody(bodyA);
 
-	//m_sprite->setCameraMask(2);
+	m_sprite->setCameraMask(2);
 
-	_layer2D->addChild(spriteBlood, 10);
+	//_layer2D->addChild(spriteBlood, 10);
 	_layer2D->addChild(m_sprite,10);
 
 
@@ -67,9 +65,6 @@ Animation * Dragon::createAnimation(std::string frefixName, int begin, int  end 
 		char buffer[20] = { 0 };
 		
 			sprintf(buffer, "%d.png", index);
-		
-
-				
 
 		std::string str = frefixName + buffer;
 
@@ -91,7 +86,7 @@ Blood* Dragon::getBlood()
 
 void Dragon::handleBloodBar()
 {
-	spriteBlood->setScaleX(blood->getBlood()/1000);
+	//spriteBlood->setScaleX(blood->getBlood()/1000);
 }
 
 void Dragon::createFire(Layer * _layer2D)
@@ -99,6 +94,7 @@ void Dragon::createFire(Layer * _layer2D)
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("fire.plist", "fire.png");
 	fire = Sprite::createWithSpriteFrameName("red00.png");
 	fire->setPosition(m_sprite->getPosition());
+	fire->setCameraMask(2);
 	fire->setVisible(false);
 	_layer2D->addChild(fire);
 }
@@ -195,7 +191,7 @@ void Dragon::dragonFire(int direct)
 
 void Dragon::updatePositionloodBar()
 {
-	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + 100);
+//	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + 100);
 }
 
 

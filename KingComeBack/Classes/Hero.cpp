@@ -45,13 +45,8 @@ Hero::~Hero()
 
 void Hero::Init(int d)
 {
-
-
-	blood = new Blood(1000.0, 1000.0, 1000.0);
-		
-	
-
-
+	blood = new Blood(1000.0, 1000.0);
+	damage = new Damage(50, 100, 200);		
 }
 
 void Hero::Attack()

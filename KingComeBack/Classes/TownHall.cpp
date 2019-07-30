@@ -9,6 +9,7 @@ TownHall ::~TownHall()
 TownHall::TownHall(Layer* _layer, int id)
 {
 	this->Init(id);
+	blood = new Blood(m_sprite, 1000);
 	_layer->addChild(m_sprite, 10);
 }
 

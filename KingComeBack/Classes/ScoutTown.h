@@ -3,7 +3,7 @@
 #include "Home.h"
 #include "Defines.h"
 #include "ui/CocosGUI.h"
-
+#include "Blood.h"
 #include "Bullet.h"
 #include "Knight.h"
 
@@ -29,7 +29,7 @@ private:
 	Sprite *loadingBar;
 	Sprite *loadingBarBg;
 	GLubyte scoutTownOpacity;
-
+	Blood *blood;
 	std::vector < Bullet * > m_listBullets;
 
 

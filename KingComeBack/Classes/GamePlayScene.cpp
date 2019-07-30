@@ -57,7 +57,7 @@ bool GamePlayScene::init()
 
 	dragon = new Dragon(_layer2D);
 
-
+	dragon->getSprite()->setPosition(1500,2000);
 
 	// add camera
 	this->AddCameraUSER1();
@@ -108,14 +108,6 @@ void GamePlayScene::createLayer2D()
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
-
-	log("Touch %f %f", touch->getLocation().x , touch->getLocation().y);
-	log("Hero position %f %f", hero->getPositionHero().x , hero->getPositionHero().y);
-	log("camera %f %f", camera -> getPosition().x + touch->getLocation().x ,  camera->getPosition().y + touch->getLocation().y);
-
-
-
-	log("touch Location: %f, %f", touch->getLocation().x, touch->getLocation().y);
 
 	mCurrentTouch.x = touch->getLocation().x;
 	mCurrentTouch.y = touch->getLocation().y;
@@ -630,9 +622,6 @@ void GamePlayScene::update(float dt)
 	this->MoveAttack(m_knightRed, knight);
 	
 
-
-
-
 	// code duoc
 	count_dragon += dt;
 	count_dragon_fire += dt;
@@ -641,9 +630,15 @@ void GamePlayScene::update(float dt)
 		dragon->createFire(_layer2D);
 		if (count_dragon_fire>7) {
 			dragon->dragonFire(hero->getDirect());
+			if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+				abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+				hero->getBlood()->reduceBlood(dragon->getDamage()->getDamageNormal());
+				hero->handleBloodBar();
+				//	dragon->handleBloodBar();
+				
+			}
 			count_dragon_fire = 0;
 	}
-		
 		count_dragon = 0;
 	}
 
@@ -672,10 +667,12 @@ void GamePlayScene::update(float dt)
 				if (abs(a->getSprite()->getPositionX() - b->getSprite()->getPositionX())<200 &&
 					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
 					) {
-
 					a->Update(count_bullet, b);
-					
-			
+					b->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
+					if (b->getBlood()->isDie()) {
+						b->getSprite()->setVisible(false);
+					}
+					//a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
 				}
 			}
 			
@@ -688,7 +685,6 @@ void GamePlayScene::update(float dt)
 
 	if (hero->getBlood()->getBlood()<10 && hero->getState() == true) {
 		hero->diedHero(hero->getDirect());
-
 		hero->setState(false);
 		countRebirth = 0;
 	}
@@ -709,7 +705,8 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
 			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
 			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal());
-			dragon->handleBloodBar();
+			handleDragonVsHero();
+		//	dragon->handleBloodBar();
 		}
 
 		for (auto b : m_knightRed)
@@ -717,20 +714,39 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 			if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 				abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
 				b->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal());
-				break;
+		
 			}
 		}
 		mCurrentTouch.x+=100;
 	}
 	if (mButtonSkill_2->getBoundingBox().containsPoint(mCurrentTouch)) {
 		hero->skillAnimation(_layer2D,1);
+		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
+
+			handleDragonVsHero();
+			//	dragon->handleBloodBar();
+		}
+		handleDragonVsHero();
+
 		mCurrentTouch.x += 200;
 	}
 	if (mButtonSkill_1->getBoundingBox().containsPoint(mCurrentTouch)) {
 		hero->skillAnimation(_layer2D, 2);
+		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_2());
+			handleDragonVsHero();
+			//	dragon->handleBloodBar();
+		}
+		handleDragonVsHero();
 		mCurrentTouch.x += 200;
 	}
 	
+	if (dragon->getBlood()->isDie()==true) {
+		dragon->getSprite()->setVisible(false);
+	}
 }
 
 
@@ -763,11 +779,7 @@ void GamePlayScene::createButton_Skill_2()
 	mButtonSkill_2->setPosition(screenSize.width *0.82, screenSize.height * 0.18);
 	_layerUI->addChild(mButtonSkill_2, 10);
 
-
-
 }
-
-
 void GamePlayScene::miniMap()
 {
 
@@ -803,7 +815,6 @@ void GamePlayScene::HandleMinimap()
 	dotHero->getSprite()->setPosition( (hero->getPositionHero().x/condinatorBigMap.x)*(map_1->getContentSize().height) + condinatorMiniMap.x, ( hero->getPositionHero().y / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 	
 }
-
 
 
 void GamePlayScene::AddKnightRed()
@@ -1017,6 +1028,47 @@ void GamePlayScene::handleJoystick()
 		}
 	}
 
+}
+
+void GamePlayScene::handleDragonVsHero()
+{
+	switch (hero->getDirect())
+	{
+	case 0:
+		dragon->dragonMove(4);
+		dragon->dragonFire(4);
+		break;
+	case 1:
+		dragon->dragonMove(5);
+		dragon->dragonFire(5);
+		break;
+	case 2:
+		dragon->dragonMove(6);
+		dragon->dragonFire(6);
+		break;
+	case 3:
+		dragon->dragonMove(7);
+		dragon->dragonFire(7);
+		break;
+	case 4:
+		dragon->dragonMove(0);
+		dragon->dragonFire(7);
+		break;
+	case 5:
+		dragon->dragonMove(1);
+		dragon->dragonFire(7);
+		break;
+	case 6:
+		dragon->dragonMove(2);
+		dragon->dragonFire(7);
+		break;
+	case 7:
+		dragon->dragonMove(3);
+		dragon->dragonFire(7);
+		break;
+	default:
+		break;
+	}
 }
 
 

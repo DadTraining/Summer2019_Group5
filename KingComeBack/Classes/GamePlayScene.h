@@ -71,12 +71,10 @@ public:
 
 //	void AddHeroAndDragon();
 
-
 	void AddEventForPopupTownHall();
 	void AddEventForPopupScoutTown();
 
 	void CreateKnight();
-
 
 	void CreateLayerUI();
 	void CreateChooseKnight();
@@ -96,9 +94,6 @@ public:
 	void miniMap();
 	
 	void HandleMinimap();
-
-
-	
 
 	void AddKnightRed();
 	
@@ -179,7 +174,7 @@ private:
 
 	Bullet * bullet;
 
-	
+	void handleDragonVsHero();
 	
 
 	// Knight

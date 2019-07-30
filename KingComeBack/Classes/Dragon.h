@@ -2,8 +2,9 @@
 #include "Person.h"
 #include "cocos2d.h"
 #include "Blood.h"
+#include "Damage.h"
 
-#define Distance 200
+#define Distance 20
 #define Fire 100
 class Dragon  : public MyObject{
 public:
@@ -22,6 +23,8 @@ public:
 	void dragonFire(int direct);
 
 	void updatePositionloodBar();
+
+	Damage * getDamage();
 	
 
 private:
@@ -35,5 +38,7 @@ private:
 
 	Blood * blood;
 	Sprite * spriteBlood, *fire;
+
+	Damage * damage;
 
 };

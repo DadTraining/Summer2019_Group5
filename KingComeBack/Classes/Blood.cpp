@@ -5,26 +5,31 @@
 
 
 
-Blood::Blood(Sprite * m_sprite, float m_input)
+Blood::Blood(Sprite * m_sprite, float bloodMax)
 {
-	this->m_blood = m_input;
+	this->m_blood = bloodMax;
+	m_bloodMax = bloodMax;
 	spriteBlood = Sprite::create("loadingBarHouse.png");
 	spriteBlood->setAnchorPoint(Vec2(0,0));
 	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height);
+	spriteBlood->setCameraMask(2);
 	m_sprite->addChild(spriteBlood,12);
 
 }
 
-Blood::Blood(float m_input, float m)
+Blood::Blood(float bloodMax, float m)
 {
-	this->m_blood = m_input;
+	this->m_blood = bloodMax;
 	this->m_mana = m;
+	
+	isDragon = true;
 
 }
 
-Blood::Blood(Sprite * m_sprite,float m_input, float m , float g)
+Blood::Blood(Sprite * m_sprite,float b, float m , float g)
 {
-	this->m_blood = m_input;
+	this->m_blood = b;
+	m_bloodMax = b;
 	this->m_green = g;
 	this->m_mana = m;
 	spriteBlood = Sprite::create("bloodBar.png");
@@ -71,26 +76,29 @@ float Blood::getGreen()
 void Blood::reduceBlood(float db)
 {
 	this->m_blood += db;
-	handleBar();
+	if (isDragon == false) {
+		handleBar();
+	}
+	
 }
 
-bool Blood::stateSprite()
+bool Blood::isDie()
 {
-	if (m_blood <5) {
-		return false;
+	if (m_blood <=0) {
+		return true;
 	}
-	else return true;
+	else return false;
 }
 
 void Blood::handleBar()
 {
-	if (m_blood > 0) {
-		spriteBlood->setScaleX(m_blood/ m_input);
-	}
-	else
-	{
+
+	if (m_blood <= 0) {
 		spriteBlood->setVisible(false);
-	} 
-	
-	
+	}
+	else {
+		spriteBlood->setScaleX(m_blood / m_bloodMax);
+	}
+		
+		
 }

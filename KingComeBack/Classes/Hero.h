@@ -51,9 +51,8 @@ public:
 	bool getState();
 	void setState(bool);
 
-	float getDamage();
-	void setDamage(float d);
-	void reduceDamage(float dentaDamage);
+	Damage * getDamage();
+	
 
 private:
 	

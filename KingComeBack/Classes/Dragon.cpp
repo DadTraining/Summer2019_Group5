@@ -16,8 +16,8 @@ Dragon::Dragon(Layer * _layer2D)
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 
 
-	spriteBlood->setAnchorPoint(Vec2(0,0));
-	spriteBlood->setPosition(Vec2(m_sprite ->getPositionX(), m_sprite ->getPositionY()+100));
+//	spriteBlood->setAnchorPoint(Vec2(0,0));
+//	spriteBlood->setPosition(Vec2(m_sprite ->getPositionX(), m_sprite ->getPositionY()+100));
 	blood = new Blood(m_sprite, 1000);
 
 
@@ -98,7 +98,7 @@ void Dragon::createFire(Layer * _layer2D)
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("fire.plist", "fire.png");
 	fire = Sprite::createWithSpriteFrameName("red00.png");
 	fire->setPosition(m_sprite->getPosition());
-	fire->setCameraMask(2);
+//	fire->setCameraMask(2);
 	fire->setVisible(false);
 	_layer2D->addChild(fire);
 }

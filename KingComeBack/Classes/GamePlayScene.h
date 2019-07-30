@@ -98,9 +98,7 @@ public:
 	void HandleMinimap();
 
 
-	void createBullet();
-
-	void handleBullet(Vec2);
+	
 
 	void AddKnightRed();
 	

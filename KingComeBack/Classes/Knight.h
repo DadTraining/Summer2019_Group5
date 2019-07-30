@@ -3,6 +3,8 @@
 #include "cocos2d.h"
 #include "Person.h"
 #include "Blood.h"
+#include "Damage.h"
+#include "Skill.h"
 
 USING_NS_CC;
 
@@ -21,6 +23,12 @@ private:
 	Vec2 direct;
 	float m_distance;
 	int count_repeat;
+
+	Blood *b;
+
+	Damage *d;
+
+	Skill * s;
 public:
 	Knight(Layer* layer, int id);
 	~Knight();
@@ -55,6 +63,12 @@ public:
 
 	//Knight Blue
 	void InitBlue();
+
+	Blood * getBlood();
+
+	Damage * getDamage();
+
+	Skill * getSkill();
 
 	static const int CURRENT_DIRECT_0 = 0;
 	static const int CURRENT_DIRECT_1 = CURRENT_DIRECT_0 + 1;

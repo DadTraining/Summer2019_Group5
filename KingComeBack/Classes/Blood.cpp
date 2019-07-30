@@ -84,7 +84,7 @@ bool Blood::stateSprite()
 
 void Blood::handleBar()
 {
-	if (m_blood > 5) {
+	if (m_blood > 0) {
 		spriteBlood->setScaleX(m_blood/ m_input);
 	}
 	else

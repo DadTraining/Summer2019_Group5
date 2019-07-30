@@ -102,7 +102,11 @@ void Knight::Init(int id)
 	}
 	m_currentDirect = 0;
 
-	Blood *b = new Blood(m_sprite, 1000);
+	b = new Blood(m_sprite, 400);
+
+	d = new Damage(50);
+
+	
 	//AddBlood();
 
 	SetColor(id);
@@ -235,6 +239,21 @@ void Knight::InitBlue()
 
 	//body->setDynamic(true);
 	m_sprite->setPhysicsBody(body);	
+}
+
+Blood * Knight::getBlood()
+{
+	return b;
+}
+
+Damage * Knight::getDamage()
+{
+	return nullptr;
+}
+
+Skill * Knight::getSkill()
+{
+	return nullptr;
 }
 
 

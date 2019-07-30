@@ -25,7 +25,7 @@ void Damage::setDamage(float d, float d1, float d2)
 
 float Damage::getDamageNormal()
 {
-	return damageNormal;
+	return -damageNormal;
 }
 
 float Damage::getDamageSkill_1()

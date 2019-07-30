@@ -107,6 +107,21 @@ void ScoutTown::Update(float dt, Knight * h)
 	
 }
 
+Blood * ScoutTown::getBlood()
+{
+	return blood;
+}
+
+Damage * ScoutTown::getDamage()
+{
+	return d;
+}
+
+Skill * ScoutTown::getSkill()
+{
+	return s;
+}
+
 
 
 

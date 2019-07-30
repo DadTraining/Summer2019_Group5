@@ -6,6 +6,8 @@
 #include "Blood.h"
 #include "Bullet.h"
 #include "Knight.h"
+#include "Damage.h"
+#include "Skill.h"
 
 USING_NS_CC;
 
@@ -23,7 +25,11 @@ public:
 	void Shoot(Knight *);
 	void Update(float dt, Knight* h);
 
+	Blood * getBlood();
 
+	Damage * getDamage();
+
+	Skill * getSkill();
 private:
 	float m_dame;
 	Sprite *loadingBar;
@@ -31,6 +37,11 @@ private:
 	GLubyte scoutTownOpacity;
 	Blood *blood;
 	std::vector < Bullet * > m_listBullets;
+
+
+	Damage *d;
+
+	Skill * s;
 
 
 };

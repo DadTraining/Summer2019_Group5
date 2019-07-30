@@ -46,7 +46,7 @@ Hero::~Hero()
 void Hero::Init(int d)
 {
 	blood = new Blood(1000.0, 1000.0);
-	damage = new Damage(50, 100, 200);		
+	damage = new Damage(20, 50, 100);		
 }
 
 void Hero::Attack()
@@ -148,7 +148,6 @@ void  Hero::getAttack(int directAttack)
 	animaton = Hero::createAnimation(str, 9, 0.01f);
 	Animate* animate = Animate::create(animaton);
 	animate->retain();
-
 	m_sprite->runAction(Repeat::create(animate, 1));
 		
 }
@@ -334,19 +333,11 @@ void Hero::setState(bool state)
 	this->state = state;
 }
 
-float Hero::getDamage()
+Damage * Hero::getDamage()
 {
 	return damage;
 }
 
-void Hero::setDamage(float d)
-{
-	this->damage = d;
-}
 
-void Hero::reduceDamage(float dentaDamage)
-{
-	this->damage += dentaDamage;
-}
 
 

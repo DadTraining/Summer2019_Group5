@@ -151,6 +151,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Blood.cpp" />
     <ClCompile Include="..\Classes\Bullet.cpp" />
+    <ClCompile Include="..\Classes\Damage.cpp" />
     <ClCompile Include="..\Classes\dotMiniMap.cpp" />
     <ClCompile Include="..\Classes\Dragon.cpp" />
     <ClCompile Include="..\Classes\GamePlayScene.cpp" />
@@ -175,6 +176,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\ResourceNature.cpp" />
     <ClCompile Include="..\Classes\ScoutTown.cpp" />
     <ClCompile Include="..\Classes\SettingScene.cpp" />
+    <ClCompile Include="..\Classes\Skill.cpp" />
     <ClCompile Include="..\Classes\SneakyButton.cpp" />
     <ClCompile Include="..\Classes\SneakyButtonSkinnedBase.cpp" />
     <ClCompile Include="..\Classes\SneakyJoystick.cpp" />
@@ -188,6 +190,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Blood.h" />
     <ClInclude Include="..\Classes\Bullet.h" />
+    <ClInclude Include="..\Classes\Damage.h" />
     <ClInclude Include="..\Classes\Defines.h" />
     <ClInclude Include="..\Classes\dotMiniMap.h" />
     <ClInclude Include="..\Classes\Dragon.h" />
@@ -213,6 +216,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\ResourceNature.h" />
     <ClInclude Include="..\Classes\ScoutTown.h" />
     <ClInclude Include="..\Classes\SettingScene.h" />
+    <ClInclude Include="..\Classes\Skill.h" />
     <ClInclude Include="..\Classes\SneakyButton.h" />
     <ClInclude Include="..\Classes\SneakyButtonSkinnedBase.h" />
     <ClInclude Include="..\Classes\SneakyJoystick.h" />

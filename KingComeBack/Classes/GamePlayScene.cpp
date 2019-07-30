@@ -638,7 +638,7 @@ void GamePlayScene::update(float dt)
 	count_dragon_fire += dt;
 	if (count_dragon>7) {
 		dragon->dragonMove(hero->getDirect());
-		dragon->createFire(_layerUI);
+		dragon->createFire(_layer2D);
 		if (count_dragon_fire>7) {
 			dragon->dragonFire(hero->getDirect());
 			count_dragon_fire = 0;
@@ -651,7 +651,7 @@ void GamePlayScene::update(float dt)
 		handleJoystick();
 	}
 
-	dragon->updatePositionloodBar();
+	//dragon->updatePositionloodBar();
 	
 	joystickBase->updatePositions(dt);
 
@@ -668,12 +668,13 @@ void GamePlayScene::update(float dt)
 	
 	if (count_bullet>0.4 && m_listScoutTowns.size()>0 && m_knightRed.size()>0) {
 		for (auto a : m_listScoutTowns) {
-			for (auto b: knight) {
+			for (auto b: m_knightRed) {
 				if (abs(a->getSprite()->getPositionX() - b->getSprite()->getPositionX())<200 &&
 					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
 					) {
 
 					a->Update(count_bullet, b);
+					
 			
 				}
 			}
@@ -707,20 +708,27 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 		hero->getAttack(STATE_ATTACK);
 		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
 			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
-			dragon->getBlood()->reduceBlood(-hero->getDamage());
+			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal());
 			dragon->handleBloodBar();
-			
 		}
-		
+
+		for (auto b : m_knightRed)
+		{
+			if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
+				abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
+				b->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal());
+				break;
+			}
+		}
 		mCurrentTouch.x+=100;
 	}
 	if (mButtonSkill_2->getBoundingBox().containsPoint(mCurrentTouch)) {
 		hero->skillAnimation(_layer2D,1);
-		mCurrentTouch.x += 100;
+		mCurrentTouch.x += 200;
 	}
 	if (mButtonSkill_1->getBoundingBox().containsPoint(mCurrentTouch)) {
 		hero->skillAnimation(_layer2D, 2);
-		mCurrentTouch.x += 100;
+		mCurrentTouch.x += 200;
 	}
 	
 }

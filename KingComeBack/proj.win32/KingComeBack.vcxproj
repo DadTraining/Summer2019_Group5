@@ -159,6 +159,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Hero.cpp" />
     <ClCompile Include="..\Classes\Home.cpp" />
     <ClCompile Include="..\Classes\HouseDecorate.cpp" />
+    <ClCompile Include="..\Classes\HudGold.cpp" />
     <ClCompile Include="..\Classes\Human.cpp" />
     <ClCompile Include="..\Classes\Item.cpp" />
     <ClCompile Include="..\Classes\Knight.cpp" />
@@ -171,7 +172,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\MyObject.cpp" />
     <ClCompile Include="..\Classes\Person.cpp" />
     <ClCompile Include="..\Classes\Popup.cpp" />
-    <ClCompile Include="..\Classes\PopupHero.cpp" />
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
     <ClCompile Include="..\Classes\ResourceNature.cpp" />
     <ClCompile Include="..\Classes\ScoutTown.cpp" />
@@ -196,6 +196,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Hero.h" />
     <ClInclude Include="..\Classes\Home.h" />
     <ClInclude Include="..\Classes\HouseDecorate.h" />
+    <ClInclude Include="..\Classes\HudGold.h" />
     <ClInclude Include="..\Classes\Human.h" />
     <ClInclude Include="..\Classes\Item.h" />
     <ClInclude Include="..\Classes\Knight.h" />
@@ -208,7 +209,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\MyObject.h" />
     <ClInclude Include="..\Classes\Person.h" />
     <ClInclude Include="..\Classes\Popup.h" />
-    <ClInclude Include="..\Classes\PopupHero.h" />
     <ClInclude Include="..\Classes\ResourceManager.h" />
     <ClInclude Include="..\Classes\ResourceNature.h" />
     <ClInclude Include="..\Classes\ScoutTown.h" />

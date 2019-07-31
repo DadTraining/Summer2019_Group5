@@ -22,6 +22,7 @@ public:
 	void RedurceBlood(float);
 	
 	bool IsDie();
+	Vec2 GetPosition();
 protected:
 	float m_blood;
 	float m_amor;

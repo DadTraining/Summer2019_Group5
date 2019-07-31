@@ -55,3 +55,8 @@ bool Human::IsDie()
 	return false;
 }
 
+Vec2 Human::GetPosition()
+{
+	return m_sprite->getPosition();
+}
+

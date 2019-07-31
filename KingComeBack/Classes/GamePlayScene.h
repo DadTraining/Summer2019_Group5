@@ -108,11 +108,7 @@ public:
 	void ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, float dt);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
-
-
 	void handleJoystick();
-
-	
 
 
 	CREATE_FUNC(GamePlayScene);
@@ -210,6 +206,7 @@ private:
 	dotMiniMap * dotHero;
 
 	std::vector<TownHall *> containerHallTown;
+	std::vector<StoreHouse *> containerStoreHouse;
 	std::vector<Knight *> knight;
 	std::vector<Item *> menuItem;
 };

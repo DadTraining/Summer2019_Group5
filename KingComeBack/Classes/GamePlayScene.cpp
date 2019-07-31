@@ -475,7 +475,6 @@ void GamePlayScene::AddEventForPopupTownHall()
 		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
 		buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
-
 			copyHallTown->setPosition(_touch->getLocation());
 			return true;
 		};
@@ -496,10 +495,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 			//code duoc
 			dotHallTown->getSprite()->setPosition((hallTown->GetButton()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) +
 			condinatorMiniMap.x, (hallTown->GetButton()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
-
 			dotHallTown->VisiableDot(true);
-			//
-
 			hallTown->GetButton()->setCameraMask(2);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
 
@@ -517,8 +513,6 @@ void GamePlayScene::AddEventForPopupTownHall()
 
 					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [&]() {
 						auto createKnight = new Knight(_layer2D, TEAM_BLUE);
-						//auto btn = ((ui::Button*)sender);
-						//Vec2 vec = m_position_house.at();
 						createKnight->SetPositionKnight(hallTown->GetButton()->getPosition() + createKnight->GetConTentSize());
 						knight.push_back(createKnight);
 					});
@@ -648,7 +642,7 @@ void GamePlayScene::AddEventForPopupStoreHouse()
 {
 
 	//Add house copy
-	auto copyStoreHouse = ui::Button::create("StoreHouse.png");
+	auto copyStoreHouse = Sprite::create("StoreHouse.png");
 	copyStoreHouse->setOpacity(50);
 	_layerUI->addChild(copyStoreHouse);
 
@@ -667,17 +661,17 @@ void GamePlayScene::AddEventForPopupStoreHouse()
 
 	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyStoreHouse->setVisible(false);
-		newStoreHouse = new StoreHouse(_layer2D, 2);
-		newStoreHouse->GetButton()->setPosition(_touch->getLocation()
+		static auto storeHouse = new StoreHouse(_layer2D, 2);
+		storeHouse->GetButton()->setPosition(_touch->getLocation()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-		newStoreHouse->GetButton()->setCameraMask(2);
-		newStoreHouse->GetButton()->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
+		storeHouse->GetButton()->setCameraMask(2);
+		storeHouse->GetButton()->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 			switch (type)
 			{
 			case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			{
 
-				auto popup = UICustom::PopupShop::createAsConfirmDialogue(_layerUI, "adfd", "", menuItem,[&]() {
+				auto popup = UICustom::PopupShop::createAsConfirmDialogue(_layerUI, "", "", menuItem, [&]() {
 
 				});
 				_layer2D->addChild(popup);
@@ -688,8 +682,8 @@ void GamePlayScene::AddEventForPopupStoreHouse()
 			default:
 				break;
 			}
-
 		});
+		containerStoreHouse.push_back(storeHouse);
 		this->getEventDispatcher()->removeEventListener(buildHouseListener);
 	};
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
@@ -838,9 +832,15 @@ void GamePlayScene::update(float dt)
 	{
 		newDecorateHouse->Update(dt);
 	}
-	if (newStoreHouse != nullptr)
+	if (containerStoreHouse.size() > 0)
 	{
-		newStoreHouse->Update(dt);
+		for (int i = 0; i < containerStoreHouse.size(); i++)
+		{
+			if (containerStoreHouse.at(i) != nullptr)
+			{
+				containerStoreHouse.at(i)->Update(dt);
+			}
+		}
 	}
 	if (containerHallTown.size() > 0)
 	{

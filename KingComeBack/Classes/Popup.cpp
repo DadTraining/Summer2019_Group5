@@ -556,7 +556,7 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 				Menu *menu = Menu::create(YesButton, noButton, NULL);
-				node->addChild(menu, 2);
+				//node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 1.4, winSize.height / 1.5 - intSum->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
 
@@ -569,7 +569,8 @@ namespace UICustom {
 				});
 				Menu *menuAddSub = Menu::create(subButton, addButton, NULL);
 				node->addChild(menuAddSub, 2);
-				menuAddSub->setPosition(winSize.width * 0.726, winSize.height * 0.483);
+				//menuAddSub->setPosition(winSize.width * 0.726, winSize.height * 0.483);
+				menu->setPosition(winSize.width / 1.4 + intChoose->getContentSize().width / 2, winSize.height / 1.5);
 				menuAddSub->alignItemsHorizontallyWithPadding(subButton->getContentSize().width / 1.1);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}
@@ -643,7 +644,7 @@ namespace UICustom {
 			float posHeight = winSize.height / 1.36;
 
 			if (YesFunc) {
-
+				//auto potionBlue = ui::Button::
 				// remove when out of popup
 				for (int i = 0; i < menuItem.size(); i++)
 				{

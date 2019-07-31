@@ -78,3 +78,16 @@ void Bullet::Move(Knight * h)
 	m_sprite->runAction(sq);
 }
 
+void Bullet::Move(Dragon * h)
+{
+	ccBezierConfig bezier;
+	bezier.controlPoint_1 = Point(m_sprite->getPositionX(), m_sprite->getPositionY() + 100);
+	bezier.controlPoint_2 = Point(Vec2(((m_sprite->getPositionX() + h->getSprite()->getPositionX()) / 2), (m_sprite->getPositionY() + h->getSprite()->getPositionY()) / 2 + 200));
+	bezier.endPosition = Point(Vec2(h->getSprite()->getPosition()));
+
+	auto movetToOfBullet = BezierTo::create(0.4f, bezier);
+	auto callfunct = CallFunc::create(CC_CALLBACK_0(Bullet::stopHide, this));
+	auto sq = Sequence::create(movetToOfBullet, callfunct, nullptr);
+	m_sprite->runAction(sq);
+}
+

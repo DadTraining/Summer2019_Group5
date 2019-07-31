@@ -9,6 +9,7 @@
 #include "Damage.h"
 #include "Skill.h"
 #include "dotMiniMap.h"
+#include "Dragon.h"
 
 USING_NS_CC;
 
@@ -23,7 +24,9 @@ public:
 	void LoadingBuild() override;
 	void Update(float dt) override;
 	void Shoot(Knight *);
+	void Shoot(Dragon *);
 	void Update(float dt, Knight* h);
+	void Update(float dt, Dragon* d);
 	dotMiniMap * getDotMiniMap();
 	void setDotMiniMap(dotMiniMap * d);
 

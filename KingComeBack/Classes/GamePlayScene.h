@@ -110,6 +110,7 @@ public:
 
 	void handleJoystick();
 
+	void handleDragonVsScout();
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -209,5 +210,7 @@ private:
 	std::vector<StoreHouse *> containerStoreHouse;
 	std::vector<Knight *> knight;
 	std::vector<Item *> menuItem;
+
+	float countSkill_1 =0.0, countSkill_2 =0.0;
 };
 

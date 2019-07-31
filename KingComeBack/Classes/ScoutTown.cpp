@@ -100,14 +100,28 @@ void ScoutTown::Shoot(Knight * monster)
 	
 }
 
+void ScoutTown::Shoot(Dragon * monster)
+{
+	for (auto b : m_listBullets) {
+		if (b->getSprite()->isVisible() != true)
+		{
+			b->getSprite()->setVisible(true);
+			b->getSprite()->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height / 2);
+			b->Move(monster);
+			break;
+		}
+	}
+
+}
+
 void ScoutTown::Update(float dt, Knight * h)
 {
-	
-	
-	
-		Shoot(h);
-	
-	
+		Shoot(h);	
+}
+
+void ScoutTown::Update(float dt, Dragon * d)
+{
+	Shoot(d);
 }
 
 dotMiniMap * ScoutTown::getDotMiniMap()

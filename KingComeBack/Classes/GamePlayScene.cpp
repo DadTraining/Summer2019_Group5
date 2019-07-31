@@ -434,7 +434,12 @@ void GamePlayScene::AddButtonAttack()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			//this->AddPopupHouse();
-			heroAttack(hero->getDirect(), 0);
+			if ( hero->getState() == true) {
+				heroAttack(hero->getDirect(), 0);
+			}
+				
+			
+			
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -455,7 +460,11 @@ void GamePlayScene::AddButtonAttack()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			//this->AddPopupHouse();
-			heroAttack(hero->getDirect(), 1);
+			if (countSkill_1 > 4.0 && hero->getState()==true ) {
+				heroAttack(hero->getDirect(), 1);
+				countSkill_1 = 0.0;
+			}
+			
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -475,7 +484,11 @@ void GamePlayScene::AddButtonAttack()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			//this->AddPopupHouse();
-			heroAttack(hero->getDirect(), 2);
+			if (countSkill_2 > 6.0 && hero->getState() == true) {
+				heroAttack(hero->getDirect(), 2);
+				countSkill_2 = 0.0;
+			}
+			
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -885,7 +898,8 @@ void GamePlayScene::ChooseKnight()
 
 void GamePlayScene::update(float dt)
 {
-	
+	countSkill_1 += dt;
+	countSkill_2 += dt;
 	if (newScoutTown != nullptr)
 	{
 		newScoutTown->Update(dt);
@@ -964,6 +978,11 @@ void GamePlayScene::update(float dt)
 	
 	if (count_bullet>0.4 && m_listScoutTowns.size()>0 && m_knightRed.size()>0) {
 		for (auto a : m_listScoutTowns) {
+			if (abs(a->getSprite()->getPositionX() - dragon->getSprite()->getPositionX())<200 &&
+				abs(a->getSprite()->getPositionY() - dragon->getSprite()->getPositionY())<200) {
+				a->Update(count_bullet, dragon);
+				dragon->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
+			}
 			for (auto b: m_knightRed) {
 				if (abs(a->getSprite()->getPositionX() - b->getSprite()->getPositionX())<200 &&
 					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
@@ -1323,6 +1342,14 @@ void GamePlayScene::handleJoystick()
 			count[i] = 0;
 		}
 	}
+
+}
+
+void GamePlayScene::handleDragonVsScout()
+{
+	
+	
+
 
 }
 

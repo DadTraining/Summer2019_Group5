@@ -45,3 +45,10 @@ void Human::RedurceBlood(float dame)
 	m_blood = m_blood - dame;
 }
 
+bool Human::IsDie()
+{
+	if (m_blood <= 0)
+		return true;
+	return false;
+}
+

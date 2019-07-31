@@ -20,6 +20,8 @@ public:
 	void SetBlood(float blood);
 	float GetBlood();
 	void RedurceBlood(float);
+	
+	bool IsDie();
 protected:
 	float m_blood;
 	float m_amor;

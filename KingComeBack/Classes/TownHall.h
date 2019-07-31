@@ -16,8 +16,6 @@ public:
 	void LoadingBuild() override;
 	void Update(float dt) override;
 
-	void CreateKnight();
-
 //void OnTouchMove(Touch *touch, Event *unused_event);
 	void OnTouchEnd(Touch *touch, Event *unused_event);
 
@@ -25,6 +23,7 @@ public:
 
 	bool isSelected = false;
 
+	Blood* GetBlood();
 private:
 	int id_home;
 	Sprite *loadingBarBg;

@@ -102,7 +102,7 @@ void Knight::Init(int id)
 	}
 	m_currentDirect = 0;
 
-	b = new Blood(m_sprite, 400);
+	b = new Blood(m_sprite, 400, id);
 
 	d = new Damage(50);
 
@@ -110,6 +110,7 @@ void Knight::Init(int id)
 	//AddBlood();
 
 	SetColor(id);
+	SetAmor(10);
 }
 
 void Knight::Update(float dt)
@@ -123,7 +124,7 @@ void Knight::Update(float dt)
 	}
 	count += dt;
 
-	if (b->getBlood() <= 0 && m_sprite->getActionByTag(TAG_ACTION_DEATH) == nullptr)
+	if (b->getBlood() <= 0 && !m_sprite->getActionByTag(TAG_ACTION_DEATH))
 	{
 		Died();
 	}
@@ -168,7 +169,7 @@ void Knight::Died()
 	action->setTag(TAG_ACTION_DEATH);
 
 	m_sprite->runAction(action);
-	m_sprite->setVisible(false);
+	//m_sprite->setVisible(false);
 	//m_sprite->removeFromParentAndCleanup(true);
 }
 
@@ -197,7 +198,6 @@ void Knight::InitRed()
 	body->setGravityEnable(false);
 	body->setCategoryBitmask(32);
 	body->setRotationEnable(false);
-	//body->getShape(0)->setRestitution(1);
 	body->setCollisionBitmask(53);
 	body->setContactTestBitmask(53);
 
@@ -218,13 +218,12 @@ void Knight::MoveRed(Vec2 vec)
 		{
 			m_sprite->stopAllActions();
 		}
-		else if (m_sprite->getActionByTag(TAG_ACTION_ATTACK))
+		if (m_sprite->getActionByTag(TAG_ACTION_ATTACK))
 		{
 			m_sprite->stopAllActionsByTag(TAG_ACTION_ATTACK);
 		}
-		else if (!m_sprite->getActionByTag(TAG_ACTION_WALK))
+		if (!m_sprite->getActionByTag(TAG_ACTION_WALK))
 		{
-			//m_sprite->getPhysicsBody()->setDynamic(true);
 			m_sprite->getPhysicsBody()->setDynamic(true);
 			//StopActionWalk();
 			SetCurrentDirect(vec);
@@ -241,7 +240,6 @@ void Knight::MoveRed(Vec2 vec)
 			auto spaw = Spawn::create(moveTo, action, nullptr);
 			spaw->setTag(TAG_ACTION_WALK);
 			m_sprite->runAction(spaw);
-			//m_sprite->getActionManager()->
 		}
 	}
 	
@@ -279,8 +277,6 @@ Skill * Knight::getSkill()
 {
 	return nullptr;
 }
-
-
 
 void Knight::Attack()
 {

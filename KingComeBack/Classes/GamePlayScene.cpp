@@ -553,7 +553,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHallTown->setVisible(false);
 
-			auto hallTown = new TownHall(_layer2D, 2);
+			auto hallTown = new TownHall(_layer2D, TEAM_BLUE);
 			hallTown->GetButton()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 				
@@ -617,7 +617,7 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyScoutTown->setVisible(false);
-		newScoutTown = new ScoutTown(_layer2D, 2);
+		newScoutTown = new ScoutTown(_layer2D, TEAM_BLUE);
 
 		
 		m_listScoutTowns.push_back(newScoutTown);
@@ -693,7 +693,7 @@ void GamePlayScene::AddEventForPopupDecorateHouse()
 
 	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyHouseDecorate->setVisible(false);
-		newDecorateHouse = new HouseDecorate(_layer2D, 2);
+		newDecorateHouse = new HouseDecorate(_layer2D, TEAM_BLUE);
 		newDecorateHouse->GetButton()->setPosition(_touch->getLocation()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 		newDecorateHouse->GetButton()->setCameraMask(2);
@@ -1000,13 +1000,13 @@ void GamePlayScene::update(float dt)
 					b->MoveRed(a->getSprite()->getPosition());
 					if (b->getBlood()->isDie()) {
 						b->getSprite()->setVisible(false);
-						b->getSprite()->setPosition(0,2000);
+						b->getSprite()->setPosition(0,-2000);
 					}
 					a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
 					if (a->getBlood()->isDie()) {
 						a->getSprite()->setVisible(false);
 						a->getDotMiniMap()->getSprite()->setVisible(false);
-						a->getSprite()->setPosition(2000,0);
+						a->getSprite()->setPosition(-2000,0);
 					}
 				}
 			}
@@ -1187,7 +1187,10 @@ void GamePlayScene::MoveAttack(std::vector<Knight*> red, std::vector<Knight*> bl
 
 		for (auto red : red)
 		{
-			red->MoveRed(vec);
+			if (red->getBlood()->getBlood() > 0)
+			{
+				red->MoveRed(vec);
+			}		
 		}
 	}
 }
@@ -1209,17 +1212,19 @@ void GamePlayScene::ChekAttackKnight(std::vector<Knight*> red, std::vector<Knigh
 				static float count = 0;
 				if (count >= 5)
 				{
-					float damgeRed = knightRed->getDamage()->getDamageNormal();
-					float damgeBlue = knightBlue->getDamage()->getDamageNormal();
+					float damgeRed = knightRed->getDamage()->getDamageNormal() - knightRed->GetAmor();
+					float damgeBlue = knightBlue->getDamage()->getDamageNormal() - knightBlue->GetAmor();
 
 					knightBlue->getBlood()->reduceBlood(damgeRed);
 					if (knightBlue->getBlood()->isDie())
 					{
-						//this->RemoveKnightRed(knightBlue);
+						knightBlue->SetPositionKnight(Vec2(-1000, 0));
+					//	this->RemoveKnightRed(knightBlue);
 					}
 					knightRed->getBlood()->reduceBlood(damgeBlue);
 					if (knightRed->getBlood()->isDie())
 					{
+						knightRed->SetPositionKnight(Vec2(-2000, 0));
 						//this->RemoveKnightRed(knightRed);
 					}
 					count = 0;
@@ -1247,6 +1252,7 @@ void GamePlayScene::RemoveKnightBlue(Knight * blue)
 				knight.erase(it);
 				break;
 			}
+			++it;
 		}
 	}
 }

@@ -10,9 +10,12 @@ Blood::Blood(Sprite * m_sprite, float bloodMax, int color)
 	this->m_blood = bloodMax;
 	m_bloodMax = bloodMax;
 	spriteBlood = Sprite::create("loadingBarHouse.png");
-	spriteBlood->setAnchorPoint(Vec2(0,0));
+	
+	//spriteBlood->setAnchorPoint(Vec2(0,0));
 	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height);
 	spriteBlood->setCameraMask(2);
+
+	
 	
 	if (color == TEAM_BLUE)
 	{

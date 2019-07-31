@@ -842,7 +842,7 @@ void GamePlayScene::update(float dt)
 
 	// Check Knight
 	this->MoveAttack(m_knightRed, knight);
-	
+	this->ChekAttackKnight(m_knightRed, knight, dt);
 
 	// code duoc
 	count_dragon += dt;
@@ -1056,7 +1056,10 @@ void GamePlayScene::AddKnightRed()
 		Knight *knightRed = new Knight(_layer2D, TEAM_RED);
 		knightRed->getSprite()->setCameraMask(2);
 		//this->getContentSize()
-		knightRed->SetPositionKnight((Vec2)mapTop->getContentSize() *2 / 3 + mapTop->getPosition());
+		int dir = rand() % (50 - 10 + 1) + 10;
+		float x = mapTop->getPosition().x + mapTop->getContentSize().width * 2 / 3 + dir;
+		float y = mapTop->getPosition().y + mapTop->getContentSize().height * 2 / 3 + dir;
+		knightRed->SetPositionKnight(Vec2(x, y));
 		knightRed->getSprite()->getPhysicsBody()->setGroup(i);
 		m_knightRed.push_back(knightRed);
 		//log("%f %f", _layer2D->getContentSize().width, _layer2D->getContentSize().height);
@@ -1097,6 +1100,25 @@ void GamePlayScene::MoveAttack(std::vector<Knight*> red, std::vector<Knight*> bl
 		for (auto red : red)
 		{
 			red->MoveRed(vec);
+		}
+	}
+}
+
+void GamePlayScene::ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, float dt)
+{
+	Point positionKnightRed, positionKnightBlue;
+	for (auto knightRed : red)
+	{
+		positionKnightRed = knightRed->GetPositionKnight();
+		for (auto knightBlue : blue)
+		{
+			positionKnightBlue = knightBlue->GetPositionKnight();
+			float _distance = positionKnightRed.distance(positionKnightBlue);
+			if (_distance <= knightBlue->GetConTentSize().width + 10)
+			{
+				knightRed->Update(dt);
+				knightBlue->Update(dt);
+			}
 		}
 	}
 }

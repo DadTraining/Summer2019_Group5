@@ -104,7 +104,7 @@ void Knight::Init(int id)
 
 	b = new Blood(m_sprite, 400);
 
-	d = new Damage(2);
+	d = new Damage(50);
 
 	
 	//AddBlood();
@@ -114,8 +114,8 @@ void Knight::Init(int id)
 
 void Knight::Update(float dt)
 {
-	static float count = 1;
-	if (count >= 1)
+	static float count = 2;
+	if (count >= 2)
 	{
 		Attack();
 		count = 0;
@@ -180,7 +180,6 @@ void Knight::InitRed()
 	body->setRotationEnable(false);
 	body->setCollisionBitmask(53);
 	body->setContactTestBitmask(53);
-	body->setRotationEnable(false);
 
 	/*body->getFirstShape()->setRestitution(10);
 	body->getShape(0)->setFriction(1);
@@ -232,7 +231,6 @@ void Knight::InitBlue()
 	body->setRotationEnable(false);
 	body->setCollisionBitmask(61);
 	body->setContactTestBitmask(61);
-	body->setRotationEnable(false);
 	/*body->getFirstShape()->setRestitution(1);
 	body->getShape(0)->setFriction(1);
 	body->getShape(0)->setMass(100);*/
@@ -260,23 +258,24 @@ Skill * Knight::getSkill()
 
 void Knight::Attack()
 {
-	m_sprite->getPhysicsBody()->setDynamic(false);
+	//m_sprite->getPhysicsBody()->setDynamic(false);
+	m_sprite->getPhysicsBody()->setRotationEnable(false);
 	if (m_sprite->getActionByTag(TAG_ACTION_WALK))
 	{
 		//Action * ac1 = m_sprite->getActionByTag(TAG_ACTION_WALK);
-		m_sprite->stopActionByTag(TAG_ACTION_WALK);
+		//m_sprite->stopActionByTag(TAG_ACTION_WALK);	
+		m_sprite->stopAllActions();
+	}
+	//Action * ac = m_sprite->getActionByTag(TAG_ACTION_ATTACK);
+	if (!m_sprite->getActionByTag(TAG_ACTION_ATTACK))
+	{
+		char actionName[MAX_LENGHT] = { 0 };
+		sprintf(actionName, "knight_attack_%d000", m_currentDirect);
+		auto action = ActionKnight(actionName);
+		//auto action = RepeatForever::create(ActionKnight(actionName));
+		action->setTag(TAG_ACTION_ATTACK);
 
-		//Action * ac = m_sprite->getActionByTag(TAG_ACTION_ATTACK);
-		if (!m_sprite->getActionByTag(TAG_ACTION_ATTACK))
-		{
-			char actionName[MAX_LENGHT] = { 0 };
-			sprintf(actionName, "knight_attack_%d000", m_currentDirect);
-			auto action = ActionKnight(actionName);
-			//auto action = RepeatForever::create(ActionKnight(actionName));
-			action->setTag(TAG_ACTION_ATTACK);
-
-			m_sprite->runAction(action);
-		}		
+		m_sprite->runAction(action);
 	}
 	
 }

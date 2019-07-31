@@ -171,7 +171,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\MyObject.cpp" />
     <ClCompile Include="..\Classes\Person.cpp" />
     <ClCompile Include="..\Classes\Popup.cpp" />
-    <ClCompile Include="..\Classes\PopupHero.cpp" />
     <ClCompile Include="..\Classes\ResourceManager.cpp" />
     <ClCompile Include="..\Classes\ResourceNature.cpp" />
     <ClCompile Include="..\Classes\ScoutTown.cpp" />
@@ -208,7 +207,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\MyObject.h" />
     <ClInclude Include="..\Classes\Person.h" />
     <ClInclude Include="..\Classes\Popup.h" />
-    <ClInclude Include="..\Classes\PopupHero.h" />
     <ClInclude Include="..\Classes\ResourceManager.h" />
     <ClInclude Include="..\Classes\ResourceNature.h" />
     <ClInclude Include="..\Classes\ScoutTown.h" />

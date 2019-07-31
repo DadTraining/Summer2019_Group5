@@ -85,13 +85,11 @@ public:
 	void CreatePopupChooseKnight();
 	void AddToChooseKnight();
 	void SubToChooseKnight();
+	void AddGold();
 
 	void update(float dt) override;
 
 	void heroAttack(int, int);
-
-	void createButtonAttack();
-
 
 	void createButton_Skill_1();
 	void createButton_Skill_2();
@@ -134,6 +132,7 @@ private:
 	Layer *_layer2D;
 	Layer *_layerUI;
 
+	static int m_gold;
 	static const int indexMap = 1;
 	static const int indexCamera = 4;
 	static const int indexJoystick = 3;

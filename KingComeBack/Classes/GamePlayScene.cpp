@@ -1,5 +1,8 @@
 #include"GamePlayScene.h"
 #include<string.h>
+
+int GamePlayScene::m_gold = 10000;
+
 GamePlayScene::GamePlayScene()
 {
 }
@@ -29,6 +32,7 @@ bool GamePlayScene::init()
 	newStoreHouse = nullptr;
 	newMainHouse = nullptr;
 	//newHallTown = nullptr;
+
 
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
@@ -98,8 +102,6 @@ void GamePlayScene::createLayer2D()
 	auto layer2D = Layer::create();
 	this->addChild(layer2D, 0);
 	_layer2D = layer2D;
-
-	
 }
 
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
@@ -296,7 +298,7 @@ void GamePlayScene::AddCameraUSER1()
 	physicBody->setDynamic(true); 
 
 	camera->setPhysicsBody(physicBody);
-	_layer2D->addChild(camera, 1);	
+	this->addChild(camera, 1);	
 	_layer2D->setCameraMask((unsigned short)CameraFlag::USER1);
 }
 
@@ -356,7 +358,7 @@ void GamePlayScene::AddJoystick()
 	leftJoystick = joystickBase->getJoystick();
 	leftJoystick->retain();
 	joystickBase->setScale(m_scaleX, m_scaleY);
-	_layerUI->addChild(joystickBase, 10);
+	_layerUI->addChild(joystickBase);
 }
 
 void GamePlayScene::AddHudGoldMessage()
@@ -387,7 +389,7 @@ void GamePlayScene::AddButtonPopUpHero()
 		}
 	});
 
-	_layerUI->addChild(button, 10);
+	_layerUI->addChild(button, 1);
 }
 
 void GamePlayScene::AddButtonPopUpHouse()
@@ -408,7 +410,7 @@ void GamePlayScene::AddButtonPopUpHouse()
 			break;
 		}
 	});
-	_layerUI->addChild(button, 10);
+	_layerUI->addChild(button, 1);
 }
 
 void GamePlayScene::AddButtonAttack()
@@ -436,7 +438,7 @@ void GamePlayScene::AddButtonAttack()
 			break;
 		}
 	});
-	_layerUI->addChild(button, 10);
+	_layerUI->addChild(button);
 
 
 	auto button1 = ui::Button::create("skill_1.png", "skill_1.png");
@@ -461,7 +463,7 @@ void GamePlayScene::AddButtonAttack()
 			break;
 		}
 	});
-	_layerUI->addChild(button1, 10);
+	_layerUI->addChild(button1);
 
 	auto button2 = ui::Button::create("skill_2.png", "skill_2.png");
 	//button->setTitleText("Hero");
@@ -485,7 +487,7 @@ void GamePlayScene::AddButtonAttack()
 			break;
 		}
 	});
-	_layerUI->addChild(button2, 10);
+	_layerUI->addChild(button2);
 }
 
 void GamePlayScene::AddSpriteUI()
@@ -500,7 +502,7 @@ void GamePlayScene::AddSpriteUI()
 	sprite->setScale(m_scaleX,m_scaleY);
 	containerForSpriteUI->addChild(sprite);
 
-	_layerUI->addChild(containerForSpriteUI, 10);
+	_layerUI->addChild(containerForSpriteUI);
 }
 
 void GamePlayScene::AddPopupHero()
@@ -508,12 +510,12 @@ void GamePlayScene::AddPopupHero()
 	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"hero", "", menuItem, [=]() {
 
 	});
-	_layerUI->addChild(popUpHero, 10);
+	_layerUI->addChild(popUpHero, 1);
 }
 
 void GamePlayScene::AddPopupHouse()
 {
-	auto popupHouse = UICustom::PopupHouse::createAsConfirmDialogue("House", "",
+	auto popupHouse = UICustom::PopupHouse::createAsConfirmDialogue("", "",
 		CC_CALLBACK_0(GamePlayScene::AddEventForPopupMainHouse, this),
 		CC_CALLBACK_0(GamePlayScene::AddEventForPopupTownHall, this),
 		CC_CALLBACK_0(GamePlayScene::AddEventForPopupStoreHouse, this),
@@ -521,7 +523,7 @@ void GamePlayScene::AddPopupHouse()
 		CC_CALLBACK_0(GamePlayScene::AddEventForPopupDecorateHouse, this),
 		NULL, NULL
 		);
-	_layerUI->addChild(popupHouse, 10);
+	_layerUI->addChild(popupHouse, 1);
 }
 
  // void GamePlayScene::AddHeroAndDragon()
@@ -674,7 +676,7 @@ void GamePlayScene::AddEventForPopupMainHouse()
 void GamePlayScene::AddEventForPopupDecorateHouse()
 {
 	//Add house copy
-	auto copyHouseDecorate = Sprite::create("HouseDecorate.png");
+	auto copyHouseDecorate = Sprite::create("gold_mine.png");
 	copyHouseDecorate->setOpacity(50);
 	_layerUI->addChild(copyHouseDecorate);
 
@@ -822,12 +824,14 @@ void GamePlayScene::CreateLayerUI()
 	_layerUI->setCameraMask((unsigned short)CameraFlag::USER2);
 
 	//Add feature for UI;
+
 	this->AddSpriteUI();
 	this->CreateChooseKnight();
 	this->AddJoystick();
 	this->AddButtonPopUpHero();
 	this->AddButtonPopUpHouse();
 	this->AddHudGoldMessage();
+	this->AddGold();
 }
 
 void GamePlayScene::CreateChooseKnight()
@@ -848,7 +852,7 @@ void GamePlayScene::CreateChooseKnight()
 			break;
 		}
 	});
-	_layerUI->addChild(button, 10);
+	_layerUI->addChild(button, 1);
 }
 
 void GamePlayScene::CreatePopupChooseKnight()
@@ -897,6 +901,18 @@ void GamePlayScene::SubToChooseKnight()
 			knight.at(i)->SetSelected(false);
 		}
 	}
+}
+
+void GamePlayScene::AddGold()
+
+{
+	auto spriteGold = Sprite::create("item/coin.png");
+	spriteGold->setPosition(Vec2(screenSize.width / 2.5, screenSize.height - spriteGold->getContentSize().height / 2));
+	_layerUI->addChild(spriteGold, 2);
+	
+	auto labelGold = Label::createWithTTF(std::to_string(m_gold), "fonts/Marker Felt.ttf", 18);
+	labelGold->setPosition(spriteGold->getPosition().x + spriteGold->getContentSize().width, spriteGold->getPosition().y);
+	_layerUI->addChild(labelGold, 2);
 }
 
 void GamePlayScene::update(float dt)
@@ -1081,13 +1097,12 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	}
 }
 
-
 void GamePlayScene::createButton_Skill_1()
 {
 	mButtonSkill_1 = Sprite::create("skill_1.png");
 	mButtonSkill_1->setScale(0.3);
 	mButtonSkill_1->setPosition(screenSize.width *0.87, screenSize.height * 0.35);
-	_layerUI->addChild(mButtonSkill_1, 10);
+	_layerUI->addChild(mButtonSkill_1);
 
 }
 
@@ -1097,7 +1112,7 @@ void GamePlayScene::createButton_Skill_2()
 	mButtonSkill_2 = Sprite::create("skill_2.png");
 	mButtonSkill_2->setScale(0.3);
 	mButtonSkill_2->setPosition(screenSize.width *0.82, screenSize.height * 0.18);
-	_layerUI->addChild(mButtonSkill_2, 10);
+	_layerUI->addChild(mButtonSkill_2);
 
 }
 
@@ -1109,7 +1124,7 @@ void GamePlayScene::miniMap()
 	m_miniMap->setAnchorPoint(Vec2(0, 0));
 	m_miniMap->setPosition(condinatorMiniMap);
 	//_layerUI->addChild(minimapSprite,11);
-	_layerUI->addChild(m_miniMap, 12);
+	_layerUI->addChild(m_miniMap);
 
 	map_1 = Sprite::create("map1.png");
 	
@@ -1119,7 +1134,7 @@ void GamePlayScene::miniMap()
 
 
 	//_layerUI->addChild(minimapSprite,11);
-	_layerUI->addChild(map_1, 11);
+	_layerUI->addChild(map_1);
 
 	dotHero = new dotMiniMap(_layerUI, 0);
 

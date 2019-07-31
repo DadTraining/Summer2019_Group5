@@ -26,8 +26,19 @@ void HouseDecorate::Init(int id)
 	physicBody->setRotationEnable(false);
 	physicBody->setCategoryBitmask(4);
 	physicBody->setCollisionBitmask(125);
-
 	m_button->setPhysicsBody(physicBody);
+
+	if (id == TEAM_BLUE)
+	{
+		blood = new Blood(m_sprite, 500, id);
+	}
+	if (id == TEAM_RED)
+	{
+		blood = new Blood(m_sprite, 500, id);
+	}
+
+	SetColor(id);
+	SetAmor(AMOR_HOUSE);
 
 	this->LoadingBuild();
 }
@@ -71,4 +82,9 @@ void HouseDecorate::Update(float dt)
 			loadingBar = nullptr;
 		}
 	}
+}
+
+Blood * HouseDecorate::GetBlood()
+{
+	return blood;
 }

@@ -112,6 +112,18 @@ namespace UICustom {
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};
+	// popup shop
+	class PopupShop : public PopupDelegates
+	{
+	public:
+		static PopupShop* createAsMessage(const std::string &title, const std::string &msg);
+		static PopupShop* createAsConfirmDialogue(Layer *layer, const std::string &title, const std::string &msg,
+			std::vector<Item *> &menuItem, const std::function<void()> &YesFunc);
+		static PopupShop* create(Layer *layer, const std::string &title, const std::string &msg,
+			cocos2d::Label *lbl, std::vector<Item *> &menuItem, const std::function<void()> &YesFunc);
+	private:
+		void initBg(const cocos2d::Size size, const std::string &title);
+	};
 }
 
 #endif /* Popup_h */

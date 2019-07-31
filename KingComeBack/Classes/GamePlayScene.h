@@ -111,8 +111,6 @@ public:
 
 	void handleJoystick();
 
-	
-
 
 	CREATE_FUNC(GamePlayScene);
 private:

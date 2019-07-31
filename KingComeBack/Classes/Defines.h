@@ -36,5 +36,6 @@
 #define ID_WEAPON 9
 #define ID_HELMET	10
 #define ID_ARMOR 11
+#define ID_SHIELD 12
 
 #endif

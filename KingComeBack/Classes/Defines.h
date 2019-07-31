@@ -15,10 +15,14 @@
 
 #define ID_SOUND_SONTUNG 0
 
+//----------Team------------
 #define TEAM_BLUE 0
 #define TEAM_RED 1
+
+//-----ranger attack--------
 #define RANGER_ATTACK 300
 
+//-----Tag Animation--------
 #define TAG_ACTION_WALK 0
 #define TAG_ACTION_ATTACK 1
 #define TAG_ACTION_DEATH 2
@@ -47,4 +51,8 @@
 #define ID_TAG_ARMOR 4
 #define ID_TAG_SHIELD 5
 
+//----Amor House------
+#define TAG_BLOOD 0
+#define AMOR_HOUSE 20
+#define BLOOD_HOUSE 500
 #endif

@@ -16,18 +16,13 @@ public:
 	void LoadingBuild() override;
 	void Update(float dt) override;
 
-//void OnTouchMove(Touch *touch, Event *unused_event);
-	void OnTouchEnd(Touch *touch, Event *unused_event);
-
 	Sprite *loadingBar;
 
 	bool isSelected = false;
 
-	Blood* GetBlood();
+	void ScaleBlood(float dame);
 private:
 	int id_home;
 	Sprite *loadingBarBg;
 	GLubyte hallTownOpacity;
-
-	Blood * blood;
 };

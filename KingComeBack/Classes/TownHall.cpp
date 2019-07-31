@@ -30,14 +30,19 @@ void TownHall::Init(int id)
 	physicBody->setCategoryBitmask(4);
 	physicBody->setCollisionBitmask(125);
 
-	/*auto blood = Sprite::create("loadingBarHouse.png");
+	// Add Blood
+	auto blood = Sprite::create("loadingBarHouse.png");
 	float x = m_button->getPosition().x + m_button->getContentSize().width / 4;
 	float y = m_button->getPosition().y + m_button->getContentSize().height;
 	blood->setPosition(Vec2(x, y));
-	m_button->addChild(blood);*/
-	blood = new Blood(m_sprite, 500, id);
+	blood->setTag(TAG_BLOOD);
+	blood->setColor(Color3B::GREEN);
+	m_button->addChild(blood);
+
 	SetColor(id);
 	SetAmor(id);
+	float bl = BLOOD_HOUSE;
+	SetBlood(bl);
 
 	m_button->setPhysicsBody(physicBody);
 
@@ -82,11 +87,9 @@ void TownHall::Update(float dt)
 	}
 }
 
-void TownHall::OnTouchEnd(Touch * touch, Event * unused_event)
+void TownHall::ScaleBlood(float dame)
 {
-}
-
-Blood * TownHall::GetBlood()
-{
-	return blood;
+	RedurceBlood(dame);
+	auto bl = m_button->getChildByTag(TAG_BLOOD);
+	bl->setScaleX(m_blood / BLOOD_HOUSE);
 }

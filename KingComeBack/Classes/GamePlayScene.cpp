@@ -30,12 +30,8 @@ bool GamePlayScene::init()
 	newMainHouse = nullptr;
 	//newHallTown = nullptr;
 
-
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
-
-
-
 
 	condinatorMiniMap = Vec2(screenSize.width * 1 / 20, screenSize.height * 7 / 10);
 
@@ -54,13 +50,8 @@ bool GamePlayScene::init()
 	//add map
 	this->AddMap();
 
-
-
-
 	//code duoc
 	hero = new Hero(_layer2D);
-	
-
 
 	dragon = new Dragon(_layer2D);
 
@@ -91,8 +82,6 @@ bool GamePlayScene::init()
 //	createButton_Skill_2();
 
 	miniMap();
-
-
 
 	this->AddButtonPopUpHero();
 
@@ -184,7 +173,6 @@ void GamePlayScene::OnTouchEnd(Touch * touch, Event * unused_event)
 
 }
 
-
 bool GamePlayScene::onContactBegin(PhysicsContact & contact)
 
 {
@@ -240,7 +228,7 @@ void GamePlayScene::AddMap()
 		PHYSICSBODY_MATERIAL_DEFAULT);
 	physicLeft->setDynamic(false);
 	physicLeft->setCategoryBitmask(1);
-
+	//physicLeft->getShape(0)->setRestitution()
 	physicLeft->setCollisionBitmask(63);
 
 	nodeLeft->setPhysicsBody(physicLeft);
@@ -337,6 +325,7 @@ void GamePlayScene::AddListener()
 
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
+
 void GamePlayScene::AddJoystick()
 {
 	Size s = Director::getInstance()->getWinSize();
@@ -564,7 +553,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHallTown->setVisible(false);
 
-			static auto hallTown = new TownHall(_layer2D, 2);
+			auto hallTown = new TownHall(_layer2D, 2);
 			hallTown->GetButton()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 				
@@ -576,22 +565,17 @@ void GamePlayScene::AddEventForPopupTownHall()
 			dotHallTown->VisiableDot(true);
 			hallTown->GetButton()->setCameraMask(2);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
-
-			m_position_house.push_back(hallTown->GetButton()->getPosition());
-			//hallTown->GetButton()->setTag(m_position_house.size() - 1);
-			//hallTown->GetButton()->_ID = m_position_house.size() - 1;
-			hallTown->GetButton()->setTag(m_position_house.size() - 1);
-			//hallTown->GetButton()->getPhysicsBody()->setGroup(m_position_house.size() - 1);
-	
+			hallTown->GetButton()->setTag(tagButton);
 			hallTown->GetButton()->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
 				switch (type)
 				{
 				case cocos2d::ui::Widget::TouchEventType::BEGAN:
 				{
+					auto button = dynamic_cast<ui::Button *>(sender);
 
-					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [&]() {
+					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "",[&]() {
 						auto createKnight = new Knight(_layer2D, TEAM_BLUE);
-						createKnight->SetPositionKnight(hallTown->GetButton()->getPosition() + createKnight->GetConTentSize());
+						createKnight->SetPositionKnight(containerHallTown.at(0)->GetButton()->getPosition() - createKnight->GetConTentSize() * 2  + Vec2(rand()%(10 - 4) + 5, (rand() % (10 - 4) + 5)));
 						knight.push_back(createKnight);
 					});
 					_layer2D->addChild(popup);
@@ -690,7 +674,7 @@ void GamePlayScene::AddEventForPopupMainHouse()
 void GamePlayScene::AddEventForPopupDecorateHouse()
 {
 	//Add house copy
-	auto copyHouseDecorate = ui::Button::create("HouseDecorate.png");
+	auto copyHouseDecorate = Sprite::create("HouseDecorate.png");
 	copyHouseDecorate->setOpacity(50);
 	_layerUI->addChild(copyHouseDecorate);
 
@@ -750,8 +734,7 @@ void GamePlayScene::AddEventForPopupStoreHouse()
 			{
 			case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			{
-
-				auto popup = UICustom::PopupShop::createAsConfirmDialogue(_layerUI, "", "", menuItem, [&]() {
+				auto popup = UICustom::PopupShop::createAsConfirmDialogue(_layerUI, "", "", menuItem, menuItemShop, [&]() {
 
 				});
 				_layer2D->addChild(popup);
@@ -771,25 +754,48 @@ void GamePlayScene::AddEventForPopupStoreHouse()
 
 void GamePlayScene::CreateItem()
 {
-	Item *itemHp = new Item(ID_HP);
+
+	Item *itemHp = new Item(ID_HP, ID_STATE_HOME);
 	itemHp->getButton()->retain();
 	menuItem.push_back(itemHp);
 
-	Item *itemMp = new Item(ID_MP);
+	Item *itemMp = new Item(ID_MP, ID_STATE_HOME);
 	itemMp->getButton()->retain();
 	menuItem.push_back(itemMp);
 
-	Item *itemWepon = new Item(ID_WEAPON);
+	Item *itemWepon = new Item(ID_WEAPON, ID_STATE_HOME);
 	itemWepon->getButton()->retain();
 	menuItem.push_back(itemWepon);
 
-	Item *itemHelmet = new Item(ID_HELMET);
+	Item *itemHelmet = new Item(ID_HELMET, ID_STATE_HOME);
 	itemHelmet->getButton()->retain();
 	menuItem.push_back(itemHelmet);
 
-	Item *itemArmor = new Item(ID_ARMOR);
+	Item *itemArmor = new Item(ID_ARMOR, ID_STATE_HOME);
 	itemArmor->getButton()->retain();
 	menuItem.push_back(itemArmor);
+
+	// item shop
+	Item *itemHpShop = new Item(ID_HP, ID_STATE_SHOP);
+	itemHpShop->getButton()->retain();
+	menuItemShop.push_back(itemHpShop);
+
+	Item *itemMpShop = new Item(ID_MP, ID_STATE_SHOP);
+	itemMpShop->getButton()->retain();
+	menuItemShop.push_back(itemMpShop);
+
+	Item *itemWeponShop = new Item(ID_WEAPON, ID_STATE_SHOP);
+	itemWeponShop->getButton()->retain();
+	menuItemShop.push_back(itemWeponShop);
+
+	Item *itemHelmetShop = new Item(ID_HELMET, ID_STATE_SHOP);
+	itemHelmetShop->getButton()->retain();
+	menuItemShop.push_back(itemHelmetShop);
+
+	Item *itemArmorShop = new Item(ID_ARMOR, ID_STATE_SHOP);
+	itemArmorShop->getButton()->retain();
+	menuItemShop.push_back(itemArmorShop);
+
 }
 
 void GamePlayScene::CreateKnight()
@@ -858,7 +864,7 @@ void GamePlayScene::CreatePopupChooseKnight()
 		,labelChoose ,labelChooseKnight,
 		CC_CALLBACK_0(GamePlayScene::AddToChooseKnight, this),
 		CC_CALLBACK_0(GamePlayScene::SubToChooseKnight, this),
-		CC_CALLBACK_0(GamePlayScene::ChooseKnight, this)
+		NULL
 	);
 	_layerUI->addChild(popupChooseKnight);
 
@@ -891,9 +897,6 @@ void GamePlayScene::SubToChooseKnight()
 			knight.at(i)->SetSelected(false);
 		}
 	}
-}
-void GamePlayScene::ChooseKnight()
-{
 }
 
 void GamePlayScene::update(float dt)
@@ -1039,7 +1042,6 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 			handleDragonVsHero();
 			//	dragon->handleBloodBar();
 		}
-
 		for (auto b : m_knightRed)
 		{
 			if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
@@ -1084,8 +1086,6 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 }
 
 
-
-
 void GamePlayScene::createButton_Skill_1()
 {
 	mButtonSkill_1 = Sprite::create("skill_1.png");
@@ -1104,6 +1104,7 @@ void GamePlayScene::createButton_Skill_2()
 	_layerUI->addChild(mButtonSkill_2, 10);
 
 }
+
 void GamePlayScene::miniMap()
 {
 
@@ -1134,7 +1135,6 @@ void GamePlayScene::HandleMinimap()
 	dotHero->getSprite()->setPosition( (hero->getPositionHero().x/condinatorBigMap.x)*(map_1->getContentSize().height) + condinatorMiniMap.x, ( hero->getPositionHero().y / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 	
 }
-
 
 void GamePlayScene::AddKnightRed()
 {
@@ -1215,12 +1215,12 @@ void GamePlayScene::ChekAttackKnight(std::vector<Knight*> red, std::vector<Knigh
 					knightBlue->getBlood()->reduceBlood(damgeRed);
 					if (knightBlue->getBlood()->isDie())
 					{
-						this->RemoveKnightRed(knightBlue);
+						//this->RemoveKnightRed(knightBlue);
 					}
 					knightRed->getBlood()->reduceBlood(damgeBlue);
 					if (knightRed->getBlood()->isDie())
 					{
-						this->RemoveKnightRed(knightRed);
+						//this->RemoveKnightRed(knightRed);
 					}
 					count = 0;
 				}
@@ -1267,8 +1267,6 @@ void GamePlayScene::RemoveKnightRed(Knight* red)
 }
 
 	
-
-
 //	if (leftJoystick->getVelocity().x > 0) {
 //		everboyBody->setVelocity(Vect(200, 0));
 //	}
@@ -1283,7 +1281,6 @@ void GamePlayScene::RemoveKnightRed(Knight* red)
 //		everboyBody->setVelocity(Vec2(0, 100));
 //	}
 //	joystickBase->updatePositions(dt);
-
 
 void GamePlayScene::handleJoystick()
 {
@@ -1475,11 +1472,3 @@ void GamePlayScene::handleDragonVsHero()
 		break;
 	}
 }
-
-
-
-	
-
-
-
-

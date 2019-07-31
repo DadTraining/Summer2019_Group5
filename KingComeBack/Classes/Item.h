@@ -14,19 +14,23 @@ private:
 	float m_armor;
 	float m_speedAttack;
 	int m_state;
+	int ID;
 	ui::Button *m_button;
 	Vec2 prePosition;
 public:
 	Item();
-	Item(int ID);
+	Item(int ID, int ID_state);
 	~Item();
-	void Init(int ID);
+	void Init(int ID, int ID_state);
+	void Init(int ID) override;
 	void Died();
 
 	int GetState();
 	void SetState(int state);
 	Vec2 getPrePosition();
 	void setPrePosition(Vec2 _pos);
+	int GetId();
+	void SetId(int _ID);
 
 	ui::Button *getButton();
 

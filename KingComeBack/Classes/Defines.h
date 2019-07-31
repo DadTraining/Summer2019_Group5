@@ -39,4 +39,12 @@
 #define ID_ARMOR 11
 #define ID_SHIELD 12
 
+// Tag Item
+#define ID_TAG_HP 0
+#define ID_TAG_MP 1
+#define ID_TAG_WEPON 2
+#define ID_TAG_HELMET 3
+#define ID_TAG_ARMOR 4
+#define ID_TAG_SHIELD 5
+
 #endif

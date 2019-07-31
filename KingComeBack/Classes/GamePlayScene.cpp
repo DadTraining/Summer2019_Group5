@@ -1245,6 +1245,7 @@ void GamePlayScene::RemoveKnightBlue(Knight * blue)
 			if ((*it) == blue)
 			{
 				knight.erase(it);
+				break;
 			}
 		}
 	}
@@ -1259,6 +1260,7 @@ void GamePlayScene::RemoveKnightRed(Knight* red)
 			if ((*it) == red)
 			{
 				m_knightRed.erase(it);
+				break;
 			}
 		}
 	}

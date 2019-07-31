@@ -856,6 +856,8 @@ void GamePlayScene::update(float dt)
 	}	
 
 	// Check Knight
+	//this->RemoveKnight(m_knightRed, knight);
+
 	this->MoveAttack(m_knightRed, knight);
 
 	this->ChekAttackKnight(m_knightRed, knight, dt);
@@ -1087,7 +1089,7 @@ Vec2 GamePlayScene::CheckRangerAttack(std::vector<Knight*> red, std::vector<Knig
 		{
 			positionKnightBlue = knightBlue->GetPositionKnight();
 			float _distance = positionKnightRed.distance(positionKnightBlue);
-			if (_distance <= RANGER_ATTACK)
+			if (_distance <= RANGER_ATTACK && _distance > knightBlue->GetConTentSize().width + 1)
 			{
 				return positionKnightBlue;
 				if (knightBlue->GetCurrentDirect() != knightBlue->GetLastDirect()) 
@@ -1125,10 +1127,63 @@ void GamePlayScene::ChekAttackKnight(std::vector<Knight*> red, std::vector<Knigh
 		{
 			positionKnightBlue = knightBlue->GetPositionKnight();
 			float _distance = positionKnightRed.distance(positionKnightBlue);
-			if (_distance <= knightBlue->GetConTentSize().width + 10)
+			if (_distance <= knightBlue->GetConTentSize().width)
 			{
 				knightRed->Update(dt);
 				knightBlue->Update(dt);
+				static float count = 0;
+				if (count >= 5)
+				{
+					float damgeRed = knightRed->getDamage()->getDamageNormal();
+					float damgeBlue = knightBlue->getDamage()->getDamageNormal();
+
+					knightBlue->getBlood()->reduceBlood(damgeRed);
+					if (knightBlue->getBlood()->isDie())
+					{
+						this->RemoveKnightRed(knightBlue);
+					}
+					knightRed->getBlood()->reduceBlood(damgeBlue);
+					if (knightRed->getBlood()->isDie())
+					{
+						this->RemoveKnightRed(knightRed);
+					}
+					count = 0;
+				}
+				count += dt;
+				break;
+			}
+		}
+	}
+}
+
+void GamePlayScene::ReduceBloodKnight(Knight * red, Knight * blue)
+{
+	
+}
+
+void GamePlayScene::RemoveKnightBlue(Knight * blue)
+{
+	if (!knight.empty())
+	{
+		for (auto it = knight.begin(); it != knight.end(); )
+		{
+			if ((*it) == blue)
+			{
+				knight.erase(it);
+			}
+		}
+	}
+}
+
+void GamePlayScene::RemoveKnightRed(Knight* red)
+{
+	if (!m_knightRed.empty())
+	{
+		for (auto it = m_knightRed.begin(); it != m_knightRed.end(); )
+		{
+			if ((*it) == red)
+			{
+				m_knightRed.erase(it);
 			}
 		}
 	}

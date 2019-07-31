@@ -106,6 +106,9 @@ public:
 	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, float dt);
+	void ReduceBloodKnight(Knight* red, Knight* blue);
+	void RemoveKnightRed(Knight* red);
+	void RemoveKnightBlue(Knight* blue);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
 	void handleJoystick();

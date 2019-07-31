@@ -21,6 +21,7 @@
 
 #define TAG_ACTION_WALK 0
 #define TAG_ACTION_ATTACK 1
+#define TAG_ACTION_DEATH 2
 
 //-----------ID item-----------
 #define ID_ITEM_STRENGTH 1

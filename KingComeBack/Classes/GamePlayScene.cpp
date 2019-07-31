@@ -53,7 +53,7 @@ bool GamePlayScene::init()
 	//code duoc
 	hero = new Hero(_layer2D);
 
-	dragon = new Dragon(_layer2D);
+	dragon = new Dragon(_layer2D, TEAM_RED);
 
 	dragon->getSprite()->setPosition(1500,2000);
 
@@ -73,7 +73,7 @@ bool GamePlayScene::init()
 	hero->createBloodSprite(_layerUI);
 
 	//Add Knight Red
-	this->AddKnightRed();
+	//this->AddKnightRed();
 
 	//code duoc
 	//createButtonAttack();

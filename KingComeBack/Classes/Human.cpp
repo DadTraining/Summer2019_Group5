@@ -42,7 +42,10 @@ float Human::GetBlood()
 
 void Human::RedurceBlood(float dame)
 {
-	m_blood = m_blood - dame;
+	if (dame > 0)
+	{
+		m_blood = m_blood - dame;
+	}
 }
 
 bool Human::IsDie()

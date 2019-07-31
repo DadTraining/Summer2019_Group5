@@ -296,7 +296,7 @@ void Knight::Attack()
 			char actionName[MAX_LENGHT] = { 0 };
 			sprintf(actionName, "knight_attack_%d000", m_currentDirect);
 			auto action = ActionKnight(actionName);
-			//auto action = RepeatForever::create(ActionKnight(actionName));
+			//auto action = Animation::create(ActionKnight(actionName));
 			action->setTag(TAG_ACTION_ATTACK);
 
 			m_sprite->runAction(action);

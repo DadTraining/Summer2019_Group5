@@ -8,6 +8,7 @@
 #include "Knight.h"
 #include "Damage.h"
 #include "Skill.h"
+#include "dotMiniMap.h"
 
 USING_NS_CC;
 
@@ -23,7 +24,9 @@ public:
 	void Update(float dt) override;
 	void Shoot(Knight *);
 	void Update(float dt, Knight* h);
-	
+	dotMiniMap * getDotMiniMap();
+	void setDotMiniMap(dotMiniMap * d);
+
 	Blood * getBlood();
 
 	Damage * getDamage();
@@ -40,6 +43,8 @@ private:
 	Damage *d;
 
 	Skill * s;
+
+	dotMiniMap * dot;
 
 
 };

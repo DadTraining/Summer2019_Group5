@@ -5,6 +5,7 @@ ScoutTown::ScoutTown(Layer* scene, int id)
 	this->Init(id);
 	blood = new Blood(m_sprite, 400);
 	d = new Damage(10);
+	
 	scene->addChild(m_sprite);
 
 	//bullet = new Bullet(scene);
@@ -108,6 +109,18 @@ void ScoutTown::Update(float dt, Knight * h)
 	
 	
 }
+
+dotMiniMap * ScoutTown::getDotMiniMap()
+{
+	return dot;
+}
+
+void ScoutTown::setDotMiniMap(dotMiniMap * d)
+{
+	this->dot = d;
+}
+
+
 
 Blood * ScoutTown::getBlood()
 {

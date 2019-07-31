@@ -178,6 +178,7 @@ void Knight::InitRed()
 	body->setGravityEnable(false);
 	body->setCategoryBitmask(32);
 	body->setRotationEnable(false);
+	//body->getShape(0)->setRestitution(1);
 	body->setCollisionBitmask(53);
 	body->setContactTestBitmask(53);
 
@@ -228,6 +229,7 @@ void Knight::InitBlue()
 	auto body = PhysicsBody::createBox(m_sprite->getContentSize() / 2, PHYSICSBODY_MATERIAL_DEFAULT);
 	body->setGravityEnable(false);
 	body->setCategoryBitmask(16);
+	//body->getShape(0)->setRestitution(0);
 	body->setRotationEnable(false);
 	body->setCollisionBitmask(61);
 	body->setContactTestBitmask(61);

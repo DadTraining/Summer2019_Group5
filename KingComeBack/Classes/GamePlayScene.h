@@ -63,6 +63,7 @@ public:
 	void AddHudGoldMessage();
 	void AddButtonPopUpHero();
 	void AddButtonPopUpHouse();
+	void AddButtonAttack();
 	void AddSpriteUI();
 	void AddPopupHero();
 	//void AddListenPopupHero();
@@ -88,7 +89,7 @@ public:
 
 	void update(float dt) override;
 
-	void heroAttack(int);
+	void heroAttack(int, int);
 
 	void createButtonAttack();
 

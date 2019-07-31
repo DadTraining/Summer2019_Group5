@@ -85,9 +85,10 @@ bool GamePlayScene::init()
 	this->AddKnightRed();
 
 	//code duoc
-	createButtonAttack();
-	createButton_Skill_1();
-	createButton_Skill_2();
+	//createButtonAttack();
+	AddButtonAttack();
+//	createButton_Skill_1();
+//	createButton_Skill_2();
 
 	miniMap();
 
@@ -419,6 +420,70 @@ void GamePlayScene::AddButtonPopUpHouse()
 		}
 	});
 	_layerUI->addChild(button, 10);
+}
+
+void GamePlayScene::AddButtonAttack()
+{
+	auto button = ui::Button::create("attack.png", "attack.png");
+	//button->setTitleText("Hero");
+	button->setScale(m_scaleX * 0.3, m_scaleX * 0.3);
+	button->setPosition(Vec2(screenSize.width *0.92, screenSize.height * 0.18));
+//	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9.5));
+	button->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			//this->AddPopupHouse();
+			heroAttack(hero->getDirect(), 0);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
+	});
+	_layerUI->addChild(button, 10);
+
+
+	auto button1 = ui::Button::create("skill_1.png", "skill_1.png");
+	//button->setTitleText("Hero");
+	button1->setScale(m_scaleX * 0.3, m_scaleX * 0.3);
+	button1->setPosition(Vec2(screenSize.width *0.87, screenSize.height * 0.35));
+	//	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9.5));
+	button1->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			//this->AddPopupHouse();
+			heroAttack(hero->getDirect(), 1);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
+	});
+	_layerUI->addChild(button1, 10);
+
+	auto button2 = ui::Button::create("skill_2.png", "skill_2.png");
+	//button->setTitleText("Hero");
+	button2->setScale(m_scaleX * 0.3, m_scaleX * 0.3);
+	button2->setPosition(Vec2(screenSize.width *0.82, screenSize.height * 0.18));
+	//	button->setPosition(Vec2(screenSize.width / 1.5, screenSize.height / 9.5));
+	button2->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			//this->AddPopupHouse();
+			heroAttack(hero->getDirect(), 2);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			break;
+		default:
+			break;
+		}
+	});
+	_layerUI->addChild(button2, 10);
 }
 
 void GamePlayScene::AddSpriteUI()
@@ -881,8 +946,6 @@ void GamePlayScene::update(float dt)
 	if (hero->getState()) {
 		handleJoystick();
 	}
-
-
 	//dragon->updatePositionloodBar();
 	
 	joystickBase->updatePositions(dt);
@@ -891,7 +954,7 @@ void GamePlayScene::update(float dt)
 	//	spriteFocus->setPosition(gameSprite->getPosition().x , gameSprite->getPosition().y +50);
 	count_attack += dt;
 	if (count_attack > 1.0 && hero->getState() == true) {
-		heroAttack(hero->getDirect());
+		//heroAttack(hero->getDirect());
 		count_attack = 0.0;
 	}
 	dotHero->VisiableDot(true);
@@ -906,6 +969,7 @@ void GamePlayScene::update(float dt)
 					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
 					) {
 					a->Update(count_bullet, b);
+					
 					b->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
 					b->MoveRed(a->getSprite()->getPosition());
 					if (b->getBlood()->isDie()) {
@@ -943,14 +1007,14 @@ void GamePlayScene::update(float dt)
 	}
 }
 
-void GamePlayScene::heroAttack(int STATE_ATTACK) {
-	if (mButtonAttack->getBoundingBox().containsPoint(mCurrentTouch)) {
+void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
+	if (type == 0) {
 		hero->getAttack(STATE_ATTACK);
 		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
 			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
 			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal());
 			handleDragonVsHero();
-		//	dragon->handleBloodBar();
+			//	dragon->handleBloodBar();
 		}
 
 		for (auto b : m_knightRed)
@@ -958,34 +1022,36 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 			if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 				abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
 				b->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal());
-		
+
 			}
 		}
-		mCurrentTouch.x+=100;
+		//	mCurrentTouch.x+=100;
 	}
-	if (mButtonSkill_2->getBoundingBox().containsPoint(mCurrentTouch)) {
-		hero->skillAnimation(_layer2D,1);
-		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
-			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
-			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
+	if(type == 1){
+		
+			hero->skillAnimation(_layer2D, 1);
+			if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+				abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+				dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
 
+				handleDragonVsHero();
+				//	dragon->handleBloodBar();
+			}
 			handleDragonVsHero();
-			//	dragon->handleBloodBar();
-		}
-		handleDragonVsHero();
-
-		mCurrentTouch.x += 200;
+	
+	
 	}
-	if (mButtonSkill_1->getBoundingBox().containsPoint(mCurrentTouch)) {
-		hero->skillAnimation(_layer2D, 2);
-		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
-			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
-			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_2());
+	if (type == 2) {
+		//if (mButtonSkill_1->getBoundingBox().containsPoint(mCurrentTouch)) {
+			hero->skillAnimation(_layer2D, 2);
+			if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+				abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+				dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_2());
+				handleDragonVsHero();
+				//	dragon->handleBloodBar();
+			}
 			handleDragonVsHero();
-			//	dragon->handleBloodBar();
-		}
-		handleDragonVsHero();
-		mCurrentTouch.x += 200;
+	
 	}
 	
 	if (dragon->getBlood()->isDie()==true) {
@@ -996,16 +1062,6 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 
 
 
-void GamePlayScene::createButtonAttack()
-{
-	//code duoc
-	mButtonAttack = Sprite::create("attack.png");
-	mButtonAttack->setScale(0.5);
-	mButtonAttack->setPosition(screenSize.width *0.92  , screenSize.height * 0.18  );
-	_layerUI->addChild(mButtonAttack,10);
-
-
-}
 
 void GamePlayScene::createButton_Skill_1()
 {

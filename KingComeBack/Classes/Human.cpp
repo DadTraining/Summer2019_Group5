@@ -20,3 +20,13 @@ int Human::GetColor()
 	return m_color;
 }
 
+void Human::SetAmor(float amor)
+{
+	m_amor = amor;
+}
+
+float Human::GetAmor()
+{
+	return m_amor;
+}
+

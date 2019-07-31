@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Blood.h"
 #include "Damage.h"
+#include "Defines.h"
 
 #define Distance 20
 #define Fire 100

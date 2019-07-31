@@ -34,7 +34,7 @@ Dragon::Dragon(Layer * _layer2D)
 	//_layer2D->addChild(spriteBlood, 10);
 //	m_sprite->setPosition(Vec2(screenSize.width/2, screenSize.height/2));
 	_layer2D->addChild(m_sprite,10);
-	blood = new Blood(m_sprite, 1000);
+	blood = new Blood(m_sprite, 1000, TEAM_RED);
 
 	damage = new Damage(100);
 

@@ -571,10 +571,12 @@ void GamePlayScene::AddEventForPopupScoutTown()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 		//code duoc
 		auto dotScoutTown = new dotMiniMap(_layerUI, 2);
+		newScoutTown->setDotMiniMap(dotScoutTown);
+		//d = dotScoutTown;
 		//code duoc
-		dotScoutTown->getSprite()->setPosition((newScoutTown->getSprite()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) + condinatorMiniMap.x, (newScoutTown->getSprite()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
+		newScoutTown->getDotMiniMap()->getSprite()->setPosition((newScoutTown->getSprite()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) + condinatorMiniMap.x, (newScoutTown->getSprite()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 
-		dotScoutTown->VisiableDot(true);
+		newScoutTown->getDotMiniMap()->getSprite()->setVisible(true);
 		//
 		newScoutTown->getSprite()->setCameraMask(2);
 		postScountTower = _touch->getLocation() + camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
@@ -807,7 +809,7 @@ void GamePlayScene::ChooseKnight()
 
 void GamePlayScene::update(float dt)
 {
-
+	
 	if (newScoutTown != nullptr)
 	{
 		newScoutTown->Update(dt);
@@ -835,10 +837,6 @@ void GamePlayScene::update(float dt)
 			}
 		}
 	}	
-
-
-
-
 
 	// Check Knight
 	this->MoveAttack(m_knightRed, knight);
@@ -892,8 +890,8 @@ void GamePlayScene::update(float dt)
 					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
 					) {
 					a->Update(count_bullet, b);
-
 					b->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
+					b->MoveRed(a->getSprite()->getPosition());
 					if (b->getBlood()->isDie()) {
 						b->getSprite()->setVisible(false);
 						b->getSprite()->setPosition(0,2000);
@@ -901,6 +899,7 @@ void GamePlayScene::update(float dt)
 					a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
 					if (a->getBlood()->isDie()) {
 						a->getSprite()->setVisible(false);
+						a->getDotMiniMap()->getSprite()->setVisible(false);
 						a->getSprite()->setPosition(2000,0);
 					}
 				}
@@ -1014,22 +1013,16 @@ void GamePlayScene::miniMap()
 {
 
 	m_miniMap = Sprite::create("miniMap.png");
-	//Sprite*  minimapSprite = Sprite::create("minimap.png");
-	//m_miniMap->setScale(0.7);
-	//minimapSprite->setScale(0.3);
-	//minimapSprite->setPosition(50*screenSize.width / (2 * 256), 820*screenSize.height  / (2*512));
+
 	m_miniMap->setAnchorPoint(Vec2(0, 0));
 	m_miniMap->setPosition(condinatorMiniMap);
 	//_layerUI->addChild(minimapSprite,11);
 	_layerUI->addChild(m_miniMap, 12);
 
 	map_1 = Sprite::create("map1.png");
-	//Sprite*  minimapSprite = Sprite::create("minimap.png");
-	//map_1->setScaleX(0.66);
-	//map_1->setScaleY(0.65);
+	
 	map_1->setAnchorPoint(Vec2(0, 0));
-	//minimapSprite->setScale(0.3);
-	//minimapSprite->setPosition(50*screenSize.width / (2 * 256), 820*screenSize.height  / (2*512));
+	
 	map_1->setPosition(m_miniMap->getPositionX()+10, m_miniMap->getPositionY() + 10);
 
 

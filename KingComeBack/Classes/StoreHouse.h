@@ -13,9 +13,10 @@ public:
 	~StoreHouse();
 	void Init(int id) override;
 	void Died() override;
-	void Attack();
 	void LoadingBuild() override;
 	void Update(float dt) override;
+
+	void SetScaleBlood(float dame);
 
 private:
 	float m_dame;

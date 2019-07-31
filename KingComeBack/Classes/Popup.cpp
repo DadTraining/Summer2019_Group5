@@ -84,6 +84,7 @@ namespace UICustom {
 			this->setOpacity(FADE_RATIO);
 		}
 	}
+
 	void PopupDelegates::dismiss(const bool animated)
 	{
 		if (animated) {
@@ -276,7 +277,6 @@ namespace UICustom {
 		return nullptr;
 	}
 
-
 	void PopupHouse::initBg(Size size, const std::string &title)
 	{
 
@@ -370,8 +370,6 @@ namespace UICustom {
 
 				}
 
-				Button *equip = ui::Button::create();
-				equip->setTitleText("Equiped");
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}
@@ -420,7 +418,7 @@ namespace UICustom {
 	}
 	PopupTownHall * PopupTownHall::createAsConfirmDialogue(const std::string & title, const std::string & msg, const std::function<void()>& YesFunc)
 	{
-		return create(title, msg, NULL, YesFunc);
+		return create(title, msg , NULL, YesFunc);
 	}
 	PopupTownHall * PopupTownHall::create(const std::string & title, const std::string & msg, cocos2d::Label * lbl, const std::function<void()>& YesFunc)
 	{
@@ -526,7 +524,7 @@ namespace UICustom {
 			labelSum->enableShadow(Color4B::BLACK, Size(0, -2));
 
 			intChoose->setSystemFontSize(24);
-			intChoose->setPosition(winSize.width / 1.6, winSize.height / 1.7 - FONT::LABEL_OFFSET / 2);
+			intChoose->setPosition(winSize.width / 1.65, winSize.height / 1.7 - FONT::LABEL_OFFSET / 2);
 			intChoose->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
 			intChoose->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
 			intChoose->enableShadow(Color4B::BLACK, Size(0, -2));
@@ -548,18 +546,6 @@ namespace UICustom {
 				//menuKnight->setPosition(winSize.width / 2, winSize.height / 1.9);
 				//Add textfile
 
-				//Add menu yes no
-				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
-					node->dismiss(true);
-				});
-				MenuItemImage *YesButton = MenuItemImage::create(IMAGEPATH::OK_BUTTON, IMAGEPATH::OK_BUTTON_PRESSED, [=](Ref *sender) {
-					node->dismiss(true);
-				});
-				Menu *menu = Menu::create(YesButton, noButton, NULL);
-				//node->addChild(menu, 2);
-				menu->setPosition(winSize.width / 1.4, winSize.height / 1.5 - intSum->getContentSize().height / 2 - 75);
-				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
-
 				//Add menu add sub
 				auto addButton = MenuItemImage::create(IMAGEPATH::ADD_BUTTON, IMAGEPATH::ADD_BUTTON_PRESS, [=](Ref *sender) {
 					add();
@@ -570,7 +556,7 @@ namespace UICustom {
 				Menu *menuAddSub = Menu::create(subButton, addButton, NULL);
 				node->addChild(menuAddSub, 2);
 				//menuAddSub->setPosition(winSize.width * 0.726, winSize.height * 0.483);
-				menu->setPosition(winSize.width / 1.4 + intChoose->getContentSize().width / 2, winSize.height / 1.5);
+				menuAddSub->setPosition(intChoose->getContentSize().width * 4 + intChoose->getPosition().x, intChoose->getPosition().y);
 				menuAddSub->alignItemsHorizontallyWithPadding(subButton->getContentSize().width / 1.1);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}
@@ -617,11 +603,13 @@ namespace UICustom {
 	{
 		return nullptr;
 	}
-	PopupShop * PopupShop::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, std::vector<Item*>& menuItem, const std::function<void()>& YesFunc)
+	PopupShop * PopupShop::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, std::vector<Item*>& menuItem, 
+		std::vector<Item *> &menuItemShop, const std::function<void()>& YesFunc)
 	{
-		return create(layer, title, msg, NULL, menuItem, YesFunc);
+		return create(layer, title, msg, NULL, menuItem, menuItemShop, YesFunc);
 	}
-	PopupShop * PopupShop::create(Layer * layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, std::vector<Item*>& menuItem, const std::function<void()>& YesFunc)
+	PopupShop * PopupShop::create(Layer * layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, std::vector<Item*>& menuItem,
+		std::vector<Item *>& menuItemShop, const std::function<void()>& YesFunc)
 	{
 		PopupShop *node = new (std::nothrow)PopupShop();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -640,43 +628,71 @@ namespace UICustom {
 			int id = 0;
 			int ID = 9;
 
-			float posWidth = winSize.width / 2.85;
-			float posHeight = winSize.height / 1.36;
+			float posWidthShop = winSize.width / 2.3;
+			float posHeightShop = winSize.height / 1.62;
 
 			if (YesFunc) {
 				//auto potionBlue = ui::Button::
-				// remove when out of popup
-				for (int i = 0; i < menuItem.size(); i++)
+
+
+				for (int i = 0; i < menuItemShop.size(); i++)
 				{
-					if (menuItem.at(i)->checkAddchild == true)
+					if (menuItemShop.at(i)->checkAddchild == true)
 					{
-						menuItem.at(i)->getButton()->removeFromParent();
-						menuItem.at(i)->checkAddchild = false;
+						menuItemShop.at(i)->getButton()->removeFromParent();
+						menuItemShop.at(i)->checkAddchild = false;
 					}
-					if (menuItem.at(i)->checkAddchild == false)
+					if (menuItemShop.at(i)->checkAddchild == false)
 					{
-						node->addChild(menuItem.at(i)->getButton(), 2);
-						menuItem.at(i)->checkAddchild = true;
+						node->addChild(menuItemShop.at(i)->getButton(), 2);
+						menuItemShop.at(i)->checkAddchild = true;
 					}
 				}
 
-				for (int i = 0; i < menuItem.size(); i++)
+				// menu shop
+
+				for (int i = 0; i < menuItemShop.size(); i++)
 				{
-					if (menuItem.at(i)->GetState() == ID_STATE_HOME)
+					if (menuItemShop.at(i)->GetState() == ID_STATE_SHOP)
 					{
-						menuItem.at(i)->getButton()->setPosition(Vec2(posWidth, posHeight));
-						posWidth += menuItem.at(i)->getButton()->getContentSize().width * 0.85;
-						menuItem.at(i)->setPrePosition(menuItem.at(i)->getButton()->getPosition());
+						menuItemShop.at(i)->getButton()->removeAllComponents();
+						
+						menuItemShop.at(i)->getButton()->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type)
+						{
+							auto button = dynamic_cast<Button *>(sender);
+							switch (type)
+							{
+							case cocos2d::ui::Widget::TouchEventType::BEGAN:
+							{
+								for (int i = 0; i < menuItemShop.size(); i++)
+								{
+									if (button->getTag() == menuItemShop.at(i)->getButton()->getTag())
+									{
+										
+										auto item = new Item(menuItemShop.at(i)->GetId(), ID_STATE_HOME);
+										item->getButton()->retain();
+										menuItem.push_back(item);
+									}
+								}
+							}
+								break;
+							case cocos2d::ui::Widget::TouchEventType::ENDED:
+								break;
+							default:
+								break;
+							}
+						});
+						menuItemShop.at(i)->getButton()->setPosition(Vec2(posWidthShop, posHeightShop));
+						posWidthShop += menuItemShop.at(i)->getButton()->getContentSize().width * 0.85;
+						menuItemShop.at(i)->setPrePosition(menuItemShop.at(i)->getButton()->getPosition());
 						if ((i + 1) % 4 == 0 && i > 0)
 						{
-							posWidth = winSize.width / 2.85;
-							posHeight -= menuItem.at(i)->getButton()->getContentSize().height * 0.9;
+							posWidthShop = winSize.width / 2.3;
+							posHeightShop -= menuItemShop.at(i)->getButton()->getContentSize().height * 0.9;
 						}
 					}
 				}
-
-				Button *equip = ui::Button::create();
-				equip->setTitleText("Equiped");
+				//auto labelAttributeItem = Label::createWithTTF()
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}

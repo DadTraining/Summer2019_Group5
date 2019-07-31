@@ -18,7 +18,6 @@ public:
 
 	void CreateKnight();
 
-	bool OnTouchBegin(Touch * touch, Event * unused_event);
 //void OnTouchMove(Touch *touch, Event *unused_event);
 	void OnTouchEnd(Touch *touch, Event *unused_event);
 

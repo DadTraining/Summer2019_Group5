@@ -84,7 +84,6 @@ public:
 	void CreatePopupChooseKnight();
 	void AddToChooseKnight();
 	void SubToChooseKnight();
-	void ChooseKnight();
 
 	void update(float dt) override;
 
@@ -151,7 +150,6 @@ private:
 	MainHouse *newMainHouse;
 	HouseDecorate *newDecorateHouse;
 	StoreHouse *newStoreHouse;
-	std::vector<Vec2> m_position_house;
 
 	cocos2d::Animation * animaton;
 
@@ -176,6 +174,7 @@ private:
 	Vec2 condinatorMiniMap ;
 	Sprite * mButtonSkill_1;
 	Sprite * mButtonSkill_2;
+	int tagButton = 1;
 
 	Dragon * dragon;
 
@@ -208,5 +207,6 @@ private:
 	std::vector<StoreHouse *> containerStoreHouse;
 	std::vector<Knight *> knight;
 	std::vector<Item *> menuItem;
+	std::vector<Item *> menuItemShop;
 };
 

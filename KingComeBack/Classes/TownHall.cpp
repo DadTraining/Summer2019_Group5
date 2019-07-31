@@ -82,19 +82,6 @@ void TownHall::CreateKnight()
 
 }
 
-bool TownHall::OnTouchBegin(Touch * touch, Event * unused_event)
-{
-	if (m_button->getBoundingBox().containsPoint(touch->getLocation()))
-	{
-		auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [=]()
-		{
-			// event
-		});
-		return true;
-	}
-	return false;
-}
-
 void TownHall::OnTouchEnd(Touch * touch, Event * unused_event)
 {
 }

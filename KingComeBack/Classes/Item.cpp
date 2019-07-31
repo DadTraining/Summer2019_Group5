@@ -24,27 +24,31 @@ void Item::Init(int ID)
 
 	if (ID == ID_HP)
 	{
-		m_button = ui::Button::create("potionRed.png", "");
+		m_button = ui::Button::create("item/potionRed.png", "");
 	}
 	else if (ID == ID_MP)
 	{
-		m_button = ui::Button::create("potionBlue.png", "");
+		m_button = ui::Button::create("item/potionBlue.png", "");
 	}
 	else if (ID == ID_WEAPON)
 	{
-		m_button = ui::Button::create("sword.png", "");
+		m_button = ui::Button::create("item/sword.png", "");
 		m_dame = 100;
 	}
 	else if (ID == ID_HELMET)
 	{
-		m_button = ui::Button::create("helmet.png", "");
+		m_button = ui::Button::create("item/helmet.png", "");
 		m_hp = 200;
 		m_mp = 100;
 	}
 	else if (ID == ID_ARMOR)
 	{
-		m_button = ui::Button::create("armor.png", "");
+		m_button = ui::Button::create("item/armor.png", "");
 		m_armor = 10;
+	}
+	else if (ID == ID_SHIELD)
+	{
+		m_button = ui::Button::create("item/armor.png");
 	}
 	if (ID == ID_ARMOR || ID == ID_WEAPON || ID == ID_HELMET)
 	{
@@ -105,7 +109,7 @@ void Item::ItemIsClick(int id_equip)
 	{
 		if (m_state == ID_STATE_HOME)
 		{
-			m_button->setPosition(Vec2(screenSize.width / 1.85, screenSize.height / 1.81));
+			m_button->setPosition(Vec2(screenSize.width / 1.785, screenSize.height / 1.735));
 			m_state = ID_STATE_EQUIPMENT;
 		}
 		else if (m_state == ID_STATE_EQUIPMENT)
@@ -116,9 +120,10 @@ void Item::ItemIsClick(int id_equip)
 	}
 	if (id_equip == ID_HELMET)
 	{
+
 		if (m_state == ID_STATE_HOME)
 		{
-			m_button->setPosition(Vec2(screenSize.width / 1.7, screenSize.height / 1.5));
+			m_button->setPosition(Vec2(screenSize.width / 1.642, screenSize.height / 1.39));
 			m_state = ID_STATE_EQUIPMENT;
 		}
 		else if (m_state == ID_STATE_EQUIPMENT)
@@ -131,7 +136,7 @@ void Item::ItemIsClick(int id_equip)
 	{
 		if (m_state == ID_STATE_HOME)
 		{
-			m_button->setPosition(Vec2(screenSize.width / 1.7, screenSize.height / 1.81));
+			m_button->setPosition(Vec2(screenSize.width / 1.63, screenSize.height / 1.6));
 			m_state = ID_STATE_EQUIPMENT;
 		}
 		else if (m_state == ID_STATE_EQUIPMENT)

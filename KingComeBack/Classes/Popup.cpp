@@ -29,6 +29,7 @@ namespace IMAGEPATH {
 
 	const char *BACKGROUND_IMAGE_HERO = "m_PopupHero1.png";
 	const char *BACKGROUND_IMAGE_HOUSE = "PopupHouse.png";
+	const char *BACKGROUND_IMAGE_SHOP = "popup_shop.png";
 	const char *BACKGROUND_IMAGE_TOWNHALL = "UI_of_HallTown.png";
 	const char *TOWN_HALL_BUTTON = "HallTown_button.png";
 	const char *TOWN_HALL_BUTTON_PRESS = "HallTown_button_press.png";
@@ -333,8 +334,8 @@ namespace UICustom {
 			int id = 0;
 			int ID = 9;
 
-			float posWidth = winSize.width / 2.55;
-			float posHeight = winSize.height / 1.50;
+			float posWidth = winSize.width / 2.85;
+			float posHeight = winSize.height / 1.36;
 
 			if (YesFunc) {
 
@@ -358,12 +359,12 @@ namespace UICustom {
 					if (menuItem.at(i)->GetState() == ID_STATE_HOME)
 					{
 						menuItem.at(i)->getButton()->setPosition(Vec2(posWidth, posHeight));
-						posWidth += menuItem.at(i)->getButton()->getContentSize().width;
+						posWidth += menuItem.at(i)->getButton()->getContentSize().width * 0.85;
 						menuItem.at(i)->setPrePosition(menuItem.at(i)->getButton()->getPosition());
 						if ((i + 1)% 4 == 0 && i > 0)
 						{
-							posWidth = winSize.width / 2.55;
-							posHeight -= menuItem.at(i)->getButton()->getContentSize().height;
+							posWidth = winSize.width / 2.85;
+							posHeight -= menuItem.at(i)->getButton()->getContentSize().height * 0.9;
 						}
 					}
 
@@ -555,7 +556,7 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 				Menu *menu = Menu::create(YesButton, noButton, NULL);
-				node->addChild(menu, 2);
+				//node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 1.4, winSize.height / 1.5 - intSum->getContentSize().height / 2 - 75);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
 
@@ -568,7 +569,8 @@ namespace UICustom {
 				});
 				Menu *menuAddSub = Menu::create(subButton, addButton, NULL);
 				node->addChild(menuAddSub, 2);
-				menuAddSub->setPosition(winSize.width * 0.726, winSize.height * 0.483);
+				//menuAddSub->setPosition(winSize.width * 0.726, winSize.height * 0.483);
+				menu->setPosition(winSize.width / 1.4 + intChoose->getContentSize().width / 2, winSize.height / 1.5);
 				menuAddSub->alignItemsHorizontallyWithPadding(subButton->getContentSize().width / 1.1);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}
@@ -602,6 +604,111 @@ namespace UICustom {
 		//fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
 		//fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
 		//fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+
+		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
+		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET / 2.3);
+		_bg->addChild(heading);
+		heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+		heading->enableShadow(Color4B::BLACK, Size(0, -3));
+	}
+
+	// Popup for shop
+	PopupShop * PopupShop::createAsMessage(const std::string & title, const std::string & msg)
+	{
+		return nullptr;
+	}
+	PopupShop * PopupShop::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, std::vector<Item*>& menuItem, const std::function<void()>& YesFunc)
+	{
+		return create(layer, title, msg, NULL, menuItem, YesFunc);
+	}
+	PopupShop * PopupShop::create(Layer * layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, std::vector<Item*>& menuItem, const std::function<void()>& YesFunc)
+	{
+		PopupShop *node = new (std::nothrow)PopupShop();
+		Size winSize = Director::getInstance()->getWinSize();
+		if (node && node->init())
+		{
+			if (!lbl) {
+				lbl = Label::createWithTTF(msg, FONT::GAME_FONT, FONT::DESCRIPTION_TEXT_SIZE);
+			}
+			lbl->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+			lbl->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+			lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
+			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
+
+			int heightBag = 6;
+			int widthBag = 4;
+			int id = 0;
+			int ID = 9;
+
+			float posWidth = winSize.width / 2.85;
+			float posHeight = winSize.height / 1.36;
+
+			if (YesFunc) {
+				//auto potionBlue = ui::Button::
+				// remove when out of popup
+				for (int i = 0; i < menuItem.size(); i++)
+				{
+					if (menuItem.at(i)->checkAddchild == true)
+					{
+						menuItem.at(i)->getButton()->removeFromParent();
+						menuItem.at(i)->checkAddchild = false;
+					}
+					if (menuItem.at(i)->checkAddchild == false)
+					{
+						node->addChild(menuItem.at(i)->getButton(), 2);
+						menuItem.at(i)->checkAddchild = true;
+					}
+				}
+
+				for (int i = 0; i < menuItem.size(); i++)
+				{
+					if (menuItem.at(i)->GetState() == ID_STATE_HOME)
+					{
+						menuItem.at(i)->getButton()->setPosition(Vec2(posWidth, posHeight));
+						posWidth += menuItem.at(i)->getButton()->getContentSize().width * 0.85;
+						menuItem.at(i)->setPrePosition(menuItem.at(i)->getButton()->getPosition());
+						if ((i + 1) % 4 == 0 && i > 0)
+						{
+							posWidth = winSize.width / 2.85;
+							posHeight -= menuItem.at(i)->getButton()->getContentSize().height * 0.9;
+						}
+					}
+				}
+
+				Button *equip = ui::Button::create();
+				equip->setTitleText("Equiped");
+				lbl->setPosition(winSize / 2);
+				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
+			}
+			node->addChild(lbl, 10);
+			node->initBg(lbl->getContentSize() + CONFIRM_DIALOGUE_SIZE_OFFSET, title);
+			node->autorelease();
+			return node;
+		}
+
+		CC_SAFE_DELETE(node);
+		return nullptr;
+	}
+	void PopupShop::initBg(const cocos2d::Size size, const std::string & title)
+	{
+		Size winSize = Director::getInstance()->getWinSize();
+
+		_bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_SHOP);
+		this->addChild(_bg);
+
+		_bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
+		_bg->setScale9Enabled(true);
+		//_bg->setContentSize(size);
+		//_bg->setVisible(false);
+
+		ui::ImageView *fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE_SHOP);
+		//_bg->addChild(fill);
+		fill->setColor(Color3B(210, 210, 210));
+		fill->setScale9Enabled(true);
+		fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
+		fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
+		//fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+
 
 		Label *heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
 		heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET / 2.3);

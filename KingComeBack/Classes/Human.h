@@ -17,6 +17,9 @@ public:
 	int GetColor();
 	void SetAmor(float amor);
 	float GetAmor();
+	void SetBlood(float blood);
+	float GetBlood();
+	void RedurceBlood(float);
 protected:
 	float m_blood;
 	float m_amor;

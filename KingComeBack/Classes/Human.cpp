@@ -30,3 +30,18 @@ float Human::GetAmor()
 	return m_amor;
 }
 
+void Human::SetBlood(float blood)
+{
+	m_blood = blood;
+}
+
+float Human::GetBlood()
+{
+	return m_blood;
+}
+
+void Human::RedurceBlood(float dame)
+{
+	m_blood = m_blood - dame;
+}
+

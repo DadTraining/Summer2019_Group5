@@ -8,7 +8,7 @@ dotMiniMap::dotMiniMap(Layer * layerUI, int type)
 	{
 	case Hero:
 		m_sprite = Sprite::create("dotHero.png");
-		m_sprite->setScale(0.01);
+		m_sprite->setScale(0.04);
 		break;
 		
 	case House:

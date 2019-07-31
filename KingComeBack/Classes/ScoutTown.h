@@ -23,14 +23,14 @@ public:
 	void Update(float dt) override;
 	void Shoot(Knight *);
 	void Update(float dt, Knight* h);
-
+	
 	Blood * getBlood();
 
 	Damage * getDamage();
 
 	Skill * getSkill();
 private:
-	float m_dame;
+	
 	Sprite *loadingBar;
 	Sprite *loadingBarBg;
 	GLubyte scoutTownOpacity;

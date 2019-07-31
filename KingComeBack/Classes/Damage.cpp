@@ -30,12 +30,12 @@ float Damage::getDamageNormal()
 
 float Damage::getDamageSkill_1()
 {
-	return damageSkill_1;
+	return -damageSkill_1;
 }
 
 float Damage::getDamageSkill_2()
 {
-	return damageSkill_2;
+	return -damageSkill_2;
 }
 
 void Damage::reduceDamageSkill_1(float d1)

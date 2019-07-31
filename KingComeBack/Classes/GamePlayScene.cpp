@@ -37,7 +37,7 @@ bool GamePlayScene::init()
 
 
 
-	condinatorMiniMap = Vec2(screenSize.width * 1 / 20, screenSize.height * 8 / 10);
+	condinatorMiniMap = Vec2(screenSize.width * 1 / 20, screenSize.height * 7 / 10);
 
 
 	pause = DelayTime::create(20);
@@ -209,7 +209,8 @@ void GamePlayScene::AddMap()
 	_layer2D->addChild(map);
 
 	//get contensize big map
-	condinatorBigMap = Vec2(map->getContentSize().height, map->getContentSize().width);
+	condinatorBigMap = Vec2(2*map->getContentSize().height, 2*map->getContentSize().width);
+	log("condinatorBigMap %f %f", map->getContentSize().height, map->getContentSize().width);
 	
 	// Map top
 	mapTop = TMXTiledMap::create("mapTop.tmx");
@@ -903,11 +904,17 @@ void GamePlayScene::update(float dt)
 					abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
 					) {
 					a->Update(count_bullet, b);
+
 					b->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
 					if (b->getBlood()->isDie()) {
 						b->getSprite()->setVisible(false);
+						b->getSprite()->setPosition(0,2000);
 					}
-					//a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
+					a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
+					if (a->getBlood()->isDie()) {
+						a->getSprite()->setVisible(false);
+						a->getSprite()->setPosition(2000,0);
+					}
 				}
 			}
 			
@@ -980,6 +987,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK) {
 	
 	if (dragon->getBlood()->isDie()==true) {
 		dragon->getSprite()->setVisible(false);
+		dragon->getSprite()->setPosition(Vec2(2000,0));
 	}
 }
 
@@ -1019,7 +1027,7 @@ void GamePlayScene::miniMap()
 
 	m_miniMap = Sprite::create("miniMap.png");
 	//Sprite*  minimapSprite = Sprite::create("minimap.png");
-	m_miniMap->setScale(0.7);
+	//m_miniMap->setScale(0.7);
 	//minimapSprite->setScale(0.3);
 	//minimapSprite->setPosition(50*screenSize.width / (2 * 256), 820*screenSize.height  / (2*512));
 	m_miniMap->setAnchorPoint(Vec2(0, 0));
@@ -1029,11 +1037,12 @@ void GamePlayScene::miniMap()
 
 	map_1 = Sprite::create("map1.png");
 	//Sprite*  minimapSprite = Sprite::create("minimap.png");
-	map_1->setScale(0.7);
+	//map_1->setScaleX(0.66);
+	//map_1->setScaleY(0.65);
 	map_1->setAnchorPoint(Vec2(0, 0));
 	//minimapSprite->setScale(0.3);
 	//minimapSprite->setPosition(50*screenSize.width / (2 * 256), 820*screenSize.height  / (2*512));
-	map_1->setPosition(m_miniMap->getPosition());
+	map_1->setPosition(m_miniMap->getPositionX()+10, m_miniMap->getPositionY() + 10);
 
 
 	//_layerUI->addChild(minimapSprite,11);
@@ -1266,6 +1275,7 @@ void GamePlayScene::handleJoystick()
 
 void GamePlayScene::handleDragonVsHero()
 {
+	if (dragon->getBlood()->isDie() == true) { return; }
 	switch (hero->getDirect())
 	{
 	case 0:

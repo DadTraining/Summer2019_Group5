@@ -104,7 +104,7 @@ void Knight::Init(int id)
 
 	b = new Blood(m_sprite, 400);
 
-	d = new Damage(50);
+	d = new Damage(2);
 
 	
 	//AddBlood();
@@ -248,7 +248,7 @@ Blood * Knight::getBlood()
 
 Damage * Knight::getDamage()
 {
-	return nullptr;
+	return d;
 }
 
 Skill * Knight::getSkill()

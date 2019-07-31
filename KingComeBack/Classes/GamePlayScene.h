@@ -29,7 +29,7 @@ const int BITMASK_MAP = 100;
 const int BITMASK_LAYER_UI = 101;
 
 
-#define SPEED 65
+#define SPEED 100
 
 
 

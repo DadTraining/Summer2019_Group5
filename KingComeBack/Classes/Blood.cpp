@@ -5,7 +5,7 @@
 
 
 
-Blood::Blood(Sprite * m_sprite, float bloodMax)
+Blood::Blood(Sprite * m_sprite, float bloodMax, int color)
 {
 	this->m_blood = bloodMax;
 	m_bloodMax = bloodMax;
@@ -13,6 +13,16 @@ Blood::Blood(Sprite * m_sprite, float bloodMax)
 	spriteBlood->setAnchorPoint(Vec2(0,0));
 	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height);
 	spriteBlood->setCameraMask(2);
+	
+	if (color == TEAM_BLUE)
+	{
+		spriteBlood->setColor(Color3B::GREEN);
+	}
+	if (color == TEAM_RED)
+	{
+		spriteBlood->setColor(Color3B::RED);
+	}
+	
 	m_sprite->addChild(spriteBlood,12);
 
 }

@@ -3,7 +3,7 @@
 ScoutTown::ScoutTown(Layer* scene, int id)
 {
 	this->Init(id);
-	blood = new Blood(m_sprite, 400);
+	blood = new Blood(m_sprite, 400, id);
 	d = new Damage(10);
 	
 	scene->addChild(m_sprite);
@@ -37,6 +37,10 @@ void ScoutTown::Init(int id)
 	physicBody->setCategoryBitmask(4);
 	physicBody->setCollisionBitmask(125);
 	m_sprite->setPhysicsBody(physicBody);
+	
+	SetColor(id);
+	SetAmor(AMOR_HOUSE);
+
 	this->LoadingBuild();
 
 }

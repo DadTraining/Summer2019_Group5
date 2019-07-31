@@ -238,10 +238,6 @@ void Hero::skillAnimation( Layer* l, int type)
 		break;
 	}
 	
-
-	
-
-
 }
 
 Animation * Hero::createSkillAnimation(int begin, int end)
@@ -252,7 +248,6 @@ Animation * Hero::createSkillAnimation(int begin, int end)
 
 	for (int index = begin; index <= end; index++)
 	{
-
 
 		char buffer[20] = { 0 };
 

@@ -1170,13 +1170,24 @@ void GamePlayScene::update(float dt)
 		}
 	}
 
-	if (m_knightRed.empty())
+	if (!m_knightRed.empty())
 	{
 		for (auto k : m_knightRed)
 		{
 			if (k->GetBlood() <= 0)
 			{
 				RemoveKnightRed(k);
+				break;
+			}
+		}
+	}
+	if (!m_knightRedMove.empty())
+	{
+		for (auto k : m_knightRedMove)
+		{
+			if (k->GetBlood() <= 0)
+			{
+				RemoveKnightRedMove(k);
 				break;
 			}
 		}
@@ -1333,8 +1344,8 @@ void GamePlayScene::AddKnightRed()
 		knightRed->getSprite()->setCameraMask(2);
 		//this->getContentSize()
 		int dir = rand() % (50 - 10 + 1) + 10;
-		float x = mapTop->getPosition().x + mapTop->getContentSize().width * 2 / 3 + dir;
-		float y = mapTop->getPosition().y + mapTop->getContentSize().height * 2 / 3 + dir;
+		float x = mapTopRight->getPosition().x + mapTopRight->getContentSize().width * 7 / 9 + dir;
+		float y = mapTopRight->getPosition().y + mapTopRight->getContentSize().height * 7 / 9 + dir;
 		knightRed->SetPositionKnight(Vec2(x, y));
 		knightRed->getSprite()->getPhysicsBody()->setGroup(i);
 		m_knightRed.push_back(knightRed);
@@ -1432,6 +1443,24 @@ void GamePlayScene::RemoveKnightBlue(Knight * blue)
 		}
 	}
 }
+
+void GamePlayScene::RemoveKnightRedMove(Knight * k)
+{
+	if (!knight.empty())
+	{
+		for (auto it = m_knightRedMove.begin(); it != m_knightRedMove.end(); )
+		{
+			if ((*it) == k)
+			{
+				m_knightRedMove.erase(it);
+				break;
+			}
+			++it;
+		}
+	}
+}
+
+
 
 void GamePlayScene::RemoveKnightRed(Knight* red)
 {

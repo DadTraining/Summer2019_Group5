@@ -29,25 +29,21 @@ public:
 	
 
 	int getDirect();
-
 	void setDirect(int);
-
 	void getAttack(int);
-
 	Vec2  getPositionHero();
 
-
 	void skillAnimation(Layer *, int );
-
 	Animation * createSkillAnimation( int begin, int end);
 
 	void diedHero(int direct);
 
 	Blood * getBlood();
-
 	void createBloodSprite(Layer *);
-
 	void handleBloodBar();
+
+	float getStrength();
+	void setStrength(float _strength);
 
 	bool getState();
 	void setState(bool);
@@ -58,7 +54,6 @@ public:
 private:
 	
 	Blood * blood;
-
 	const int BITMASK_LAYER_UI = 101;
 	Size screenSize;
 	cocos2d::Animation * animaton;
@@ -76,5 +71,5 @@ private:
 
 	Damage * damage;
 
-	
+	float m_strength;
 };

@@ -225,6 +225,7 @@ private:
 	std::vector<Knight *> knight;
 	std::vector<Item *> menuItem;
 	std::vector<Item *> menuItemShop;
+	Vector<MenuItemLabel *> menuItemLabelAtribute;
 	float countSkill_1 =0.0, countSkill_2 =0.0;
 
 	//---dragon----

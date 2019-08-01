@@ -57,6 +57,8 @@ bool GamePlayScene::init()
 
 	dragon->getSprite()->setPosition(1500,2000);
 
+	AddHouseDragon();
+
 	// add camera
 	this->AddCameraUSER1();
 
@@ -690,7 +692,7 @@ void GamePlayScene::AddEventForPopupDecorateHouse()
 
 	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyHouseDecorate->setVisible(false);
-		newDecorateHouse = new HouseDecorate(_layer2D, TEAM_BLUE);
+		newDecorateHouse = new HouseDecorate(_layer2D, TEAM_RED);
 		newDecorateHouse->GetButton()->setPosition(_touch->getLocation()
 			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
 		newDecorateHouse->GetButton()->setCameraMask(2);
@@ -1392,13 +1394,26 @@ void GamePlayScene::RedurceBloodBlueTeam(std::vector<ScoutTown*> scoutTown, std:
 	}
 	if (heo->GetPosition().distance(vec) <= DRAGON_RANGER_DAME)
 	{
-		float d = heo->GetPosition().distance(vec);
-		if (d <= DRAGON_DAME)
-		{
-			heo->getBlood()->reduceBlood(dame - heo->GetAmor());
-		}
+	
+		heo->getBlood()->reduceBlood(dame - heo->GetAmor());
 	}
 	m_stateReduce = false;
+}
+
+void GamePlayScene::AddHouseDragon()
+{
+
+	m_houseDragon = Sprite::create("DragonHouse.png");
+	m_houseDragon->setPosition(mapTopRight->getPosition() + mapTopRight->getContentSize() * 8 / 9);
+	m_houseDragon->setScale(1);
+	m_houseDragon->setCameraMask(2);
+	
+	auto body = PhysicsBody::create();
+	body->setCategoryBitmask(4);
+	body->setDynamic(false);
+	m_houseDragon->setPhysicsBody(body);
+
+	_layer2D->addChild(m_houseDragon, 10);
 }
 
 void GamePlayScene::handleJoystick()

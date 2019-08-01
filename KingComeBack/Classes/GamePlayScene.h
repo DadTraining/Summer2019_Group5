@@ -90,9 +90,6 @@ public:
 
 	void heroAttack(int, int);
 
-	void createButtonAttack();
-
-
 	void createButton_Skill_1();
 	void createButton_Skill_2();
 
@@ -112,9 +109,12 @@ public:
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
 	//-- Dragon --
-	void DragonCheck(std::vector<ScoutTown*>, std::vector<TownHall*>,std::vector<StoreHouse *>, std::vector<Knight *>, Hero*);
+	void DragonCheck(std::vector<ScoutTown*>, std::vector<TownHall*>,std::vector<StoreHouse *>, 
+		std::vector<Knight *>, Hero*);
 	void DragonAttack(Human* hm, float dt);
-	void RedurceBloodBlueTeam(std::vector<ScoutTown*>, std::vector<TownHall*>, std::vector<StoreHouse *>, std::vector<Knight *>, Hero*, Vec2);
+	void RedurceBloodBlueTeam(std::vector<ScoutTown*>, std::vector<TownHall*>, 
+		std::vector<StoreHouse *>, std::vector<Knight *>, Hero*, Vec2);
+	void AddHouseDragon();
 
 	//---------------------
 	void handleJoystick();
@@ -227,5 +227,6 @@ private:
 	Human *m_humanDragonAttack = nullptr;
 	bool m_stateReduce = false;
 	Vec2 m_vecPosition = Vec2::ZERO;
+	Sprite* m_houseDragon;
 };
 

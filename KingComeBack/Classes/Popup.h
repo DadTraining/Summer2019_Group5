@@ -119,9 +119,9 @@ namespace UICustom {
 	{
 	public:
 		static PopupShop* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupShop* createAsConfirmDialogue(Layer *layer, const std::string &title, const std::string &msg,
+		static PopupShop* createAsConfirmDialogue(int &m_gold, const std::string &title, const std::string &msg,
 			std::vector<Item *> &menuItem, std::vector<Item *> &menuItemShop,const std::function<void()> &YesFunc);
-		static PopupShop* create(Layer *layer, const std::string &title, const std::string &msg,
+		static PopupShop* create(int &m_gold, const std::string &title, const std::string &msg,
 			cocos2d::Label *lbl, std::vector<Item *> &menuItem, std::vector<Item *>& menuItemShop, const std::function<void()> &YesFunc);
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);

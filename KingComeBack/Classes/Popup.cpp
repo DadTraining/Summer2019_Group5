@@ -715,12 +715,12 @@ namespace UICustom {
 	{
 		return nullptr;
 	}
-	PopupShop * PopupShop::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, std::vector<Item*>& menuItem, 
+	PopupShop * PopupShop::createAsConfirmDialogue(int &m_gold, const std::string & title, const std::string & msg, std::vector<Item*>& menuItem,
 		std::vector<Item *> &menuItemShop, const std::function<void()>& YesFunc)
 	{
-		return create(layer, title, msg, NULL, menuItem, menuItemShop, YesFunc);
+		return create(m_gold, title, msg, NULL, menuItem, menuItemShop, YesFunc);
 	}
-	PopupShop * PopupShop::create(Layer * layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, std::vector<Item*>& menuItem,
+	PopupShop * PopupShop::create(int &_gold, const std::string & title, const std::string & msg, cocos2d::Label * lbl, std::vector<Item*>& menuItem,
 		std::vector<Item *>& menuItemShop, const std::function<void()>& YesFunc)
 	{
 		PopupShop *node = new (std::nothrow)PopupShop();
@@ -778,10 +778,11 @@ namespace UICustom {
 							{
 								for (int i = 0; i < menuItemShop.size(); i++)
 								{
-									if (button->getTag() == menuItemShop.at(i)->getButton()->getTag())
+									if (button->getTag() == menuItemShop.at(i)->getButton()->getTag() && menuItemShop.at(i)->getGoldItem() <= _gold)
 									{
 										
 										auto item = new Item(menuItemShop.at(i)->GetId(), ID_STATE_HOME);
+										_gold -= item->getGoldItem();
 										item->getButton()->retain();
 										menuItem.push_back(item);
 									}

@@ -27,7 +27,9 @@ void Item::Init(int _ID, int ID_state)
 	{
 		m_button = ui::Button::create("item/potionRed.png", "");
 		m_hp = 1000;
+		m_goldItem = 100;
 		m_button->setTag(ID_TAG_HP);
+
 	}
 	else if (ID == ID_MP)
 	{
@@ -39,6 +41,7 @@ void Item::Init(int _ID, int ID_state)
 		m_button = ui::Button::create("item/sword.png", "");
 		m_button->setTag(ID_TAG_WEPON);
 
+		m_goldItem = 2000;
 		m_dame = 100;
 	}
 	else if (ID == ID_HELMET)
@@ -46,6 +49,7 @@ void Item::Init(int _ID, int ID_state)
 		m_button = ui::Button::create("item/helmet.png", "");
 		m_button->setTag(ID_TAG_HELMET);
 
+		m_goldItem = 1000;
 		m_hp = 200;
 	}
 	else if (ID == ID_ARMOR)
@@ -53,13 +57,15 @@ void Item::Init(int _ID, int ID_state)
 		m_button = ui::Button::create("item/armor.png", "");
 		m_button->setTag(ID_TAG_ARMOR);
 
+		m_goldItem = 700;
 		m_armor = 10;
 	}
 	else if (ID == ID_SHIELD)
 	{
 		m_button = ui::Button::create("item/shield.png");
+		m_goldItem = 1500;
+		m_armor = 100;
 		m_button->setTag(ID_TAG_SHIELD);
-
 	}
 	if (ID == ID_ARMOR || ID == ID_WEAPON || ID == ID_HELMET)
 	{
@@ -112,6 +118,14 @@ float Item::getStrength()
 {
 	return m_strength;
 }
+int Item::getGoldItem()
+{
+	return m_goldItem;
+}
+void Item::setGoldItem(int _gold)
+{
+	m_goldItem = _gold;
+}
 int Item::GetState()
 {
 	return m_state;
@@ -148,7 +162,6 @@ ui::Button * Item::getButton()
 
 void Item::retain()
 {
-	delete this;
 }
 
 void Item::ItemIsClick(int id_equip)
@@ -166,7 +179,7 @@ void Item::ItemIsClick(int id_equip)
 			m_state = ID_STATE_HOME;
 		}
 	}
-	if (id_equip == ID_HELMET)
+	else if (id_equip == ID_HELMET)
 	{
 
 		if (m_state == ID_STATE_HOME)
@@ -180,11 +193,24 @@ void Item::ItemIsClick(int id_equip)
 			m_state = ID_STATE_HOME;
 		}
 	}
-	if (id_equip == ID_ARMOR)
+	else if (id_equip == ID_ARMOR)
 	{
 		if (m_state == ID_STATE_HOME)
 		{
 			m_button->setPosition(Vec2(screenSize.width / 1.63, screenSize.height / 1.6));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	else if (id_equip == ID_SHIELD)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.58, screenSize.height / 1.6));
 			m_state = ID_STATE_EQUIPMENT;
 		}
 		else if (m_state == ID_STATE_EQUIPMENT)

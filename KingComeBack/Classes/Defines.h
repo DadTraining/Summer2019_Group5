@@ -21,6 +21,7 @@
 
 //-----ranger attack--------
 #define RANGER_ATTACK 300
+#define RANGER_ATTACK_SCOUT 200
 
 //-----Tag Animation--------
 #define TAG_ACTION_WALK 0
@@ -64,4 +65,7 @@
 //-----Tag Child Sprite-------
 #define TAG_SPRITE_BLOOD 0
 
+//-----ID Human--------------
+#define ID_PERSON 0
+#define ID_HOME 1
 #endif

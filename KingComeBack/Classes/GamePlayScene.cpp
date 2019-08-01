@@ -1,5 +1,5 @@
-#include"GamePlayScene.h"
-#include<string.h>
+#include "GamePlayScene.h"
+#include <string.h>
 
 int GamePlayScene::m_gold = 10000;
 
@@ -430,9 +430,10 @@ void GamePlayScene::AddButtonAttack()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			//this->AddPopupHouse();
-			/*if ( hero->getState() == true) {
+			if ( hero->getState() == true && countNormal >1.0) {
 				heroAttack(hero->getDirect(), 0);
-			}	*/	
+				countNormal = 0.0;
+			}	
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -441,7 +442,6 @@ void GamePlayScene::AddButtonAttack()
 		}
 	});
 	_layerUI->addChild(button);
-
 
 	auto button1 = ui::Button::create("skill_1.png", "skill_1.png");
 	//button->setTitleText("Hero");
@@ -453,11 +453,11 @@ void GamePlayScene::AddButtonAttack()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			//this->AddPopupHouse();
-			/*if (countSkill_1 > 4.0 && hero->getState()==true ) {
+			if (countSkill_1 > 4.0 && hero->getState() == true) {
 				heroAttack(hero->getDirect(), 1);
 				countSkill_1 = 0.0;
-			}*/
-			
+
+			}
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -477,11 +477,11 @@ void GamePlayScene::AddButtonAttack()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			//this->AddPopupHouse();
-			/*if (countSkill_2 > 6.0 && hero->getState() == true) {
+			if (countSkill_2 > 6.0 && hero->getState() == true) {
 				heroAttack(hero->getDirect(), 2);
 				countSkill_2 = 0.0;
 			}
-			*/
+			
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -549,8 +549,6 @@ void GamePlayScene::AddEventForPopupTownHall()
 		auto copyHallTown = Sprite::create("HallTown.png");
 		copyHallTown->setOpacity(50);
 		_layerUI->addChild(copyHallTown);
-
-
 		//Add event touch
 		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
@@ -635,9 +633,12 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-			copyScoutTown->setVisible(false);
 
-			newScoutTown = new ScoutTown(_layer2D, TEAM_BLUE);
+		copyScoutTown->setVisible(false);
+		newScoutTown = new ScoutTown(_layer2D, TEAM_BLUE);
+
+
+
 
 			m_listScoutTowns.push_back(newScoutTown);
 			newScoutTown->getSprite()->setPosition(_touch->getLocation()
@@ -687,7 +688,6 @@ void GamePlayScene::AddEventForPopupMainHouse()
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyMainHouse->setVisible(false);
 
-
 			newMainHouse = new MainHouse(_layer2D, 2);
 			newMainHouse->GetButton()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
@@ -700,6 +700,7 @@ void GamePlayScene::AddEventForPopupMainHouse()
 
 void GamePlayScene::AddEventForPopupDecorateHouse()
 {
+
 	if (m_gold >= 1000)
 	{
 		m_gold -= 1000;
@@ -723,7 +724,6 @@ void GamePlayScene::AddEventForPopupDecorateHouse()
 
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 			copyHouseDecorate->setVisible(false);
-
 			auto decorateHouse = new HouseDecorate(_layer2D, 2);
 			decorateHouse->GetButton()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
@@ -733,6 +733,7 @@ void GamePlayScene::AddEventForPopupDecorateHouse()
 		};
 		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 	}
+
 }
 
 void GamePlayScene::AddEventForPopupStoreHouse()
@@ -955,6 +956,7 @@ void GamePlayScene::update(float dt)
 
 	countSkill_1 += dt;
 	countSkill_2 += dt;
+	countNormal += dt;
 	if (newScoutTown != nullptr)
 	{
 		newScoutTown->Update(dt);
@@ -1046,9 +1048,13 @@ void GamePlayScene::update(float dt)
 
 	this->MoveAttack(m_knightRed, knight);
 
+
 	labelGold->setString(std::to_string(m_gold));
 
+
 	this->ChekAttackKnight(m_knightRed, knight, dt);
+
+
 
 	// code duoc
 	//count_dragon += dt;
@@ -1087,40 +1093,10 @@ void GamePlayScene::update(float dt)
 	dotHero->VisiableDot(true);
 //	dot->setPosition(hero->getPositionHero().x-100, hero->getPositionHero().y+200);
 	HandleMinimap();
-	count_bullet += dt;
 	
-	//if (count_bullet>0.4 && m_listScoutTowns.size()>0 && m_knightRed.size()>0) {
-	//	for (auto a : m_listScoutTowns) {
-	//		if (abs(a->getSprite()->getPositionX() - dragon->getSprite()->getPositionX())<200 &&
-	//			abs(a->getSprite()->getPositionY() - dragon->getSprite()->getPositionY())<200) {
-	//			a->Update(count_bullet, dragon);
-	//			dragon->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
-	//		}
-	//		/*for (auto b: m_knightRed) {
-	//			if (abs(a->getSprite()->getPositionX() - b->getSprite()->getPositionX())<200 &&
-	//				abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
-	//				) {
-	//				a->Update(count_bullet, b);
-	//				
-	//				b->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
-	//				b->MoveRed(a->getSprite()->getPosition());
-	//				if (b->getBlood()->isDie()) {
-	//					b->getSprite()->setVisible(false);
-	//					b->getSprite()->setPosition(0,-2000);
-	//				}
-	//				a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
-	//				if (a->getBlood()->isDie()) {
-	//					a->getSprite()->setVisible(false);
-	//					a->getDotMiniMap()->getSprite()->setVisible(false);
-	//					a->getSprite()->setPosition(-2000,0);
-	//				}
-	//			}
-	//		}*/
-	//		
-	//	}
-	//	
-	//	count_bullet = 0;
-	//}
+	//-----Scout Town Attack--------------
+	ScoutAttack(m_listScoutTowns, m_knightRed, m_knightRedMove, dt);
+
 	//hero->setBlood(-dt);
 
 	if (hero->getBlood()->getBlood()<10 && hero->getState() == true) {
@@ -1210,76 +1186,112 @@ void GamePlayScene::update(float dt)
 void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	if (type == 0) {
 		hero->getAttack(STATE_ATTACK);
-		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 160 &&
-			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 160) {
-			//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - dragon->GetAmor());
-			//handleDragonVsHero();
-			//	dragon->handleBloodBar();
+
+		if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
+		{
+			dragon->SetScaleBlood((hero->getDamage()->getDamageNormal() - dragon->GetAmor()));
+
 		}
+
 		else
 		{
 			for (auto b : m_knightRed)
 			{
 				if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 					abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-					//b->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					break;
+				}
+			}
+
+			for (auto c : m_knightRedMove)
+			{
+				if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
+					abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
+					c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
 					break;
 				}
 			}
 		}
-		
-		//	mCurrentTouch.x+=100;
-	}
-	if(type == 1){
-		
-			hero->skillAnimation(_layer2D, 1);
-			if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 64 &&
-				abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 64) {
-				//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
 
-//				handleDragonVsHero();
-				//	dragon->handleBloodBar();
+	}
+	if (type == 1) {
+
+		hero->skillAnimation(_layer2D, 1);
+		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
+			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
+			//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
+			dragon->SetScaleBlood(hero->getDamage()->getDamageNormal() - dragon->GetAmor());
+			if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
+			{
+				dragon->SetScaleBlood((hero->getDamage()->getDamageSkill_1() - dragon->GetAmor()));
+
 			}
-//			handleDragonVsHero();
-	
-	
+			else
+			{
+				for (auto b : m_knightRed)
+				{
+					if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+						abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+						b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+						break;
+					}
+				}
+
+				for (auto c : m_knightRedMove)
+				{
+					if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
+						abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
+						c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+						break;
+					}
+				}
+
+			}
+
+
+		}
 	}
 	if (type == 2) {
-		//if (mButtonSkill_1->getBoundingBox().containsPoint(mCurrentTouch)) {
-			//hero->skillAnimation(_layer2D, 2);
-			//if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 64 &&
-			//	abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 64) {
-			//	dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_2());
-			//	//handleDragonVsHero();
-			//	//	dragon->handleBloodBar();
-			//}
-			//handleDragonVsHero();
-	
-	}
-	
-	//if (dragon->getBlood()->isDie()==true) {
-	//	dragon->getSprite()->setVisible(false);
-	//	dragon->getSprite()->setPosition(Vec2(2000,0));
-	//}
+
+			hero->skillAnimation(_layer2D, 2);
+
+			if (hero->GetPosition().distance(dragon->GetPosition()) <= 200
+				&& hero->getDirect() - hero->checkTrueSkill_2(Vec2(dragon->getSprite()->getPosition().x, dragon->getSprite()->getPosition().y)) <= 2)
+			{
+				dragon->SetScaleBlood((hero->getDamage()->getDamageSkill_2() - dragon->GetAmor()));
+
+			}
+			else
+			{
+				for (auto b : m_knightRed)
+				{
+					if (hero->GetPosition().distance(b->GetPosition()) <= 200
+						)
+					{
+						b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+						break;
+					}
+				}
+
+				for (auto c : m_knightRedMove)
+				{
+					if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
+						abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
+						c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+						break;
+					}
+				}
+			}
+
+		}
+
+
 }
 
-void GamePlayScene::createButton_Skill_1()
-{
-	mButtonSkill_1 = Sprite::create("skill_1.png");
-	mButtonSkill_1->setScale(0.3);
-	mButtonSkill_1->setPosition(screenSize.width *0.87, screenSize.height * 0.35);
-	_layerUI->addChild(mButtonSkill_1);
 
-}
 
-void GamePlayScene::createButton_Skill_2()
-{
-	mButtonSkill_2 = Sprite::create("skill_2.png");
-	mButtonSkill_2->setScale(0.3);
-	mButtonSkill_2->setPosition(screenSize.width *0.82, screenSize.height * 0.18);
-	_layerUI->addChild(mButtonSkill_2);
-
-}
 
 void GamePlayScene::miniMap()
 {
@@ -1295,7 +1307,7 @@ void GamePlayScene::miniMap()
 	
 	map_1->setAnchorPoint(Vec2(0, 0));
 	
-	map_1->setPosition(m_miniMap->getPositionX()+10, m_miniMap->getPositionY() + 10);
+	map_1->setPosition(m_miniMap->getPositionX()+5, m_miniMap->getPositionY() + 5);
 
 
 	//_layerUI->addChild(minimapSprite,11);
@@ -1569,6 +1581,59 @@ void GamePlayScene::KnightMoveAttack(std::vector<Knight*> red)
 	}
 }
 
+void GamePlayScene::ScoutAttack(std::vector<ScoutTown*> m_listScoutTowns, std::vector<Knight*> m_knightRed, std::vector<Knight*> m_knightRedMove, float dt)
+{
+	count_bullet += dt;
+	if (count_bullet>0.4 && !m_listScoutTowns.empty())
+	{
+		for (auto a : m_listScoutTowns)
+		{
+			if (a->GetPosition().distance(dragon->GetPosition()) <= RANGER_ATTACK_SCOUT)
+			{
+				a->Update(count_bullet, dragon);
+				dragon->SetScaleBlood(a->getDamage()->getDamageNormal() - dragon->GetAmor());
+			}
+			else 
+			{
+				bool cur = false;
+				if (!m_knightRedMove.empty())
+				{
+					
+					for (auto b : m_knightRedMove)
+					{
+						if (a->GetPosition().distance(b->GetPosition()) <= RANGER_ATTACK_SCOUT)
+						{
+							a->Update(count_bullet, b);
+
+							b->SetScaleBlood(a->getDamage()->getDamageNormal() - b->GetAmor());
+							cur = true;
+						}
+					}
+				}
+				if (!cur)
+				{
+					if (!m_knightRed.empty())
+					{
+						for (auto b : m_knightRed)
+						{
+							if (a->GetPosition().distance(b->GetPosition()) <= RANGER_ATTACK_SCOUT)
+							{
+								a->Update(count_bullet, b);
+
+								b->SetScaleBlood(a->getDamage()->getDamageNormal() - b->GetAmor());
+							}
+						}
+					}
+				}
+				
+			}
+			
+
+		}
+		count_bullet = 0;
+	}
+}
+
 void GamePlayScene::handleJoystick()
 {
 	if (leftJoystick->getVelocity().x > 0.866 && leftJoystick->getVelocity().y > -0.5 && leftJoystick->getVelocity().y < 0.5) {
@@ -1713,14 +1778,11 @@ void GamePlayScene::handleJoystick()
 void GamePlayScene::handleDragonVsScout()
 {
 	
-	
-
-
 }
 
 void GamePlayScene::handleDragonVsHero()
 {
-	if (dragon->getBlood()->isDie() == true) { return; }
+	//if (dragon->getBlood()->isDie() == true) { return; }
 	switch (hero->getDirect())
 	{
 	case 0:

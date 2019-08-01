@@ -87,7 +87,7 @@ float Blood::getGreen()
 
 void Blood::reduceBlood(float db)
 {
-	this->m_blood += db;
+	this->m_blood -= db;
 	if (isDragon == false) {
 		handleBar();
 	}

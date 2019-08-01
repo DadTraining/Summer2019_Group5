@@ -13,6 +13,7 @@
 #include "Dragon.h"
 #include "Knight.h"
 #include"HudGold.h"
+#include "HouseDragon.h"
 
 
 #include "Bullet.h"
@@ -227,6 +228,6 @@ private:
 	Human *m_humanDragonAttack = nullptr;
 	bool m_stateReduce = false;
 	Vec2 m_vecPosition = Vec2::ZERO;
-	Sprite* m_houseDragon;
+	HouseDragon* m_houseDragon;
 };
 

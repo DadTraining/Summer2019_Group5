@@ -7,10 +7,6 @@ Dragon::Dragon(Layer * _layer2D, int id)
 	screenSize = Director::getInstance()->getVisibleSize();
 	Init(id);
 	_layer2D->addChild(m_sprite,10);
-
-
-	//blood = new Blood(m_sprite, 1000, TEAM_RED);
-	//damage = new Damage(100);
 	
 	AnimateStand();
 	createFire(_layer2D);
@@ -92,6 +88,7 @@ void Dragon::createFire(Layer * _layer2D)
 {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("fire.plist", "fire.png");
 	fire = Sprite::createWithSpriteFrameName("red00.png");
+	fire->setAnchorPoint(Vec2(0.5, 0));
 	fire->setPosition(m_sprite->getPosition());
 	fire->setCameraMask(2);
 	fire->setVisible(false);

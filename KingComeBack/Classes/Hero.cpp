@@ -168,8 +168,6 @@ void Hero::skillAnimation( Layer* l, int type)
 		skill_1 = Sprite::createWithSpriteFrameName("skill1_064.png");
 		skill_1->setScale(1);
 		skill_1->setPosition(m_sprite->getPosition());
-		//skill_1->setPosition(Vec2(m_sprite->getPosition().x + m_sprite->getContentSize().width / 2,
-		//	m_sprite->getPosition().y + m_sprite->getContentSize().height / 2));
 		skill_1->setCameraMask(2);
 		l->addChild(skill_1);
 		auto animationSkill_1 = createSkillAnimation(64, 81);
@@ -186,7 +184,6 @@ void Hero::skillAnimation( Layer* l, int type)
 		skill_2->setScale(1);
 		skill_2->setCameraMask(2);
 		l->addChild(skill_2);
-	//	skill_2->setVisible();
 
 		switch (direct)
 		{

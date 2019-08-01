@@ -1058,6 +1058,7 @@ void GamePlayScene::update(float dt)
 			containerStoreHouse, knight, hero, m_vecPosition);
 	}
 
+	// Remove Knight Death
 	for (auto k : knight)
 	{
 		if (k->GetBlood() <= 0)
@@ -1432,18 +1433,8 @@ void GamePlayScene::RedurceBloodBlueTeam(std::vector<ScoutTown*> scoutTown, std:
 
 void GamePlayScene::AddHouseDragon()
 {
-
-	m_houseDragon = Sprite::create("DragonHouse.png");
-	m_houseDragon->setPosition(mapTopRight->getPosition() + mapTopRight->getContentSize() * 8 / 9);
-	m_houseDragon->setScale(1);
-	m_houseDragon->setCameraMask(2);
-	
-	auto body = PhysicsBody::create();
-	body->setCategoryBitmask(4);
-	body->setDynamic(false);
-	m_houseDragon->setPhysicsBody(body);
-
-	_layer2D->addChild(m_houseDragon, 10);
+	m_houseDragon = new HouseDragon(_layer2D, TEAM_RED);
+	m_houseDragon->SetPosition(mapTopRight->getPosition() + mapTopRight->getContentSize() * 8 / 9);
 }
 
 void GamePlayScene::handleJoystick()

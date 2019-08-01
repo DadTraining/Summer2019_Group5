@@ -624,12 +624,13 @@ void GamePlayScene::AddEventForPopupScoutTown()
 			copyScoutTown->setPosition(_touch->getLocation());
 		};
 
+
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyScoutTown->setVisible(false);
 		newScoutTown = new ScoutTown(_layer2D, TEAM_BLUE);
 
 
-			
+
 			m_listScoutTowns.push_back(newScoutTown);
 			newScoutTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
@@ -725,7 +726,6 @@ void GamePlayScene::AddEventForPopupDecorateHouse()
 		};
 		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 	}
-	
 
 }
 
@@ -1003,10 +1003,12 @@ void GamePlayScene::update(float dt)
 
 	this->MoveAttack(m_knightRed, knight);
 
+
 	labelGold->setString(std::to_string(m_gold));
 
 
 	this->ChekAttackKnight(m_knightRed, knight, dt);
+
 
 
 	// code duoc
@@ -1123,6 +1125,15 @@ void GamePlayScene::update(float dt)
 		this->RedurceBloodBlueTeam(m_listScoutTowns, containerHallTown,
 			containerStoreHouse, knight, hero, m_vecPosition);
 	}
+
+	//-----Create knight red attack-----
+	m_houseDragon->Update(dt);
+	if (m_houseDragon->GetIsNewKnight())
+	{
+		m_knightRedMove.push_back(m_houseDragon->GetKnight());
+		m_houseDragon->SetIsNewKnight(false);
+	}
+
 
 	// Remove Knight Death
 	for (auto k : knight)
@@ -1504,6 +1515,14 @@ void GamePlayScene::AddHouseDragon()
 {
 	m_houseDragon = new HouseDragon(_layer2D, TEAM_RED);
 	m_houseDragon->SetPosition(mapTopRight->getPosition() + mapTopRight->getContentSize() * 8 / 9);
+}
+
+void GamePlayScene::KnightMoveAttack(std::vector<Knight*> red)
+{
+	for (auto k : red)
+	{
+		k->Move(hero->GetPosition());
+	}
 }
 
 void GamePlayScene::handleJoystick()

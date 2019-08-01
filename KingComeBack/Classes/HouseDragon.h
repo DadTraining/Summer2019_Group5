@@ -1,12 +1,16 @@
 #pragma once
 #include "Home.h"
 #include "Defines.h"
+#include "Knight.h"
 
 USING_NS_CC;
 
 class HouseDragon : public Home
 {
 private:
+	Layer* _layer2D;
+	Knight *m_knight;
+	bool isNewKnight = false;
 public:
 	HouseDragon(Layer* scene, int id);
 	~HouseDragon();
@@ -20,4 +24,7 @@ public:
 	void SetScaleBlood(float dame) override;
 
 	void SetPosition(Vec2 vec);
+	Knight* GetKnight();
+	void SetIsNewKnight(bool);
+	bool GetIsNewKnight();
 };

@@ -1057,6 +1057,27 @@ void GamePlayScene::update(float dt)
 		this->RedurceBloodBlueTeam(m_listScoutTowns, containerHallTown,
 			containerStoreHouse, knight, hero, m_vecPosition);
 	}
+
+	for (auto k : knight)
+	{
+		if (k->GetBlood() <= 0)
+		{
+			RemoveKnightBlue(k);
+			break;
+		}
+	}
+
+	if (m_knightRed.empty())
+	{
+		for (auto k : m_knightRed)
+		{
+			if (k->GetBlood() <= 0)
+			{
+				RemoveKnightRed(k);
+				break;
+			}
+		}
+	}
 }
 
 void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
@@ -1238,7 +1259,15 @@ void GamePlayScene::ChekAttackKnight(std::vector<Knight*> red, std::vector<Knigh
 			if (_distance <= knightBlue->GetConTentSize().width)
 			{
 				knightRed->Attack(knightBlue,dt);
+				if (knightRed->GetBlood() <= 0)
+				{
+					RemoveKnightRed(knightRed);
+				}
 				knightBlue->Attack(knightRed, dt);
+				if (knightBlue->GetBlood() <= 0)
+				{
+					RemoveKnightBlue(knightBlue);
+				}
 				
 				//break;
 			}

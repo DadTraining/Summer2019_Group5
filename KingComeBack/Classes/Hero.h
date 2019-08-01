@@ -4,6 +4,7 @@
 #include "Damage.h"
 #include "Skill.h"
 #include "Blood.h"
+
 #define DISTANCE_SKILL_1 100
 
 #define DISTANCE_SKILL_2 200

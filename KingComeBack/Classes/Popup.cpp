@@ -30,7 +30,7 @@ namespace IMAGEPATH {
 	const char *BACKGROUND_IMAGE_HERO = "m_PopupHero1.png";
 	const char *BACKGROUND_IMAGE_HOUSE = "PopupHouse.png";
 	const char *BACKGROUND_IMAGE_SHOP = "popup_shop.png";
-	const char *BACKGROUND_IMAGE_TOWNHALL = "UI_of_HallTown.png";
+	const char *BACKGROUND_IMAGE_TOWNHALL = "popup_create_knight.png";
 	const char *TOWN_HALL_BUTTON = "HallTown_button.png";
 	const char *TOWN_HALL_BUTTON_PRESS = "HallTown_button_press.png";
 	const char *SCOUT_TOWN_BUTTON = "ScoutTown2D_button.png";
@@ -41,6 +41,8 @@ namespace IMAGEPATH {
 	const char *HOUSE_STORE_BUTTON_PRESS = "StoreHouse_button_press.png";
 	const char *HOUSE_DECORATE_BUTTON = "HouseDecorate_button.png";
 	const char *HOUSE_DECORATE_BUTTON_PRESS = "HouseDecorate_button_press";
+	const char *GOLD_MINE_BUTTON = "gold_mine_button.png";
+	const char *GOLD_MINE_BUTTON_PRESS = "gold_mine_button_press.png";
 	const char *AXE_ITEM = "axe.png";
 	const char *KNIHT_ITEM = "itemKnight.png";
 	const char *BACKGROUND_POPUP_CHOOSE_KNIGHT = "Popup_choose_knight.png";
@@ -239,7 +241,7 @@ namespace UICustom {
 					mainHouse();
 					node->dismiss(true);
 				});
-				MenuItemImage *houseDecorate = MenuItemImage::create(IMAGEPATH::HOUSE_DECORATE_BUTTON, IMAGEPATH::HOUSE_DECORATE_BUTTON_PRESS, [=](Ref *sender) {
+				MenuItemImage *houseDecorate = MenuItemImage::create(IMAGEPATH::GOLD_MINE_BUTTON, IMAGEPATH::GOLD_MINE_BUTTON_PRESS, [=](Ref *sender) {
 					DecorateHouse();
 					node->dismiss(true);
 				});
@@ -262,8 +264,70 @@ namespace UICustom {
 				Menu *menu = Menu::create(houseMain, hallTownImage, StoreHouse, scoutTownImage, houseDecorate,NULL);
 				node->addChild(menu, 2);
 				menu->setPosition(winSize.width / 2, winSize.height / 1.5 - lbl->getContentSize().height / 2 - 75);
-				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
+				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 1.9);
 
+				// Menu label
+				Label *mainHouseLabel = Label::createWithTTF("Hall Town", "fonts/Marker Felt.ttf", 20);
+				Label *hallTownLabel = Label::createWithTTF("Barrack", "fonts/Marker Felt.ttf", 20);
+				Label *storeHouseLabel = Label::createWithTTF("      Shop", "fonts/Marker Felt.ttf", 20);
+				Label *scoutTownLabel = Label::createWithTTF("Scout Town", "fonts/Marker Felt.ttf", 20);
+				Label *decorateHouseLabel	 = Label::createWithTTF("Gold mine", "fonts/Marker Felt.ttf", 20);
+
+				MenuItemLabel *mainHouseLabelItem = MenuItemLabel::create(mainHouseLabel);
+				MenuItemLabel *hallTownLabelItem = MenuItemLabel::create(hallTownLabel);
+				MenuItemLabel *storeHouseLabelItem = MenuItemLabel::create(storeHouseLabel);
+				MenuItemLabel *scoutTownLabelItem = MenuItemLabel::create(scoutTownLabel);
+				MenuItemLabel *decorateHouseLabelItem = MenuItemLabel::create(decorateHouseLabel);
+
+				auto menuLabel = Menu::create(mainHouseLabelItem, hallTownLabelItem,
+					storeHouseLabelItem, scoutTownLabelItem, decorateHouseLabelItem, NULL);
+				menuLabel->setPosition(winSize.width / 1.97, winSize.height / 2.2);
+				node->addChild(menuLabel, 2);
+				menuLabel->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET * 1.2);
+
+				// label gold
+				auto *mainHouseLabelCoin = Label::createWithTTF("5000", "fonts/arial.ttf", 18);
+				mainHouseLabelCoin->setColor(Color3B::YELLOW);
+				auto *hallTownLabelCoin = Label::createWithTTF("2000", "fonts/arial.ttf", 18);
+				hallTownLabelCoin->setColor(Color3B::YELLOW);
+				auto *storeHouseLabelCoin = Label::createWithTTF("1500", "fonts/arial.ttf", 18);
+				storeHouseLabelCoin->setColor(Color3B::YELLOW);
+				auto *scoutTownLabelCoin = Label::createWithTTF("500", "fonts/arial.ttf", 18);
+				scoutTownLabelCoin->setColor(Color3B::YELLOW);
+				auto *decorateHouseLabelCoin = Label::createWithTTF("1000", "fonts/arial.ttf", 18);
+				decorateHouseLabelCoin->setColor(Color3B::YELLOW);
+
+
+				MenuItemLabel *mainHouseLabelItemCoin = MenuItemLabel::create(mainHouseLabelCoin);
+				MenuItemLabel *hallTownLabelItemCoin = MenuItemLabel::create(hallTownLabelCoin);
+				MenuItemLabel *storeHouseLabelItemCoin = MenuItemLabel::create(storeHouseLabelCoin);
+				MenuItemLabel *scoutTownLabelItemCoin = MenuItemLabel::create(scoutTownLabelCoin);
+				MenuItemLabel *decorateHouseLabelItemCoin = MenuItemLabel::create(decorateHouseLabelCoin);
+
+				auto menuLabelCoin = Menu::create(mainHouseLabelItemCoin, hallTownLabelItemCoin,
+					storeHouseLabelItemCoin, scoutTownLabelItemCoin, decorateHouseLabelItemCoin, NULL);
+				menuLabelCoin->setPosition(winSize.width / 1.95, winSize.height / 2.6);
+				node->addChild(menuLabelCoin, 2);
+				menuLabelCoin->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET * 1.8);
+
+				// sprite gold
+				auto coin1 = Sprite::create("Item/coin.png");
+				auto coin2 = Sprite::create("Item/coin.png");
+				auto coin3 = Sprite::create("Item/coin.png");
+				auto coin4 = Sprite::create("Item/coin.png");
+				auto coin5 = Sprite::create("Item/coin.png");
+			
+				auto coinMenuSprite1 = MenuItemSprite::create(coin1, NULL);
+				auto coinMenuSprite2 = MenuItemSprite::create(coin2, NULL);
+				auto coinMenuSprite3 = MenuItemSprite::create(coin3, NULL);
+				auto coinMenuSprite4 = MenuItemSprite::create(coin4, NULL);
+				auto coinMenuSprite5 = MenuItemSprite::create(coin5, NULL);
+
+				auto menuSprite = Menu::create(coinMenuSprite1, coinMenuSprite2, coinMenuSprite3, 
+					coinMenuSprite4, coinMenuSprite5, NULL);
+				node->addChild(menuSprite, 2);
+				menuSprite->setPosition(winSize.width / 2.15, winSize.height / 2.6);
+				menuSprite->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET * 1.35);
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}
@@ -315,7 +379,7 @@ namespace UICustom {
 		return create(layer, title, msg, NULL, menuItem, YesFunc);
 	}
 	PopupHero * PopupHero::create(Layer *layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, 
-		std::vector<Item *> &menuItem,const std::function<void()>& YesFunc)
+		std::vector<Item *> &menuItem, const std::function<void()>& YesFunc)
 	{
 		PopupHero *node = new (std::nothrow)PopupHero();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -369,7 +433,23 @@ namespace UICustom {
 					}
 
 				}
+				auto labelHp = Label::createWithTTF("Hp :", "fonts/arial.ttf", 15);
+				auto labelDamage = Label::createWithTTF("Damage :", "fonts/arial.ttf", 15);
+				auto labelArmor = Label::createWithTTF("Armor :", "fonts/arial.ttf", 15);
+				auto labelStrength = Label::createWithTTF("Strength :", "fonts/arial.ttf", 15);
 
+				
+				auto itemLabelHp = MenuItemLabel::create(labelHp);
+				auto itemLabelDamage = MenuItemLabel::create(labelDamage);
+				auto itemLabelArmor = MenuItemLabel::create(labelArmor);
+				auto itemLabelStrength = MenuItemLabel::create(labelStrength);
+
+
+				Menu *menuLabelAtributeHero = Menu::create(itemLabelHp, itemLabelDamage,
+					itemLabelArmor, itemLabelStrength, NULL);
+				node->addChild(menuLabelAtributeHero, 1);
+				menuLabelAtributeHero->setPosition(winSize.width * 0.58, winSize.height * 0.16);
+				menuLabelAtributeHero->alignItemsVerticallyWithPadding(5);
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}
@@ -439,14 +519,11 @@ namespace UICustom {
 					YesFunc();
 					node->dismiss(true);
 				});
+				knight->setScale(0.7);
 
-				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
-					node->dismiss(true);
-				});
-
-				Menu *menu = Menu::create(knight, noButton, NULL);
+				Menu *menu = Menu::create(knight, NULL);
 				node->addChild(menu, 2);
-				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
+				menu->setPosition(winSize.width / 2.5, winSize.height / 2.1);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
 
 				lbl->setPosition(winSize / 2);
@@ -556,7 +633,7 @@ namespace UICustom {
 				Menu *menuAddSub = Menu::create(subButton, addButton, NULL);
 				node->addChild(menuAddSub, 2);
 				//menuAddSub->setPosition(winSize.width * 0.726, winSize.height * 0.483);
-				menuAddSub->setPosition(intChoose->getContentSize().width * 4 + intChoose->getPosition().x, intChoose->getPosition().y);
+				menuAddSub->setPosition(intChoose->getContentSize().width * 5 + intChoose->getPosition().x, intChoose->getPosition().y);
 				menuAddSub->alignItemsHorizontallyWithPadding(subButton->getContentSize().width / 1.1);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}

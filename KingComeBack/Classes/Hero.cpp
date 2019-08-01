@@ -16,8 +16,10 @@ Hero::Hero(Layer * _layer2D)
 	m_sprite->setScale(0.7);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 	
-	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	//bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
 	
+	MyBodyParser::getInstance()->parseJsonFile("hero_body.json");
+	auto bodyA = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "HeroPhysicBody", PhysicsMaterial(0, 0, 0));
 	bodyA->setGravityEnable(false);
 
 	bodyA->setCategoryBitmask(8);
@@ -302,21 +304,21 @@ void Hero::createBloodSprite(Layer * l)
 {
 	spriteBlood = Sprite::create("bloodBar.png");
 	spriteBlood->setAnchorPoint(Vec2(0,0));
-	spriteBlood->setPosition(322,97);
-	l->addChild(spriteBlood,10);
+	spriteBlood->setPosition(322,98);
+	l->addChild(spriteBlood,1);
 
 	spriteMana = Sprite::create("bloodBar.png");
 	
 
 	spriteMana->setAnchorPoint(Vec2(0, 0));
 	spriteMana->setPosition(322, 70);
-	l->addChild(spriteMana, 10);
+	l->addChild(spriteMana, 1);
 
 	spriteGreen = Sprite::create("bloodBar.png");
 
 	spriteGreen->setAnchorPoint(Vec2(0, 0));
-	spriteGreen->setPosition(322, 38);
-	l->addChild(spriteGreen, 10);
+	spriteGreen->setPosition(322, 40);
+	l->addChild(spriteGreen, 1);
 }
 
 void Hero::handleBloodBar()

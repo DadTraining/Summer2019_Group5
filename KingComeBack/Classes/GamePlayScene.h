@@ -80,12 +80,14 @@ public:
 
 	void CreateItem();
 	void CreateKnight();
+	void CreateAttibuteHero();
 
 	void CreateLayerUI();
 	void CreateChooseKnight();
 	void CreatePopupChooseKnight();
 	void AddToChooseKnight();
 	void SubToChooseKnight();
+	void AddGold();
 
 	void update(float dt) override;
 
@@ -149,6 +151,7 @@ private:
 	Layer *_layer2D;
 	Layer *_layerUI;
 
+	static int m_gold;
 	static const int indexMap = 1;
 	static const int indexCamera = 4;
 	static const int indexJoystick = 3;
@@ -156,7 +159,7 @@ private:
 	std::string stringChooseKnight = "0";
 	Label *labelChooseKnight;
 	Label *labelSumKnight;
-
+	Label* labelGold;
 	Vec2 positionWeapons;
 
 	Size mapContentSize;
@@ -220,6 +223,7 @@ private:
 
 	dotMiniMap * dotHero;
 
+	std::vector<HouseDecorate *> containerDecorateHouse;
 	std::vector<TownHall *> containerHallTown;
 	std::vector<StoreHouse *> containerStoreHouse;
 	std::vector<Knight *> knight;

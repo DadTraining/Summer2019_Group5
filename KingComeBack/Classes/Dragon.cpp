@@ -24,9 +24,11 @@ void Dragon::Init(int id)
 
 	m_sprite = Sprite::createWithSpriteFrameName("_dragon_000.png");
 
+	MyBodyParser::getInstance()->parseJsonFile("dragon_body.json");
+	auto bodyA = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "DragonBodyPhysic", PhysicsMaterial(0, 0, 0));
+	
 	m_sprite->setScale(1.5);
 
-	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
 	bodyA->setGravityEnable(false);
 	bodyA->setCategoryBitmask(16);
 	bodyA->setCollisionBitmask(5);

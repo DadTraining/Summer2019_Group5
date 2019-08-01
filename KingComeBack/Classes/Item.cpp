@@ -66,7 +66,6 @@ void Item::Init(int _ID, int ID_state)
 		m_itemAttribute = rand() % 3 + 1;
 	}
 	m_state = ID_state;
-
 	m_button->addTouchEventListener([=](Ref *sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{

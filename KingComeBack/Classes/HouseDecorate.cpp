@@ -15,12 +15,12 @@ HouseDecorate::~HouseDecorate()
 
 void HouseDecorate::Init(int id)
 {
-	m_button = ui::Button::create("HouseDecorate.png");
+	m_button = ui::Button::create("gold_mine.png");
 	decorateHouseOpacity = m_button->getOpacity();
 	m_button->setOpacity(30);
 	
-	MyBodyParser::getInstance()->parseJsonFile("HouseDecorate.json");
-	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_button, "HouseDecorateBody", PhysicsMaterial(0, 0, 0));
+	MyBodyParser::getInstance()->parseJsonFile("gold_mine.json");
+	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_button, "GoldMineBody", PhysicsMaterial(0, 0, 0));
 
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);

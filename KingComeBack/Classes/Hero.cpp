@@ -45,9 +45,10 @@ void Hero::Init(int d)
 	blood = new Blood(500.0,1000.0);
 	damage = new Damage(100, 150, 200);	
 
-	SetBlood(500);
-	SetAmor(50);
-	SetDame(60);
+	SetBlood(500.0f);
+	SetAmor(50.0f);
+	SetDame(60.0f);
+	setStrength(30.0f);
 }
 
 void Hero::Attack(Human*, float)
@@ -331,6 +332,16 @@ void Hero::handleBloodBar()
 	else {
 		spriteBlood->setVisible(true);
 	}
+}
+
+float Hero::getStrength()
+{
+	return m_strength;
+}
+
+void Hero::setStrength(float _strength)
+{
+	m_strength = _strength;
 }
 
 bool Hero::getState()

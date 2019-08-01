@@ -207,15 +207,16 @@ private:
 	// Knight
 	std::vector<Knight*> m_knightRed;
 	bool m_checkKnight = false;
-
-
+	
+	// Atribute of hero
+	MenuItemLabel *menuLabelHp;
+	MenuItemLabel *menuLabelDamage;
+	MenuItemLabel *menuLabelArmor;
+	MenuItemLabel *menuLabelStrength;
 
 	std::vector < Bullet * > m_listBullets;
-
 	std::vector < ScoutTown * > m_listScoutTowns;
-
 	float count_bullet =0;
-
 	float count_attack = 0.0, count_dragon =0.0, count_dragon_fire=0.0 ;
 	bool shoot = false;
 	Point postScountTower;
@@ -229,7 +230,11 @@ private:
 	std::vector<Knight *> knight;
 	std::vector<Item *> menuItem;
 	std::vector<Item *> menuItemShop;
+
 	float countSkill_1 =0.0, countSkill_2 =0.0, countNormal = 0.0;
+
+	Vector<MenuItemLabel *> menuItemLabelAtribute;
+
 
 	//---dragon----
 	bool m_dragonState = DRAGON_STATE_FIND;

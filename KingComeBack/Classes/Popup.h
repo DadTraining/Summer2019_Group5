@@ -77,10 +77,12 @@ namespace UICustom {
 	{
 	public:
 		static PopupHero* createAsMessage(const std::string &title, const std::string &msg);
-		static PopupHero* createAsConfirmDialogue(Layer *layer, const std::string &title, const std::string &msg, 
-			std::vector<Item *> &menuItem, const std::function<void()> &YesFunc);
-		static PopupHero* create(Layer *layer, const std::string &title, const std::string &msg, 
-			cocos2d::Label *lbl, std::vector<Item *> &menuItem,const std::function<void()> &YesFunc);
+		static PopupHero* createAsConfirmDialogue(const std::string &title, const std::string &msg, 
+			std::vector<Item *> &menuItem, const std::function<void()> &YesFunc, MenuItemLabel * _menuLabelHp
+			, MenuItemLabel * _menuLabelDamage, MenuItemLabel * _menuLabelArmor, MenuItemLabel * _menuLabelStrength);
+		static PopupHero* create(const std::string &title, const std::string &msg, 
+			cocos2d::Label *lbl, std::vector<Item *> &menuItem,const std::function<void()> &YesFunc, MenuItemLabel * _menuLabelHp
+			, MenuItemLabel * _menuLabelDamage, MenuItemLabel * _menuLabelArmor, MenuItemLabel * _menuLabelStrength);
 	private:
 		void initBg(const cocos2d::Size size, const std::string &title);
 	};

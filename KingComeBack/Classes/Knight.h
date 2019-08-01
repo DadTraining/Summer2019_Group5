@@ -64,12 +64,6 @@ public:
 	//Knight Blue
 	void InitBlue();
 
-	Blood * getBlood();
-
-	Damage * getDamage();
-
-	Skill * getSkill();
-
 	static const int CURRENT_DIRECT_0 = 0;
 	static const int CURRENT_DIRECT_1 = CURRENT_DIRECT_0 + 1;
 	static const int CURRENT_DIRECT_2 = CURRENT_DIRECT_1 + 1;

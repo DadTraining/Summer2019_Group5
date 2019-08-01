@@ -1,5 +1,5 @@
-#include"GamePlayScene.h"
-#include<string.h>
+#include "GamePlayScene.h"
+#include <string.h>
 
 int GamePlayScene::m_gold = 10000;
 
@@ -31,6 +31,11 @@ bool GamePlayScene::init()
 	newDecorateHouse = nullptr;
 	newStoreHouse = nullptr;
 	newMainHouse = nullptr;
+
+	menuLabelHp = nullptr;
+	menuLabelDamage = nullptr;
+	menuLabelArmor = nullptr;
+	menuLabelStrength = nullptr;
 	//newHallTown = nullptr;
 
 
@@ -506,10 +511,21 @@ void GamePlayScene::AddSpriteUI()
 
 void GamePlayScene::AddPopupHero()
 {
+	auto labelHp = Label::createWithTTF(std::to_string((int)hero->getBlood()->getBlood()), "fonts/arial.ttf", 15);
+	auto labelDamage = Label::createWithTTF(std::to_string(-(int)hero->getDamage()->getDamageNormal()), "fonts/arial.ttf", 15);
+	auto labelArmor = Label::createWithTTF(std::to_string((int)hero->GetAmor()), "fonts/arial.ttf", 15);
+	auto labelStrength = Label::createWithTTF(std::to_string((int)hero->getStrength()), "fonts/arial.ttf", 15);
 
-	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"", "", menuItem, [=]() {
-
-	});
+	menuLabelHp = MenuItemLabel::create(labelHp);
+	menuLabelHp->retain();
+	menuLabelDamage = MenuItemLabel::create(labelDamage);
+	menuLabelDamage->retain();
+	menuLabelArmor = MenuItemLabel::create(labelArmor);
+	menuLabelArmor->retain();
+	menuLabelStrength = MenuItemLabel::create(labelStrength);
+	menuLabelStrength->retain();
+	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue("", "", menuItem, NULL, menuLabelHp,
+		menuLabelDamage, menuLabelArmor, menuLabelStrength);
 	_layerUI->addChild(popUpHero, 1);
 }
 
@@ -525,12 +541,6 @@ void GamePlayScene::AddPopupHouse()
 		);
 	_layerUI->addChild(popupHouse, 1);
 }
-
- // void GamePlayScene::AddHeroAndDragon()
-// {
-//	hero = new Hero(_layer2D);
-//	dragon = new Dragon(_layer2D);
-// }
 
 void GamePlayScene::AddEventForPopupTownHall()
 {
@@ -625,8 +635,10 @@ void GamePlayScene::AddEventForPopupScoutTown()
 
 
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+
 		copyScoutTown->setVisible(false);
 		newScoutTown = new ScoutTown(_layer2D, TEAM_BLUE);
+
 
 
 
@@ -842,12 +854,7 @@ void GamePlayScene::CreateKnight()
 
 void GamePlayScene::CreateAttibuteHero()
 {
-	auto labelHp = Label::createWithTTF(std::to_string(hero->getBlood()->getBlood()), "fonts/arial.ttf", 15);
-	auto labelDamage = Label::createWithTTF(std::to_string(hero->getDamage()->getDamageNormal()), "fonts/arial.ttf", 15);
-	//auto labelArmor = Label::createWithTTF(std::to_string(hero->G()), "fonts/arial.ttf", 15);
-	auto labelStrength = Label::createWithTTF(std::to_string(hero->getBlood()->getBlood()), "fonts/arial.ttf", 15);
 
-	//menuLabelAtribute
 }
 
 void GamePlayScene::CreateLayerUI()
@@ -954,6 +961,8 @@ void GamePlayScene::AddGold()
 
 void GamePlayScene::update(float dt)
 {
+	labelGold->setString(std::to_string(m_gold));
+
 	countSkill_1 += dt;
 	countSkill_2 += dt;
 	countNormal += dt;
@@ -972,6 +981,8 @@ void GamePlayScene::update(float dt)
 			if (containerDecorateHouse.at(i) != nullptr)
 			{
 				containerDecorateHouse.at(i)->Update(dt);
+				m_gold++;
+				labelGold->setString(std::to_string(m_gold));
 			}
 		}
 	}
@@ -982,6 +993,7 @@ void GamePlayScene::update(float dt)
 			if (containerStoreHouse.at(i) != nullptr)
 			{
 				containerStoreHouse.at(i)->Update(dt);
+
 			}
 		}
 	}
@@ -995,6 +1007,50 @@ void GamePlayScene::update(float dt)
 			}
 		}
 	}	
+	for (int i = 0; i < menuItem.size(); i++)
+	{
+		if (menuLabelHp != nullptr && menuItem.at(i)->GetState() == ID_STATE_EQUIPMENT)
+		{
+			if (menuItem.at(i)->GetId() == ID_WEAPON)
+			{
+				menuLabelDamage->setString(std::to_string(-(int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame()));
+				menuLabelStrength->setString(std::to_string((int)hero->getStrength() + (int)menuItem.at(i)->getStrength()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood() + (int)menuItem.at(i)->getHp()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_ARMOR)
+			{
+				menuLabelArmor->setString(std::to_string((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood() + (int)menuItem.at(i)->getHp()));
+			}
+		}
+		if (menuLabelHp != nullptr && menuItem.at(i)->GetState() == ID_STATE_HOME)
+		{
+			if (menuItem.at(i)->GetId() == ID_WEAPON)
+			{
+				menuLabelDamage->setString(std::to_string(-(int)hero->getDamage()->getDamageNormal()));
+				menuLabelStrength->setString(std::to_string((int)hero->getStrength()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_ARMOR)
+			{
+				menuLabelArmor->setString(std::to_string((int)hero->GetAmor()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood()));
+			}
+
+		}
+	}
 
 	// Check Knight
 	//this->RemoveKnight(m_knightRed, knight);
@@ -1048,6 +1104,7 @@ void GamePlayScene::update(float dt)
 	HandleMinimap();
 	count_bullet += dt;
 	
+
 	if (count_bullet>0.4 && m_listScoutTowns.size()>0 && m_knightRed.size()>0) {
 		for (auto a : m_listScoutTowns) {
 			if (abs(a->getSprite()->getPositionX() - dragon->getSprite()->getPositionX())<200 &&
@@ -1080,6 +1137,7 @@ void GamePlayScene::update(float dt)
 		
 		count_bullet = 0;
 	}
+
 	//hero->setBlood(-dt);
 
 	if (hero->getBlood()->getBlood()<10 && hero->getState() == true) {
@@ -1126,12 +1184,22 @@ void GamePlayScene::update(float dt)
 
 	//-----Create knight red attack-----
 	m_houseDragon->Update(dt);
-	if (m_houseDragon->GetIsNewKnight())
-	{
-		m_knightRedMove.push_back(m_houseDragon->GetKnight());
-		m_houseDragon->SetIsNewKnight(false);
-	}
 
+	if (m_knightRedMove.size() <= 5)
+	{
+		if (m_houseDragon->GetIsNewKnight())
+		{
+			m_knightRedMove.push_back(m_houseDragon->GetKnight());
+			m_houseDragon->SetIsNewKnight(false);
+		}
+	}
+	else
+	{
+		for (auto k : m_knightRedMove)
+		{
+			k->MoveRed(hero->GetPosition());
+		}
+	}
 
 	// Remove Knight Death
 	for (auto k : knight)
@@ -1159,18 +1227,20 @@ void GamePlayScene::update(float dt)
 void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	if (type == 0) {
 		hero->getAttack(STATE_ATTACK);
+
 		if (hero->GetPosition().distance(dragon->GetPosition()) <= 100)
 		{
 			dragon->SetScaleBlood((hero->getDamage()->getDamageNormal() - dragon->GetAmor()));
 
 		}	
+
 		else
 		{
 			for (auto b : m_knightRed)
 			{
 				if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 					abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-					b->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					//b->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
 					break;
 				}
 			}
@@ -1189,6 +1259,9 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	if(type == 1){
 		
 			hero->skillAnimation(_layer2D, 1);
+			if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 64 &&
+				abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 64) {
+				//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
 
 			if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
 			{
@@ -1220,6 +1293,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	
 	}
 	if (type == 2) {
+
 			hero->skillAnimation(_layer2D, 2);
 
 			if (hero->GetPosition().distance(dragon->GetPosition()) <= 200
@@ -1254,6 +1328,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	
 
 
+
 void GamePlayScene::createButton_Skill_1()
 {
 	mButtonSkill_1 = Sprite::create("skill_1.png");
@@ -1262,7 +1337,6 @@ void GamePlayScene::createButton_Skill_1()
 	_layerUI->addChild(mButtonSkill_1);
 
 }
-
 
 void GamePlayScene::createButton_Skill_2()
 {
@@ -1335,12 +1409,12 @@ Vec2 GamePlayScene::CheckRangerAttack(std::vector<Knight*> red, std::vector<Knig
 			if (_distance <= RANGER_ATTACK && _distance > knightBlue->GetConTentSize().width + 1)
 			{
 				return positionKnightBlue;
-				if (knightBlue->GetCurrentDirect() != knightBlue->GetLastDirect()) 
-				{
-					return Vec2((positionKnightBlue.x + positionKnightRed.x) / 2,
-						(positionKnightBlue.y + positionKnightRed.y) / 2);
-				}
-				return Vec2::ZERO;
+				//if (knightBlue->GetCurrentDirect() != knightBlue->GetLastDirect()) 
+				//{
+				//	return Vec2((positionKnightBlue.x + positionKnightRed.x) / 2,
+				//		(positionKnightBlue.y + positionKnightRed.y) / 2);
+				//}
+				//return Vec2::ZERO;
 			}
 		}
 	}
@@ -1355,7 +1429,7 @@ void GamePlayScene::MoveAttack(std::vector<Knight*> red, std::vector<Knight*> bl
 
 		for (auto red : red)
 		{
-			if (red->getBlood()->getBlood() > 0)
+			if (red->GetBlood() > 0)
 			{
 				red->MoveRed(vec);
 			}		
@@ -1376,15 +1450,15 @@ void GamePlayScene::ChekAttackKnight(std::vector<Knight*> red, std::vector<Knigh
 			if (_distance <= knightBlue->GetConTentSize().width)
 			{
 				knightRed->Attack(knightBlue,dt);
-				if (knightRed->GetBlood() <= 0)
-				{
-					RemoveKnightRed(knightRed);
-				}
+				//if (knightRed->GetBlood() <= 0)
+				//{
+				//	//RemoveKnightRed(knightRed);
+				//}
 				knightBlue->Attack(knightRed, dt);
-				if (knightBlue->GetBlood() <= 0)
-				{
-					RemoveKnightBlue(knightBlue);
-				}
+				//if (knightBlue->GetBlood() <= 0)
+				//{
+				//	//RemoveKnightBlue(knightBlue);
+				//}
 				
 				//break;
 			}

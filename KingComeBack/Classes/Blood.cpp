@@ -5,14 +5,27 @@
 
 
 
-Blood::Blood(Sprite * m_sprite, float bloodMax)
+Blood::Blood(Sprite * m_sprite, float bloodMax, int color)
 {
 	this->m_blood = bloodMax;
 	m_bloodMax = bloodMax;
 	spriteBlood = Sprite::create("loadingBarHouse.png");
-	spriteBlood->setAnchorPoint(Vec2(0,0));
+	
+	//spriteBlood->setAnchorPoint(Vec2(0,0));
 	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height);
 	spriteBlood->setCameraMask(2);
+
+	
+	
+	if (color == TEAM_BLUE)
+	{
+		spriteBlood->setColor(Color3B::GREEN);
+	}
+	if (color == TEAM_RED)
+	{
+		spriteBlood->setColor(Color3B::RED);
+	}
+	
 	m_sprite->addChild(spriteBlood,12);
 
 }
@@ -23,7 +36,6 @@ Blood::Blood(float bloodMax, float m)
 	this->m_mana = m;
 	
 	isDragon = true;
-
 }
 
 Blood::Blood(Sprite * m_sprite,float b, float m , float g)
@@ -75,7 +87,7 @@ float Blood::getGreen()
 
 void Blood::reduceBlood(float db)
 {
-	this->m_blood += db;
+	this->m_blood -= db;
 	if (isDragon == false) {
 		handleBar();
 	}

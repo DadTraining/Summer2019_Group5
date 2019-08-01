@@ -89,7 +89,7 @@ bool SettingScene::init()
 	slVolume->loadBarTexture("Sprites/Loading/slider_bar_bg.png");
 	slVolume->loadSlidBallTextures("Sprites/Loading/slider_ball_normal.png", "Sprites/Loading/slider_ball_pressed.png", "/Sprites/Loading/slider_ball_disable.png");
 	slVolume->loadProgressBarTexture("Sprites/Loading/slider_bar_pressed.png");
-	slVolume->setPosition(Vec2(cbMusic->getPosition().x, visibleSize.height - 360));
+	slVolume->setPosition(Vec2(cbMusic->getPosition().x, volumeTitle->getPosition().y- volumeTitle->getContentSize().height*2));
 	slVolume->setPercent(GameSetting::getIntance()->getVolume());
 	slVolume->addTouchEventListener([](Ref* sender, ui::Widget::TouchEventType type)
 	{

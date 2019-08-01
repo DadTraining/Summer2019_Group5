@@ -3,6 +3,7 @@
 #include "Home.h"
 #include "Defines.h"
 #include "ui/CocosGUI.h"
+#include "Blood.h"
 
 USING_NS_CC;
 
@@ -17,11 +18,15 @@ public:
 	void LoadingBuild() override;
 	void Update(float dt) override;
 
+	Blood* GetBlood();
+
 private:
 	float m_dame;
 	Sprite *loadingBar;
 	Sprite *loadingBarBg;
 	GLubyte decorateHouseOpacity;
+
+	Blood *blood;
 };
 
 

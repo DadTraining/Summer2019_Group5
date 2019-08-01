@@ -1,9 +1,10 @@
 #pragma once
 #include "cocos2d.h"
+#include "Defines.h"
 USING_NS_CC;
 class Blood {
 public:
-	Blood(Sprite * p,float);
+	Blood(Sprite * p,float,int);
 	Blood(float, float);
 	Blood(Sprite * m_sprite,float, float, float);
 	~Blood();

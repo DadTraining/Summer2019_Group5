@@ -25,15 +25,24 @@ void StoreHouse::Init(int id)
 	physicBody->setCollisionBitmask(125);
 	m_button->setPhysicsBody(physicBody);
 
+	//add Blood
+	auto blood = Sprite::create("loadingBarHouse.png");
+	float x = m_button->getPosition().x + m_button->getContentSize().width / 4;
+	float y = m_button->getPosition().y + m_button->getContentSize().height;
+	blood->setPosition(Vec2(x, y));
+	blood->setTag(TAG_BLOOD);
+	blood->setColor(Color3B::GREEN);
+	m_button->addChild(blood);
+
+	SetColor(id);
+	SetAmor(id);
+	float bl = BLOOD_HOUSE;
+	SetBlood(bl);
+
 	this->LoadingBuild();
 }
 
 void StoreHouse::Died()
-{
-
-}
-
-void StoreHouse::Attack()
 {
 
 }
@@ -66,5 +75,32 @@ void StoreHouse::Update(float dt)
 			m_button->getPhysicsBody()->setDynamic(false);
 			loadingBar = nullptr;
 		}
+	}
+}
+
+Vec2 StoreHouse::GetPosition()
+{
+	return m_button->getPosition();
+}
+
+void StoreHouse::RedurceBlood(float dame)
+{
+	if (dame > 0)
+	{
+		m_blood = m_blood - dame;
+	}
+	if (m_blood <= 0)
+	{
+		m_button->setPosition(Vec2(-3000, 0));
+	}
+}
+
+void StoreHouse::SetScaleBlood(float dame)
+{
+	RedurceBlood(dame);
+	if (m_blood > 0)
+	{
+		auto bl = m_button->getChildByTag(TAG_BLOOD);
+		bl->setScaleX(m_blood / BLOOD_HOUSE);
 	}
 }

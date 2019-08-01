@@ -13,6 +13,7 @@
 #include "Dragon.h"
 #include "Knight.h"
 #include"HudGold.h"
+#include "HouseDragon.h"
 
 
 #include "Bullet.h"
@@ -79,6 +80,7 @@ public:
 
 	void CreateItem();
 	void CreateKnight();
+	void CreateAttibuteHero();
 
 	void CreateLayerUI();
 	void CreateChooseKnight();
@@ -103,8 +105,21 @@ public:
 	//knight Attack
 	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
+	void ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, float dt);
+	void ReduceBloodKnight(Knight* red, Knight* blue);
+	void RemoveKnightRed(Knight* red);
+	void RemoveKnightBlue(Knight* blue);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
+	//-- Dragon --
+	void DragonCheck(std::vector<ScoutTown*>, std::vector<TownHall*>,std::vector<StoreHouse *>, 
+		std::vector<Knight *>, Hero*);
+	void DragonAttack(Human* hm, float dt);
+	void RedurceBloodBlueTeam(std::vector<ScoutTown*>, std::vector<TownHall*>, 
+		std::vector<StoreHouse *>, std::vector<Knight *>, Hero*, Vec2);
+	void AddHouseDragon();
+
+	//---------------------
 	void handleJoystick();
 
 	void handleDragonVsScout();
@@ -177,7 +192,7 @@ private:
 	Sprite * mButtonSkill_2;
 	int tagButton = 1;
 
-	Dragon * dragon;
+	Dragon * dragon = nullptr;
 
 
 	Bullet * bullet;
@@ -212,5 +227,11 @@ private:
 	std::vector<Item *> menuItemShop;
 	float countSkill_1 =0.0, countSkill_2 =0.0;
 
+	//---dragon----
+	bool m_dragonState = DRAGON_STATE_FIND;
+	Human *m_humanDragonAttack = nullptr;
+	bool m_stateReduce = false;
+	Vec2 m_vecPosition = Vec2::ZERO;
+	HouseDragon* m_houseDragon;
 };
 

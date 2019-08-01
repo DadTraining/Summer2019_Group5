@@ -23,7 +23,7 @@ public:
 	~Item();
 	void Init(int ID, int ID_state);
 	void Init(int ID) override;
-	void Died();
+	void Died() override;
 
 	int GetState();
 	void SetState(int state);

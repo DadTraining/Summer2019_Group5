@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "MyObject.h"
+#include "Defines.h"
 
 USING_NS_CC;
 
@@ -15,9 +16,19 @@ public:
 
 	void SetColor(int color);
 	int GetColor();
+	void SetAmor(float amor);
+	float GetAmor();
+	void SetBlood(float blood);
+	float GetBlood();
+	virtual void RedurceBlood(float);
+	virtual void SetScaleBlood(float bl);
+	
+	bool IsDie();
+	virtual Vec2 GetPosition();
 protected:
 	float m_blood;
 	float m_amor;
 	int m_color;
+	float m_maxBlood;
 };
 

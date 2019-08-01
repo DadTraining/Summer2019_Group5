@@ -39,7 +39,7 @@ public:
 	void Died() override;
 	void AddBlood();
 
-	void Attack() override;
+	void Attack(Human*, float) override;
 	void StopAllAction();
 	void SetDynamic(bool dynamic);
 	void StopActionWalk();

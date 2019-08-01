@@ -15,20 +15,16 @@ public:
 	void Died() override;
 	void LoadingBuild() override;
 	void Update(float dt) override;
-
-	void CreateKnight();
-
-//void OnTouchMove(Touch *touch, Event *unused_event);
-	void OnTouchEnd(Touch *touch, Event *unused_event);
+	Vec2 GetPosition() override;
+	void RedurceBlood(float dame) override;
 
 	Sprite *loadingBar;
 
 	bool isSelected = false;
 
+	void SetScaleBlood(float dame) override;
 private:
 	int id_home;
 	Sprite *loadingBarBg;
 	GLubyte hallTownOpacity;
-
-	Blood * blood;
 };

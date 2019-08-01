@@ -3,15 +3,19 @@
 #include "cocos2d.h"
 #include "Blood.h"
 #include "Damage.h"
+#include "Defines.h"
+#include "Knight.h"
 
 #define Distance 20
 #define Fire 100
-class Dragon  : public MyObject{
+class Dragon  : public Person{
 public:
-	Dragon(Layer * _layer2D);
+	Dragon(Layer * _layer2D, int id);
 	~Dragon();
 	void Init(int) override;
 	void Died() override;
+	void Update(float dt) override;
+
 	Animation* createAnimation(std::string frefixName, int pFrame, int delay);
 	Blood * getBlood();
 	void handleBloodBar();
@@ -25,6 +29,15 @@ public:
 	void updatePositionloodBar();
 
 	Damage * getDamage();
+
+	// Code Tuan
+	void AddBlood();
+	void SetDirect(Vec2 vec);
+	void AnimateStand();
+	Animate* ActionDragon(std::string name, int begin, int end);
+	void Move(Vec2 vec) override;
+	void Attack(Human*,float) override;
+	Sprite *GetSpriteFire();
 	
 
 private:
@@ -41,4 +54,8 @@ private:
 
 	Damage * damage;
 
+	// code tuan
+	Vec2 m_direct;
+	int m_currentDirect;
+	float m_distance;
 };

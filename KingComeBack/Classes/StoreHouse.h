@@ -13,9 +13,12 @@ public:
 	~StoreHouse();
 	void Init(int id) override;
 	void Died() override;
-	void Attack();
 	void LoadingBuild() override;
 	void Update(float dt) override;
+	Vec2 GetPosition() override;
+
+	void RedurceBlood(float) override;
+	void SetScaleBlood(float dame) override;
 
 private:
 	float m_dame;

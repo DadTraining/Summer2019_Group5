@@ -3,7 +3,7 @@
 ScoutTown::ScoutTown(Layer* scene, int id)
 {
 	this->Init(id);
-	blood = new Blood(m_sprite, 400);
+	//blood = new Blood(m_sprite, 400, id);
 	d = new Damage(10);
 	
 	scene->addChild(m_sprite);
@@ -37,6 +37,12 @@ void ScoutTown::Init(int id)
 	physicBody->setCategoryBitmask(4);
 	physicBody->setCollisionBitmask(125);
 	m_sprite->setPhysicsBody(physicBody);
+	
+	SetColor(id);
+	SetAmor(AMOR_HOUSE);
+
+	AddBlood();
+
 	this->LoadingBuild();
 
 }
@@ -149,6 +155,17 @@ Damage * ScoutTown::getDamage()
 Skill * ScoutTown::getSkill()
 {
 	return s;
+}
+
+void ScoutTown::AddBlood()
+{
+	auto blood = Sprite::create("loadingBarHouse.png");
+	float x = m_sprite->getPosition().x + m_sprite->getContentSize().width / 4;
+	float y = m_sprite->getPosition().y + m_sprite->getContentSize().height;
+	blood->setPosition(Vec2(x, y));
+	blood->setTag(TAG_BLOOD);
+	blood->setColor(Color3B::GREEN);
+	m_sprite->addChild(blood);
 }
 
 

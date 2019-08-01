@@ -35,6 +35,7 @@ public:
 	Damage * getDamage();
 
 	Skill * getSkill();
+	void AddBlood();
 private:
 	
 	Sprite *loadingBar;

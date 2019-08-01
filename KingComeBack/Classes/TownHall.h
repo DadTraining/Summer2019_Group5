@@ -15,12 +15,14 @@ public:
 	void Died() override;
 	void LoadingBuild() override;
 	void Update(float dt) override;
+	Vec2 GetPosition() override;
+	void RedurceBlood(float dame) override;
 
 	Sprite *loadingBar;
 
 	bool isSelected = false;
 
-	void ScaleBlood(float dame);
+	void SetScaleBlood(float dame) override;
 private:
 	int id_home;
 	Sprite *loadingBarBg;

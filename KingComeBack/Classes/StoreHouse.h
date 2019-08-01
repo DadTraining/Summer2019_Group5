@@ -15,8 +15,10 @@ public:
 	void Died() override;
 	void LoadingBuild() override;
 	void Update(float dt) override;
+	Vec2 GetPosition() override;
 
-	void SetScaleBlood(float dame);
+	void RedurceBlood(float) override;
+	void SetScaleBlood(float dame) override;
 
 private:
 	float m_dame;

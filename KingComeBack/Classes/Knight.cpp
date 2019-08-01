@@ -102,28 +102,29 @@ void Knight::Init(int id)
 	}
 	m_currentDirect = 0;
 
-	b = new Blood(m_sprite, 400, id);
+	//b = new Blood(m_sprite, 400, id);
 
-	d = new Damage(50);
+	//d = new Damage(50);
 
 	
-	//AddBlood();
+	AddBlood();
 
 	SetColor(id);
 	SetAmor(10);
+	SetDame(30);
+	SetBlood(200);
 }
 
 void Knight::Update(float dt)
 {
-	static float count = 5;
-	if (count >= 5)
-	{
-		Attack();
-		
-		count = 0;
-	}
-	count += dt;
-
+	//static float count = 5;
+	//if (count >= 5)
+	//{
+	//	Attack();
+	//	
+	//	count = 0;
+	//}
+	//count += dt;
 	if (b->getBlood() <= 0 && !m_sprite->getActionByTag(TAG_ACTION_DEATH))
 	{
 		Died();
@@ -183,6 +184,7 @@ void Knight::AddBlood()
 	auto blood = Sprite::create("Sprites/Loading/progress.png");
 	blood->setPosition(blood_bg->getPosition());
 	blood->setScale(0.3);
+	blood->setTag(TAG_BLOOD);
 
 	m_sprite->addChild(blood_bg, 100);
 	m_sprite->addChild(blood, 101);
@@ -278,7 +280,7 @@ Skill * Knight::getSkill()
 	return nullptr;
 }
 
-void Knight::Attack()
+void Knight::Attack(Human* human, float dt)
 {
 	if (!m_sprite->getActionByTag(TAG_ACTION_DEATH))
 	{
@@ -301,9 +303,22 @@ void Knight::Attack()
 
 			m_sprite->runAction(action);
 		}
+
+		static float count = 5;
+		if (count >= 5)
+		{
+			Knight *k = (Knight*)human;
+			float dame = this->GetDame() - k->GetAmor();
+
+			k->SetScaleBlood(dame);
+			if (k->GetBlood() <= 0)
+			{
+				k->SetPositionKnight(Vec2(-1000, 0));
+			}
+			count = 0;
+		}
+		count += dt;
 	}
-	
-	
 }
 
 void Knight::StopAllAction()

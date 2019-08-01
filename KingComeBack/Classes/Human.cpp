@@ -46,6 +46,20 @@ void Human::RedurceBlood(float dame)
 	{
 		m_blood = m_blood - dame;
 	}
+	if (m_blood <= 0)
+	{
+		m_sprite->setPosition(-3000, 0);
+	}
+}
+
+void Human::SetScaleBlood(float bl)
+{
+	
+	if (bl > 0)
+	{
+		RedurceBlood(bl);
+		m_sprite->getChildByTag(TAG_SPRITE_BLOOD)->setScaleX(m_blood / m_maxBlood);
+	}
 }
 
 bool Human::IsDie()

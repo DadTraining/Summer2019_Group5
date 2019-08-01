@@ -56,4 +56,12 @@
 #define TAG_BLOOD 0
 #define AMOR_HOUSE 20
 #define BLOOD_HOUSE 500
+
+//-----Dragon State------
+#define DRAGON_STATE_ATTACK true
+#define DRAGON_STATE_FIND false
+#define DRAGON_DAME 100
+//-----Tag Child Sprite-------
+#define TAG_SPRITE_BLOOD 0
+
 #endif

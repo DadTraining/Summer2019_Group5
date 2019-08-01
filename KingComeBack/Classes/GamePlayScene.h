@@ -111,6 +111,12 @@ public:
 	void RemoveKnightBlue(Knight* blue);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
+	//-- Dragon --
+	void DragonCheck(std::vector<ScoutTown*>, std::vector<TownHall*>,std::vector<StoreHouse *>, std::vector<Knight *>, Hero*);
+	void DragonAttack(Human* hm, float dt);
+	void RedurceBloodBlueTeam(std::vector<ScoutTown*>, std::vector<TownHall*>, std::vector<StoreHouse *>, std::vector<Knight *>, Hero*, Vec2);
+
+	//---------------------
 	void handleJoystick();
 
 	void handleDragonVsScout();
@@ -182,7 +188,7 @@ private:
 	Sprite * mButtonSkill_2;
 	int tagButton = 1;
 
-	Dragon * dragon;
+	Dragon * dragon = nullptr;
 
 
 	Bullet * bullet;
@@ -216,5 +222,10 @@ private:
 	std::vector<Item *> menuItemShop;
 	float countSkill_1 =0.0, countSkill_2 =0.0;
 
+	//---dragon----
+	bool m_dragonState = DRAGON_STATE_FIND;
+	Human *m_humanDragonAttack = nullptr;
+	bool m_stateReduce = false;
+	Vec2 m_vecPosition = Vec2::ZERO;
 };
 

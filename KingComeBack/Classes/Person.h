@@ -13,8 +13,11 @@ public:
 	virtual void Update();
 	virtual void Move(Vec2 vec) = 0;
 	virtual void Died() = 0;
-	virtual void Attack() = 0;
-private:
+	virtual void Attack(Human*, float) = 0;
+
+	void SetDame(float dame);
+	float GetDame();
+protected:
 	float m_speedMovement;
 	float m_dame;
 	float m_range;

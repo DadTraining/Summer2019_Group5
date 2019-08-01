@@ -87,9 +87,30 @@ void TownHall::Update(float dt)
 	}
 }
 
-void TownHall::ScaleBlood(float dame)
+Vec2 TownHall::GetPosition()
+{
+	return m_button->getPosition();
+}
+
+void TownHall::RedurceBlood(float dame)
+{
+	if (dame > 0)
+	{
+		m_blood = m_blood - dame;
+	}
+	if (m_blood <= 0)
+	{
+		m_button->setPosition(Vec2(-3000, 0));
+	}
+}
+
+void TownHall::SetScaleBlood(float dame)
 {
 	RedurceBlood(dame);
-	auto bl = m_button->getChildByTag(TAG_BLOOD);
-	bl->setScaleX(m_blood / BLOOD_HOUSE);
+	if (m_blood > 0)
+	{
+		auto bl = m_button->getChildByTag(TAG_BLOOD);
+		bl->setScaleX(m_blood / BLOOD_HOUSE);
+	}
+	
 }

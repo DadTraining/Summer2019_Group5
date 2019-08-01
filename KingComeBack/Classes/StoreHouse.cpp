@@ -78,9 +78,29 @@ void StoreHouse::Update(float dt)
 	}
 }
 
+Vec2 StoreHouse::GetPosition()
+{
+	return m_button->getPosition();
+}
+
+void StoreHouse::RedurceBlood(float dame)
+{
+	if (dame > 0)
+	{
+		m_blood = m_blood - dame;
+	}
+	if (m_blood <= 0)
+	{
+		m_button->setPosition(Vec2(-3000, 0));
+	}
+}
+
 void StoreHouse::SetScaleBlood(float dame)
 {
 	RedurceBlood(dame);
-	auto bl = m_button->getChildByTag(TAG_BLOOD);
-	bl->setScaleX(m_blood / BLOOD_HOUSE);
+	if (m_blood > 0)
+	{
+		auto bl = m_button->getChildByTag(TAG_BLOOD);
+		bl->setScaleX(m_blood / BLOOD_HOUSE);
+	}
 }

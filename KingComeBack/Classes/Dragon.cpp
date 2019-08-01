@@ -8,18 +8,13 @@ Dragon::Dragon(Layer * _layer2D, int id)
 	Init(id);
 	_layer2D->addChild(m_sprite,10);
 
-	//code cui
-	blood = new Blood(m_sprite, 1000, TEAM_RED);
 
-	damage = new Damage(100);
-
-	//Animate* animate = Animate::create(createAnimation("_dragon_00", 0,120));
-
-	//animate->retain();
-
-	//m_sprite->runAction(Repeat::create(animate,1));
-
+	//blood = new Blood(m_sprite, 1000, TEAM_RED);
+	//damage = new Damage(100);
+	
 	AnimateStand();
+	createFire(_layer2D);
+	AddBlood();
 }
 
 Dragon::~Dragon()
@@ -46,6 +41,7 @@ void Dragon::Init(int id)
 	SetColor(id);
 	SetBlood(1000);
 	SetAmor(50);
+	SetDame(200);
 }
 
 void Dragon::Died()
@@ -99,7 +95,7 @@ void Dragon::createFire(Layer * _layer2D)
 	fire->setPosition(m_sprite->getPosition());
 	fire->setCameraMask(2);
 	fire->setVisible(false);
-	_layer2D->addChild(fire);
+	_layer2D->addChild(fire, 100);
 }
 
 void Dragon::dragonMove(int direct)
@@ -201,6 +197,17 @@ Damage * Dragon::getDamage()
 	return damage;
 }
 
+void Dragon::AddBlood()
+{
+	auto bl = Sprite::create("Sprites/Loading/progress.png");
+	float x = m_sprite->getPosition().x + m_sprite->getContentSize().width / 2;
+	float y = m_sprite->getPosition().y + m_sprite->getContentSize().height;
+	bl->setPosition(Vec2(x, y));
+	bl->setScale(0.3);
+	bl->setTag(TAG_SPRITE_BLOOD);
+	m_sprite->addChild(bl);
+}
+
 // code Tuan
 void Dragon::SetDirect(Vec2 vec)
 {
@@ -209,38 +216,38 @@ void Dragon::SetDirect(Vec2 vec)
 
 	if (m_direct.x > 0 && m_direct.y > 0 && m_direct.y / m_direct.x > 0.5 && m_direct.y / m_direct.x <= 2.5)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_1;
+		m_currentDirect = Knight::CURRENT_DIRECT_1 + 1;
 	}
 	else if (m_direct.x / m_direct.y < 0.5 && m_direct.x / m_direct.y > -0.5 && m_direct.y > 0)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_2;
+		m_currentDirect = Knight::CURRENT_DIRECT_2 + 1;
 	}
 	else if (m_direct.x < 0 && m_direct.y > 0 && m_direct.y / m_direct.x <= -0.5 &&
 		m_direct.y / m_direct.x >= -2.5)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_3;
+		m_currentDirect = Knight::CURRENT_DIRECT_3 + 1;
 	}
 	else if (m_direct.x < 0 && m_direct.y / m_direct.x > -0.5 && m_direct.y / m_direct.x < 0.5)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_4;
+		m_currentDirect = Knight::CURRENT_DIRECT_4 + 1;
 	}
 	else if (m_direct.x < 0 && m_direct.y < 0 && m_direct.y / m_direct.x > 0.5 &&
 		m_direct.y / m_direct.x <= 2.5)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_5;
+		m_currentDirect = Knight::CURRENT_DIRECT_5 + 1;
 	}
 	else if (m_direct.x / m_direct.y < 0.5 && m_direct.x / m_direct.y > -0.5 && m_direct.y < 0)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_6;
+		m_currentDirect = Knight::CURRENT_DIRECT_6 + 1;
 	}
 	else if (m_direct.x > 0 && m_direct.y < 0 && m_direct.y / m_direct.x <= -0.5 &&
 		m_direct.y / m_direct.x >= -2.5)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_7;
+		m_currentDirect = Knight::CURRENT_DIRECT_7 - 7;
 	}
 	else if (m_direct.x > 0 && m_direct.y / m_direct.x > -0.5 && m_direct.y / m_direct.x < 0.5)
 	{
-		m_currentDirect = Knight::CURRENT_DIRECT_0;
+		m_currentDirect = Knight::CURRENT_DIRECT_0 + 1;
 	}
 }
 
@@ -276,89 +283,179 @@ Animate * Dragon::ActionDragon(std::string name, int begin, int end)
 
 void Dragon::Move(Vec2 vec)
 {
-	SetDirect(vec);
-	float _time = m_distance / 70.0;
-	int count_repeat = _time + 1;
-	switch (m_currentDirect)
+	if (m_sprite->getActionByTag(TAG_ACTION_STAND))
 	{
-	case 0:
-		//animate = Animate::create(createAnimation("_dragon_00", 160, 191));
-		//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() + Distance, m_sprite->getPositionY() - Distance));
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 160, 191), count_repeat);
-		auto spawn = Spawn::create(move, animate, nullptr);
-		break;
-	case 1:
-		/*animate = Animate::create(createAnimation("_dragon_00", 128, 159));
-		moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() + Distance, m_sprite->getPositionY()));*/
-		
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 128, 159), count_repeat);
-		auto spawn = Spawn::create(move, animate, nullptr);
-		
-		break;
-	case 2:
-		/*animate = Animate::create(createAnimation("_dragon_00", 96, 123));
-		moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() + Distance, m_sprite->getPositionY() + Distance));
-		*/
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 96, 123), count_repeat);
-		auto spawn = Spawn::create(move, animate, nullptr);
-
-		break;
-	case 3:
-		/*animate = Animate::create(createAnimation("_dragon_00", 64, 95));
-		moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() + Distance));*/
-		
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 64, 95), count_repeat);
-		auto spawn = Spawn::create(move, animate, nullptr);
-
-		break;
-	case 4:
-		/*animate = Animate::create(createAnimation("_dragon_00", 32, 63));
-		moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() - Distance, m_sprite->getPositionY() + Distance));*/
-		
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 32, 63), count_repeat);
-		auto spawn = Spawn::create(move, animate, nullptr);
-
-		break;
-	case 5:
-		//animate = Animate::create(createAnimation("_dragon_00", 0, 31));
-		//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() - Distance, m_sprite->getPositionY()));
-		
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 0, 31), count_repeat);
-		auto spawn = Spawn::create(move, animate, nullptr);
-
-		break;
-	case 6:
-		//animate = Animate::create(createAnimation("_dragon_00", 224, 255));
-		//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() - Distance, m_sprite->getPositionY() - Distance));
-		
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 224, 255), count_repeat);
-		
-		auto spawn = Spawn::create(move, animate, nullptr);
-		break;
-	case 7:
-		//animate = Animate::create(createAnimation("_dragon_00", 192, 223));
-		//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() - Distance));
-		
-		auto move = MoveTo::create(_time, vec);
-		auto animate = Repeat::create(ActionDragon("_dragon_00", 192, 223), count_repeat);
-		auto spawn = Spawn::create(move, animate, nullptr);
-
-		break;
-	default:
-		break;
+		m_sprite->stopAllActionsByTag(TAG_ACTION_STAND);
 	}
+	if (!m_sprite->getActionByTag(TAG_ACTION_WALK))
+	{
+		SetDirect(vec);
+		float _time = m_distance / 70.0;
+		int count_repeat = _time + 1;
+		switch (m_currentDirect)
+		{
+		case 0:
+			//animate = Animate::create(createAnimation("_dragon_00", 160, 191));
+			//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() + Distance, m_sprite->getPositionY() - Distance));
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 160, 191), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+
+			break;
+		}
+
+		case 1:
+			/*animate = Animate::create(createAnimation("_dragon_00", 128, 159));
+			moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() + Distance, m_sprite->getPositionY()));*/
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 128, 159), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+			break;
+		}
+
+		case 2:
+			/*animate = Animate::create(createAnimation("_dragon_00", 96, 123));
+			moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() + Distance, m_sprite->getPositionY() + Distance));
+			*/
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 96, 123), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+			break;
+		}
+
+		case 3:
+			/*animate = Animate::create(createAnimation("_dragon_00", 64, 95));
+			moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() + Distance));*/
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 64, 95), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+			break;
+		}
+
+		case 4:
+			/*animate = Animate::create(createAnimation("_dragon_00", 32, 63));
+			moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() - Distance, m_sprite->getPositionY() + Distance));*/
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 32, 63), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+			break;
+		}
+
+		case 5:
+			//animate = Animate::create(createAnimation("_dragon_00", 0, 31));
+			//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() - Distance, m_sprite->getPositionY()));
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 0, 31), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+			break;
+		}
+
+		case 6:
+			//animate = Animate::create(createAnimation("_dragon_00", 224, 255));
+			//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX() - Distance, m_sprite->getPositionY() - Distance));
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 224, 255), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+			break;
+		}
+
+		case 7:
+			//animate = Animate::create(createAnimation("_dragon_00", 192, 223));
+			//moveTo = MoveTo::create(3, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() - Distance));
+		{
+			auto move = MoveTo::create(_time, vec);
+			auto animate = Repeat::create(ActionDragon("_dragon_00", 192, 223), count_repeat);
+			auto spawn = Spawn::create(move, animate, nullptr);
+			spawn->setTag(TAG_ACTION_WALK);
+			m_sprite->runAction(spawn);
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
+	//else 
+	//{
+	//	m_sprite->runAction(m_sprite->getActionByTag(TAG_ACTION_WALK));
+	//}
+	
 }
 
-void Dragon::Attack()
+void Dragon::Attack(Human *hm, float dt)
 {
+	if (m_sprite->getActionByTag(TAG_ACTION_WALK))
+	{
+		m_sprite->stopAllActionsByTag(TAG_ACTION_WALK);
+	}
+	//switch (m_currentDirect)
+	//{
+	//case 0:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX() + Fire, m_sprite->getPositionY() + Fire));
+	//	break;
+	//case 1:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() + Fire));
+	//	break;
+	//case 2:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX() - Fire, m_sprite->getPositionY() + Fire));
+	//	break;
+	//case 3:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() + Fire));
+	//	break;
+	//case 4:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX() - Fire, m_sprite->getPositionY() - Fire));
+	//	break;
+	//case 5:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX() - Fire, m_sprite->getPositionY()));
+	//	break;
+	//case 6:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX() + Fire, m_sprite->getPositionY() - Fire));
+	//	break;
+	//case 7:
+	//	fire->setPosition(Vec2(m_sprite->getPositionX() + Fire, m_sprite->getPositionY()));
+	//	break;
 
+	//default:
+	//	break;
+	//}
+	//static float count = 2.0;
+	//if (count == 2)
+	//{
+		fire->setPosition(hm->GetPosition());
+		auto animate = ActionDragon("red0", 0, 2);
+		fire->runAction(animate);
+		fire->setVisible(true);
+		//count = 0;
+	//}
+	//count += dt;
+}
+
+Sprite * Dragon::GetSpriteFire()
+{
+	if (!fire)
+		return fire;
+	return nullptr;
 }
 
 

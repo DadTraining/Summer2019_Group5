@@ -17,7 +17,7 @@ public:
 	Hero(Layer * _layer2D);
 	~Hero();
 	void Init( int ) override;
-	void Attack() override;
+	void Attack(Human*, float) override;
 	void Update( float) override;
 	void Move(Vec2 vec) override;
 	void Died()override;

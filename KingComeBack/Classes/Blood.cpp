@@ -36,7 +36,6 @@ Blood::Blood(float bloodMax, float m)
 	this->m_mana = m;
 	
 	isDragon = true;
-
 }
 
 Blood::Blood(Sprite * m_sprite,float b, float m , float g)

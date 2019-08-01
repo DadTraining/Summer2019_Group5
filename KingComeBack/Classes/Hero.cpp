@@ -40,11 +40,15 @@ Hero::~Hero()
 
 void Hero::Init(int d)
 {
-	blood = new Blood(1000.0,1000.0);
-	damage = new Damage(20, 50, 100);		
+	blood = new Blood(500.0,1000.0);
+	damage = new Damage(30, 50, 100);	
+
+	SetBlood(500);
+	SetAmor(50);
+	SetDame(60);
 }
 
-void Hero::Attack()
+void Hero::Attack(Human*, float)
 {
 	
 }
@@ -105,7 +109,7 @@ void Hero::moveR(int directMove, int x , int y)
 	sprintf(buffer, "walk_%d000", directMove);
 	std::string str = buffer;
 	//m_sprite->runAction( mListAction[2] );
-	animaton = Hero::createAnimation(str, 7, 0.09f);
+	animaton = Hero::createAnimation(str, 7, 0.1f);
 	Animate* animate = Animate::create(animaton);
 	animate->retain();
 	m_sprite->stopAllActions();
@@ -140,7 +144,7 @@ void  Hero::getAttack(int directAttack)
 	std::string str = buffer;
 		
 	//m_sprite->runAction( mListAction[2] );
-	animaton = Hero::createAnimation(str, 9, 0.01f);
+	animaton = Hero::createAnimation(str, 9, 0.1f);
 	Animate* animate = Animate::create(animaton);
 	animate->retain();
 	m_sprite->runAction(Repeat::create(animate, 1));
@@ -160,9 +164,12 @@ void Hero::skillAnimation( Layer* l, int type)
 	{
 	case 1:
 	{
+		getAttack(direct);
 		skill_1 = Sprite::createWithSpriteFrameName("skill1_064.png");
 		skill_1->setScale(1);
 		skill_1->setPosition(m_sprite->getPosition());
+		//skill_1->setPosition(Vec2(m_sprite->getPosition().x + m_sprite->getContentSize().width / 2,
+		//	m_sprite->getPosition().y + m_sprite->getContentSize().height / 2));
 		skill_1->setCameraMask(2);
 		l->addChild(skill_1);
 		auto animationSkill_1 = createSkillAnimation(64, 81);
@@ -174,9 +181,9 @@ void Hero::skillAnimation( Layer* l, int type)
 	}
 	case 2:
 	{
+		getAttack(direct);
 		skill_2 = Sprite::createWithSpriteFrameName("skill1_093.png");
 		skill_2->setScale(1);
-		skill_2->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY()+50);
 		skill_2->setCameraMask(2);
 		l->addChild(skill_2);
 	//	skill_2->setVisible();
@@ -185,33 +192,41 @@ void Hero::skillAnimation( Layer* l, int type)
 		{
 		case 0:
 			//skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() - DISTANCE_SKILL_1);
+			skill_2->setPosition(m_sprite->getPositionX() + 50, m_sprite->getPositionY() - 50);
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY() - DISTANCE_SKILL_2));
 			break;
 		case 1:
 			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() );
+			skill_2->setPosition(m_sprite->getPositionX() + 50, m_sprite->getPositionY());
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
 			break;
 		case 2:
+			skill_2->setPosition(m_sprite->getPositionX() + 50, m_sprite->getPositionY());
 			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() + DISTANCE_SKILL_1);
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
 			break;
 		case 3:
+			skill_2->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + 50);
 			//	skill_2->setPosition(m_sprite->getPositionX() , m_sprite->getPositionY() + DISTANCE_SKILL_1);
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() + DISTANCE_SKILL_2));
 			break;
 		case 4:
+			skill_2->setPosition(m_sprite->getPositionX() - 50, m_sprite->getPositionY() + 50);
 			//	skill_2->setPosition(m_sprite->getPositionX() - DISTANCE_SKILL_1, m_sprite->getPositionY() + DISTANCE_SKILL_1);
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() - DISTANCE_SKILL_2, m_sprite->getPositionY() + DISTANCE_SKILL_2));
 			break;
 		case 5:
+			skill_2->setPosition(m_sprite->getPositionX() - 50, m_sprite->getPositionY());
 			//	skill_2->setPosition(m_sprite->getPositionX() - DISTANCE_SKILL_1, m_sprite->getPositionY());
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() - DISTANCE_SKILL_2, m_sprite->getPositionY()));
 			break;
 		case 6:
+			skill_2->setPosition(m_sprite->getPositionX() - 50, m_sprite->getPositionY() - 50);
 			//	skill_2->setPosition(m_sprite->getPositionX() - DISTANCE_SKILL_1 , m_sprite->getPositionY() - DISTANCE_SKILL_1);
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() - DISTANCE_SKILL_2, m_sprite->getPositionY() - DISTANCE_SKILL_2));
 			break;
 		case 7:
+			skill_2->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() - 50);
 			//	skill_2->setPosition(m_sprite->getPositionX() , m_sprite->getPositionY() - DISTANCE_SKILL_1);
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX(), m_sprite->getPositionY() - DISTANCE_SKILL_2));
 			break;
@@ -274,7 +289,7 @@ void Hero::diedHero(int directDied)
 	std::string str = buffer;
 
 	//m_sprite->runAction( mListAction[2] );
-	auto animaton = Hero::createAnimation(str, 7, 0.02f);
+	auto animaton = Hero::createAnimation(str, 7, 0.1f);
 	Animate* animate = Animate::create(animaton);
 	animate->retain();
 	m_sprite->stopAllActions();

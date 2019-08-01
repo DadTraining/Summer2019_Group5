@@ -31,11 +31,13 @@ public:
 	Damage * getDamage();
 
 	// Code Tuan
+	void AddBlood();
 	void SetDirect(Vec2 vec);
 	void AnimateStand();
 	Animate* ActionDragon(std::string name, int begin, int end);
 	void Move(Vec2 vec) override;
-	void Attack() override;
+	void Attack(Human*,float) override;
+	Sprite *GetSpriteFire();
 	
 
 private:

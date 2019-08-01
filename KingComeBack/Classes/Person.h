@@ -18,6 +18,8 @@ public:
 
 	void SetDame(float dame);
 	float GetDame();
+
+	int checkTrueSkill_2( Vec2  v);
 protected:
 	float m_speedMovement;
 	float m_dame;

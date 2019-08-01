@@ -200,9 +200,9 @@ void Hero::skillAnimation( Layer* l, int type)
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
 			break;
 		case 2:
-			skill_2->setPosition(m_sprite->getPositionX() + 50, m_sprite->getPositionY());
-			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() + DISTANCE_SKILL_1);
-			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
+			skill_2->setPosition(m_sprite->getPositionX() + 50, m_sprite->getPositionY()+ 50);
+			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY() + DISTANCE_SKILL_2);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()+ DISTANCE_SKILL_2));
 			break;
 		case 3:
 			skill_2->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + 50);

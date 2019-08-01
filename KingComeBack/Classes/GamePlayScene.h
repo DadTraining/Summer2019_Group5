@@ -229,7 +229,7 @@ private:
 	std::vector<Knight *> knight;
 	std::vector<Item *> menuItem;
 	std::vector<Item *> menuItemShop;
-	float countSkill_1 =0.0, countSkill_2 =0.0;
+	float countSkill_1 =0.0, countSkill_2 =0.0, countNormal = 0.0;
 
 	//---dragon----
 	bool m_dragonState = DRAGON_STATE_FIND;

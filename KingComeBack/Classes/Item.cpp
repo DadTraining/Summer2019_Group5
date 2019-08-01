@@ -31,7 +31,6 @@ void Item::Init(int _ID, int ID_state)
 	{
 		m_button = ui::Button::create("item/potionBlue.png", "");
 		m_button->setTag(ID_TAG_MP);
-
 	}
 	else if (ID == ID_WEAPON)
 	{

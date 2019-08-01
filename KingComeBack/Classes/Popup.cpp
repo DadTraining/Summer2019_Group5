@@ -456,6 +456,9 @@ namespace UICustom {
 				node->addChild(menuLabelAtributeOfHero, 1);
 				menuLabelAtributeOfHero->setPosition(winSize.width * 0.62, winSize.height * 0.16);
 				menuLabelAtributeOfHero->alignItemsVerticallyWithPadding(5);
+				
+				//
+				
 
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);

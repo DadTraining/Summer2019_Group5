@@ -507,13 +507,9 @@ void GamePlayScene::AddSpriteUI()
 void GamePlayScene::AddPopupHero()
 {
 	auto labelHp = Label::createWithTTF(std::to_string((int)hero->getBlood()->getBlood()), "fonts/arial.ttf", 15);
-	labelHp->retain();
 	auto labelDamage = Label::createWithTTF(std::to_string(-(int)hero->getDamage()->getDamageNormal()), "fonts/arial.ttf", 15);
-	labelDamage->retain();
 	auto labelArmor = Label::createWithTTF(std::to_string((int)hero->GetAmor()), "fonts/arial.ttf", 15);
-	labelArmor->retain();
 	auto labelStrength = Label::createWithTTF(std::to_string((int)hero->getStrength()), "fonts/arial.ttf", 15);
-	labelStrength->retain();
 
 	auto menuLabelHp = MenuItemLabel::create(labelHp);
 	auto menuLabelDamage = MenuItemLabel::create(labelDamage);
@@ -537,12 +533,6 @@ void GamePlayScene::AddPopupHouse()
 		);
 	_layerUI->addChild(popupHouse, 1);
 }
-
- // void GamePlayScene::AddHeroAndDragon()
-// {
-//	hero = new Hero(_layer2D);
-//	dragon = new Dragon(_layer2D);
-// }
 
 void GamePlayScene::AddEventForPopupTownHall()
 {
@@ -982,6 +972,8 @@ void GamePlayScene::update(float dt)
 			if (containerDecorateHouse.at(i) != nullptr)
 			{
 				containerDecorateHouse.at(i)->Update(dt);
+				m_gold++;
+				labelGold->setString(std::to_string(m_gold));
 			}
 		}
 	}
@@ -992,6 +984,7 @@ void GamePlayScene::update(float dt)
 			if (containerStoreHouse.at(i) != nullptr)
 			{
 				containerStoreHouse.at(i)->Update(dt);
+
 			}
 		}
 	}
@@ -1217,7 +1210,6 @@ void GamePlayScene::createButton_Skill_1()
 	_layerUI->addChild(mButtonSkill_1);
 
 }
-
 
 void GamePlayScene::createButton_Skill_2()
 {

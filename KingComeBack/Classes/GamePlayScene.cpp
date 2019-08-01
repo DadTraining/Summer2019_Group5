@@ -60,9 +60,7 @@ bool GamePlayScene::init()
 	//code duoc
 	hero = new Hero(_layer2D);
 
-	dragon = new Dragon(_layer2D, TEAM_RED);
-
-	dragon->getSprite()->setPosition(1500,2000);
+	
 
 	AddHouseDragon();
 
@@ -952,6 +950,13 @@ void GamePlayScene::AddGold()
 
 void GamePlayScene::update(float dt)
 {
+	
+	if (m_houseDragon->GetBlood() < m_houseDragon->GetMaxBlood())
+	{
+		dragon = new Dragon(_layer2D, TEAM_RED);
+
+		dragon->getSprite()->setPosition(m_houseDragon->GetPosition());
+	}
 	labelGold->setString(std::to_string(m_gold));
 
 	countSkill_1 += dt;
@@ -1169,7 +1174,7 @@ void GamePlayScene::update(float dt)
 			break;
 		}
 	}
-
+	
 	if (!m_knightRed.empty())
 	{
 		for (auto k : m_knightRed)

@@ -32,6 +32,7 @@ void Person::SetID(int i)
 int Person::GetID()
 {
 	return id;
+}
 int Person::checkTrueSkill_2(Vec2  v)
 {
 

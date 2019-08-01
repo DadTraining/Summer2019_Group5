@@ -41,8 +41,9 @@ void HouseDragon::Update(float dt)
 	if (count >= 3.0)
 	{
 		m_knight = new Knight(_layer2D, TEAM_RED);	
-		m_knight->SetPositionKnight(Vec2(m_sprite->getPosition().x,
-			m_sprite->getPosition().y - m_sprite->getContentSize().height));
+		int dir = rand() % (100 + 1 - 50) + 50;
+		m_knight->SetPositionKnight(Vec2(m_sprite->getPosition().x + dir,
+			m_sprite->getPosition().y - m_sprite->getContentSize().height + dir));
 		count = 0;
 		isNewKnight = true;
 	}

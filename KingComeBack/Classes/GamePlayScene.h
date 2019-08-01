@@ -109,6 +109,7 @@ public:
 	void ReduceBloodKnight(Knight* red, Knight* blue);
 	void RemoveKnightRed(Knight* red);
 	void RemoveKnightBlue(Knight* blue);
+	void RemoveKnightRedMove(Knight* k);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
 	//-- Dragon --

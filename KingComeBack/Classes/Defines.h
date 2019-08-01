@@ -60,7 +60,7 @@
 //-----Dragon State------
 #define DRAGON_STATE_ATTACK true
 #define DRAGON_STATE_FIND false
-#define DRAGON_DAME 100
+#define DRAGON_RANGER_DAME 100
 //-----Tag Child Sprite-------
 #define TAG_SPRITE_BLOOD 0
 

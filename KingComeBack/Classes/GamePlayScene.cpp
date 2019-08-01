@@ -31,6 +31,11 @@ bool GamePlayScene::init()
 	newDecorateHouse = nullptr;
 	newStoreHouse = nullptr;
 	newMainHouse = nullptr;
+
+	menuLabelHp = nullptr;
+	menuLabelDamage = nullptr;
+	menuLabelArmor = nullptr;
+	menuLabelStrength = nullptr;
 	//newHallTown = nullptr;
 
 
@@ -511,11 +516,14 @@ void GamePlayScene::AddPopupHero()
 	auto labelArmor = Label::createWithTTF(std::to_string((int)hero->GetAmor()), "fonts/arial.ttf", 15);
 	auto labelStrength = Label::createWithTTF(std::to_string((int)hero->getStrength()), "fonts/arial.ttf", 15);
 
-	auto menuLabelHp = MenuItemLabel::create(labelHp);
-	auto menuLabelDamage = MenuItemLabel::create(labelDamage);
-	auto menuLabelArmor = MenuItemLabel::create(labelArmor);
-	auto menuLabelStrength = MenuItemLabel::create(labelStrength);
-
+	menuLabelHp = MenuItemLabel::create(labelHp);
+	menuLabelHp->retain();
+	menuLabelDamage = MenuItemLabel::create(labelDamage);
+	menuLabelDamage->retain();
+	menuLabelArmor = MenuItemLabel::create(labelArmor);
+	menuLabelArmor->retain();
+	menuLabelStrength = MenuItemLabel::create(labelStrength);
+	menuLabelStrength->retain();
 	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue("", "", menuItem, NULL, menuLabelHp,
 		menuLabelDamage, menuLabelArmor, menuLabelStrength);
 	_layerUI->addChild(popUpHero, 1);
@@ -998,7 +1006,50 @@ void GamePlayScene::update(float dt)
 			}
 		}
 	}	
+	for (int i = 0; i < menuItem.size(); i++)
+	{
+		if (menuLabelHp != nullptr && menuItem.at(i)->GetState() == ID_STATE_EQUIPMENT)
+		{
+			if (menuItem.at(i)->GetId() == ID_WEAPON)
+			{
+				menuLabelDamage->setString(std::to_string(-(int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame()));
+				menuLabelStrength->setString(std::to_string((int)hero->getStrength() + (int)menuItem.at(i)->getStrength()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood() + (int)menuItem.at(i)->getHp()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_ARMOR)
+			{
+				menuLabelArmor->setString(std::to_string((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood() + (int)menuItem.at(i)->getHp()));
+			}
+		}
+		if (menuLabelHp != nullptr && menuItem.at(i)->GetState() == ID_STATE_HOME)
+		{
+			if (menuItem.at(i)->GetId() == ID_WEAPON)
+			{
+				menuLabelDamage->setString(std::to_string(-(int)hero->getDamage()->getDamageNormal()));
+				menuLabelStrength->setString(std::to_string((int)hero->getStrength()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_ARMOR)
+			{
+				menuLabelArmor->setString(std::to_string((int)hero->GetAmor()));
+			}
+			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			{
+				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood()));
+			}
 
+		}
+	}
 
 	// Check Knight
 	//this->RemoveKnight(m_knightRed, knight);

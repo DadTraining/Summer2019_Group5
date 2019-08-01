@@ -427,9 +427,9 @@ void GamePlayScene::AddButtonAttack()
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
 			//this->AddPopupHouse();
-			/*if ( hero->getState() == true) {
+			if ( hero->getState() == true) {
 				heroAttack(hero->getDirect(), 0);
-			}	*/	
+			}	
 			break;
 		case cocos2d::ui::Widget::TouchEventType::ENDED:
 			break;
@@ -438,7 +438,6 @@ void GamePlayScene::AddButtonAttack()
 		}
 	});
 	_layerUI->addChild(button);
-
 
 	auto button1 = ui::Button::create("skill_1.png", "skill_1.png");
 	//button->setTitleText("Hero");
@@ -625,16 +624,12 @@ void GamePlayScene::AddEventForPopupScoutTown()
 			copyScoutTown->setPosition(_touch->getLocation());
 		};
 
-<<<<<<< HEAD
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-			copyScoutTown->setVisible(false);
-=======
-	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyScoutTown->setVisible(false);
 		newScoutTown = new ScoutTown(_layer2D, TEAM_BLUE);
->>>>>>> dfc2ff358262c1fea88826fb43caba3dfe63888f
 
-			newScoutTown = new ScoutTown(_layer2D, 2);
+
+			
 			m_listScoutTowns.push_back(newScoutTown);
 			newScoutTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
@@ -696,7 +691,7 @@ void GamePlayScene::AddEventForPopupMainHouse()
 
 void GamePlayScene::AddEventForPopupDecorateHouse()
 {
-<<<<<<< HEAD
+
 	if (m_gold >= 1000)
 	{
 		m_gold -= 1000;
@@ -731,35 +726,7 @@ void GamePlayScene::AddEventForPopupDecorateHouse()
 		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 	}
 	
-=======
-	//Add house copy
-	auto copyHouseDecorate = Sprite::create("HouseDecorate.png");
-	copyHouseDecorate->setOpacity(50);
-	_layerUI->addChild(copyHouseDecorate);
 
-	//Add event touch
-	auto buildHouseListener = EventListenerTouchOneByOne::create();
-
-	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
-
-		copyHouseDecorate->setPosition(_touch->getLocation());
-		return true;
-	};
-
-	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
-		copyHouseDecorate->setPosition(_touch->getLocation());
-	};
-
-	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-		copyHouseDecorate->setVisible(false);
-		newDecorateHouse = new HouseDecorate(_layer2D, TEAM_RED);
-		newDecorateHouse->GetButton()->setPosition(_touch->getLocation()
-			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-		newDecorateHouse->GetButton()->setCameraMask(2);
-		this->getEventDispatcher()->removeEventListener(buildHouseListener);
-	};
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
->>>>>>> dfc2ff358262c1fea88826fb43caba3dfe63888f
 }
 
 void GamePlayScene::AddEventForPopupStoreHouse()
@@ -1035,13 +1002,13 @@ void GamePlayScene::update(float dt)
 	//this->RemoveKnight(m_knightRed, knight);
 
 	this->MoveAttack(m_knightRed, knight);
-<<<<<<< HEAD
+
 	labelGold->setString(std::to_string(m_gold));
-=======
+
 
 	this->ChekAttackKnight(m_knightRed, knight, dt);
 
->>>>>>> dfc2ff358262c1fea88826fb43caba3dfe63888f
+
 	// code duoc
 	//count_dragon += dt;
 	//count_dragon_fire += dt;
@@ -1086,7 +1053,7 @@ void GamePlayScene::update(float dt)
 			if (abs(a->getSprite()->getPositionX() - dragon->getSprite()->getPositionX())<200 &&
 				abs(a->getSprite()->getPositionY() - dragon->getSprite()->getPositionY())<200) {
 				a->Update(count_bullet, dragon);
-				dragon->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
+				//dragon->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
 			}
 			for (auto b: m_knightRed) {
 				if (abs(a->getSprite()->getPositionX() - b->getSprite()->getPositionX())<200 &&
@@ -1183,12 +1150,16 @@ void GamePlayScene::update(float dt)
 void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	if (type == 0) {
 		hero->getAttack(STATE_ATTACK);
-		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 160 &&
-			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 160) {
-			dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - dragon->GetAmor());
-			//handleDragonVsHero();
-			//	dragon->handleBloodBar();
+		if (hero->GetPosition().distance(dragon->GetPosition()) <= 400)
+			//if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 160 &&
+			//	abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 160) {
+		{
+			dragon->SetScaleBlood((hero->getDamage()->getDamageNormal() - dragon->GetAmor()));
 		}
+		//	//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - dragon->GetAmor());
+		//	//handleDragonVsHero();
+		//	//	dragon->handleBloodBar();
+		//}
 		else
 		{
 			for (auto b : m_knightRed)
@@ -1208,7 +1179,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 			hero->skillAnimation(_layer2D, 1);
 			if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 64 &&
 				abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 64) {
-				dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
+			//	dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
 
 //				handleDragonVsHero();
 				//	dragon->handleBloodBar();
@@ -1222,7 +1193,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 			hero->skillAnimation(_layer2D, 2);
 			if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 64 &&
 				abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 64) {
-				dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_2());
+				//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_2());
 				//handleDragonVsHero();
 				//	dragon->handleBloodBar();
 			}
@@ -1230,10 +1201,10 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	
 	}
 	
-	if (dragon->getBlood()->isDie()==true) {
-		dragon->getSprite()->setVisible(false);
-		dragon->getSprite()->setPosition(Vec2(2000,0));
-	}
+	//if (dragon->getBlood()->isDie()==true) {
+	//	dragon->getSprite()->setVisible(false);
+	//	dragon->getSprite()->setPosition(Vec2(2000,0));
+	//}
 }
 
 void GamePlayScene::createButton_Skill_1()
@@ -1686,7 +1657,7 @@ void GamePlayScene::handleDragonVsScout()
 
 void GamePlayScene::handleDragonVsHero()
 {
-	if (dragon->getBlood()->isDie() == true) { return; }
+	//if (dragon->getBlood()->isDie() == true) { return; }
 	switch (hero->getDirect())
 	{
 	case 0:

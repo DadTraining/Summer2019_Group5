@@ -76,15 +76,8 @@ Animation * Dragon::createAnimation(std::string frefixName, int begin, int  end 
 	return animatonFunc;
 }
 
-Blood* Dragon::getBlood()
-{
-	return blood;
-}
 
-void Dragon::handleBloodBar()
-{
-	//spriteBlood->setScaleX(blood->getBlood()/1000);
-}
+
 
 void Dragon::createFire(Layer * _layer2D)
 {
@@ -186,10 +179,7 @@ void Dragon::dragonFire(int direct)
 	fire->setVisible(true);
 }
 
-void Dragon::updatePositionloodBar()
-{
-//	spriteBlood->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + 100);
-}
+
 
 Damage * Dragon::getDamage()
 {

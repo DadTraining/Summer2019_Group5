@@ -43,7 +43,7 @@ Hero::~Hero()
 void Hero::Init(int d)
 {
 	blood = new Blood(500.0,1000.0);
-	damage = new Damage(30, 50, 100);	
+	damage = new Damage(100, 150, 200);	
 
 	SetBlood(500);
 	SetAmor(50);
@@ -325,6 +325,12 @@ void Hero::handleBloodBar()
 {
 	float per = blood->getBlood()/1000;
 	spriteBlood->setScaleX(per);
+	if (blood->getBlood()<=0) {
+		spriteBlood->setVisible(false);
+	}
+	else {
+		spriteBlood->setVisible(true);
+	}
 }
 
 bool Hero::getState()

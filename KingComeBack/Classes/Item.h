@@ -13,6 +13,7 @@ private:
 	float m_dame;
 	float m_armor;
 	float m_speedAttack;
+	float m_strength;
 	int m_state;
 	int ID;
 	ui::Button *m_button;
@@ -24,6 +25,13 @@ public:
 	void Init(int ID, int ID_state);
 	void Init(int ID) override;
 	void Died() override;
+
+	float getHp();
+	float setHp(float _hp);
+	float getDame();
+	float setDame(float _dame);
+	float getArmor();
+	float getStrength();
 
 	int GetState();
 	void SetState(int state);

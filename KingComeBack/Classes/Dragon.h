@@ -17,7 +17,7 @@ public:
 	void Update(float dt) override;
 
 	Animation* createAnimation(std::string frefixName, int pFrame, int delay);
-	Blood * getBlood();
+
 	void handleBloodBar();
 	
 	void createFire(Layer * _layer2D);
@@ -49,7 +49,7 @@ private:
 	Vec2 origin;
 	int direct=0;
 
-	Blood * blood;
+//	Blood * blood;
 	Sprite * spriteBlood, *fire;
 
 	Damage * damage;

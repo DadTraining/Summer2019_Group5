@@ -373,13 +373,15 @@ namespace UICustom {
 	{
 		return nullptr;
 	}
-	PopupHero * PopupHero::createAsConfirmDialogue(Layer * layer, const std::string & title, const std::string & msg, 
-		std::vector<Item *> &menuItem, const std::function<void()>& YesFunc)
+	PopupHero * PopupHero::createAsConfirmDialogue(const std::string & title, const std::string & msg, 
+		std::vector<Item *> &menuItem, const std::function<void()>& YesFunc , MenuItemLabel * _menuLabelHp
+		, MenuItemLabel * _menuLabelDamage, MenuItemLabel * _menuLabelArmor, MenuItemLabel * _menuLabelStrength)
 	{
-		return create(layer, title, msg, NULL, menuItem, YesFunc);
+		return create(title, msg, NULL, menuItem, YesFunc, _menuLabelHp, _menuLabelDamage, _menuLabelArmor, _menuLabelStrength);
 	}
-	PopupHero * PopupHero::create(Layer *layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, 
-		std::vector<Item *> &menuItem, const std::function<void()>& YesFunc)
+	PopupHero * PopupHero::create(const std::string & title, const std::string & msg, cocos2d::Label * lbl, 
+		std::vector<Item *> &menuItem, const std::function<void()>& YesFunc , MenuItemLabel * _menuLabelHp
+	, MenuItemLabel * _menuLabelDamage, MenuItemLabel * _menuLabelArmor, MenuItemLabel * _menuLabelStrength)
 	{
 		PopupHero *node = new (std::nothrow)PopupHero();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -393,6 +395,35 @@ namespace UICustom {
 			lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
 			lbl->enableShadow(Color4B::BLACK, Size(0, -2));
 
+			// Atribute Label 
+			auto labelHp = Label::createWithTTF("Hp :", "fonts/arial.ttf", 15);
+			auto labelDamage = Label::createWithTTF("Damage :", "fonts/arial.ttf", 15);
+			auto labelArmor = Label::createWithTTF("Armor :", "fonts/arial.ttf", 15);
+			auto labelStrength = Label::createWithTTF("Strength :", "fonts/arial.ttf", 15);
+
+
+			auto itemLabelHp = MenuItemLabel::create(labelHp);
+			auto itemLabelDamage = MenuItemLabel::create(labelDamage);
+			auto itemLabelArmor = MenuItemLabel::create(labelArmor);
+			auto itemLabelStrength = MenuItemLabel::create(labelStrength);
+
+			Menu *menuLabelAtributeHero = Menu::create(itemLabelHp, itemLabelDamage,
+				itemLabelArmor, itemLabelStrength, NULL);
+			node->addChild(menuLabelAtributeHero, 1);
+			menuLabelAtributeHero->setPosition(winSize.width * 0.58, winSize.height * 0.16);
+			menuLabelAtributeHero->alignItemsVerticallyWithPadding(5);
+
+			// Atribute hero
+			auto menuLabelAtributeOfHero = Menu::create(_menuLabelHp,
+				_menuLabelDamage, _menuLabelArmor, _menuLabelStrength, NULL);
+			node->addChild(menuLabelAtributeOfHero, 1);
+			menuLabelAtributeOfHero->setPosition(winSize.width * 0.62, winSize.height * 0.16);
+			menuLabelAtributeOfHero->alignItemsVerticallyWithPadding(5);
+
+			// Add atribute of hero 
+
+
+			//
 			int heightBag = 6;
 			int widthBag = 4;
 			int id = 0;
@@ -400,9 +431,6 @@ namespace UICustom {
 
 			float posWidth = winSize.width / 2.85;
 			float posHeight = winSize.height / 1.36;
-
-			if (YesFunc) {
-
 				// remove when out of popup
 				for (int i = 0; i < menuItem.size(); i++)
 				{
@@ -422,6 +450,7 @@ namespace UICustom {
 				{
 					if (menuItem.at(i)->GetState() == ID_STATE_HOME)
 					{
+
 						menuItem.at(i)->getButton()->setPosition(Vec2(posWidth, posHeight));
 						posWidth += menuItem.at(i)->getButton()->getContentSize().width * 0.85;
 						menuItem.at(i)->setPrePosition(menuItem.at(i)->getButton()->getPosition());
@@ -433,28 +462,34 @@ namespace UICustom {
 					}
 
 				}
-				auto labelHp = Label::createWithTTF("Hp :", "fonts/arial.ttf", 15);
-				auto labelDamage = Label::createWithTTF("Damage :", "fonts/arial.ttf", 15);
-				auto labelArmor = Label::createWithTTF("Armor :", "fonts/arial.ttf", 15);
-				auto labelStrength = Label::createWithTTF("Strength :", "fonts/arial.ttf", 15);
 
+				//std::string add = "+ (";
+				//std::string hp = 
+				//auto labelHp = Label::createWithTTF(add  , "fonts/arial.ttf", 15);
+				//auto labelDamage = Label::createWithTTF(add, "fonts/arial.ttf", 15);
+				//auto labelArmor = Label::createWithTTF(add, "fonts/arial.ttf", 15);
+				//auto labelStrength = Label::createWithTTF(add, "fonts/arial.ttf", 15);
+
+
+				//auto itemLabelHp = MenuItemLabel::create(labelHp);
+				//auto itemLabelDamage = MenuItemLabel::create(labelDamage);
+				//auto itemLabelArmor = MenuItemLabel::create(labelArmor);
+				//auto itemLabelStrength = MenuItemLabel::create(labelStrength);
+
+				//Menu *menuLabelAtributeHero = Menu::create(itemLabelHp, itemLabelDamage,
+				//	itemLabelArmor, itemLabelStrength, NULL);
+				//node->addChild(menuLabelAtributeHero, 1);
+				//menuLabelAtributeHero->setPosition(winSize.width * 0.58, winSize.height * 0.16);
+				//menuLabelAtributeHero->alignItemsVerticallyWithPadding(5);
 				
-				auto itemLabelHp = MenuItemLabel::create(labelHp);
-				auto itemLabelDamage = MenuItemLabel::create(labelDamage);
-				auto itemLabelArmor = MenuItemLabel::create(labelArmor);
-				auto itemLabelStrength = MenuItemLabel::create(labelStrength);
-
-
-				Menu *menuLabelAtributeHero = Menu::create(itemLabelHp, itemLabelDamage,
-					itemLabelArmor, itemLabelStrength, NULL);
-				node->addChild(menuLabelAtributeHero, 1);
-				menuLabelAtributeHero->setPosition(winSize.width * 0.58, winSize.height * 0.16);
-				menuLabelAtributeHero->alignItemsVerticallyWithPadding(5);
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
-			}
+
 			node->addChild(lbl, 10);
 			node->initBg(lbl->getContentSize() + CONFIRM_DIALOGUE_SIZE_OFFSET, title);
+
+
+
 			node->autorelease();
 			return node;
 		}
@@ -523,7 +558,7 @@ namespace UICustom {
 
 				Menu *menu = Menu::create(knight, NULL);
 				node->addChild(menu, 2);
-				menu->setPosition(winSize.width / 2.5, winSize.height / 2.1);
+				menu->setPosition(winSize.width / 2.36, winSize.height / 2.1);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
 
 				lbl->setPosition(winSize / 2);

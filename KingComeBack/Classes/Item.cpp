@@ -20,18 +20,19 @@ Item::~Item()
 void Item::Init(int _ID, int ID_state)
 {
 	ID = _ID;
+	m_strength = 30;
 	screenSize = Director::getInstance()->getVisibleSize();
 
 	if (ID == ID_HP)
 	{
 		m_button = ui::Button::create("item/potionRed.png", "");
+		m_hp = 1000;
 		m_button->setTag(ID_TAG_HP);
 	}
 	else if (ID == ID_MP)
 	{
 		m_button = ui::Button::create("item/potionBlue.png", "");
 		m_button->setTag(ID_TAG_MP);
-
 	}
 	else if (ID == ID_WEAPON)
 	{
@@ -46,7 +47,6 @@ void Item::Init(int _ID, int ID_state)
 		m_button->setTag(ID_TAG_HELMET);
 
 		m_hp = 200;
-		m_mp = 100;
 	}
 	else if (ID == ID_ARMOR)
 	{
@@ -87,6 +87,30 @@ void Item::Init(int ID)
 void Item::Died()
 {
 
+}
+float Item::getHp()
+{
+	return m_hp;
+}
+float Item::setHp(float _hp)
+{
+	return 0.0f;
+}
+float Item::getDame()
+{
+	return m_dame;
+}
+float Item::setDame(float _dame)
+{
+	return 0.0f;
+}
+float Item::getArmor()
+{
+	return m_armor;
+}
+float Item::getStrength()
+{
+	return m_strength;
 }
 int Item::GetState()
 {

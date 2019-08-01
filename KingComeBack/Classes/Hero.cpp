@@ -43,11 +43,12 @@ Hero::~Hero()
 void Hero::Init(int d)
 {
 	blood = new Blood(500.0,1000.0);
-	damage = new Damage(30, 50, 100);	
+	damage = new Damage(150, 250, 350);	
 
-	SetBlood(500);
-	SetAmor(50);
-	SetDame(60);
+	SetBlood(500.0f);
+	SetAmor(50.0f);
+	SetDame(60.0f);
+	setStrength(30.0f);
 }
 
 void Hero::Attack(Human*, float)
@@ -200,9 +201,9 @@ void Hero::skillAnimation( Layer* l, int type)
 			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
 			break;
 		case 2:
-			skill_2->setPosition(m_sprite->getPositionX() + 50, m_sprite->getPositionY());
-			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_1, m_sprite->getPositionY() + DISTANCE_SKILL_1);
-			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()));
+			skill_2->setPosition(m_sprite->getPositionX() + 50, m_sprite->getPositionY()+ 50);
+			//	skill_2->setPosition(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY() + DISTANCE_SKILL_2);
+			moveto = MoveTo::create(1.5, Vec2(m_sprite->getPositionX() + DISTANCE_SKILL_2, m_sprite->getPositionY()+ DISTANCE_SKILL_2));
 			break;
 		case 3:
 			skill_2->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + 50);
@@ -325,6 +326,22 @@ void Hero::handleBloodBar()
 {
 	float per = blood->getBlood()/1000;
 	spriteBlood->setScaleX(per);
+	if (blood->getBlood()<=0) {
+		spriteBlood->setVisible(false);
+	}
+	else {
+		spriteBlood->setVisible(true);
+	}
+}
+
+float Hero::getStrength()
+{
+	return m_strength;
+}
+
+void Hero::setStrength(float _strength)
+{
+	m_strength = _strength;
 }
 
 bool Hero::getState()

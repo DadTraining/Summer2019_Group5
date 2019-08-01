@@ -1039,40 +1039,12 @@ void GamePlayScene::update(float dt)
 	dotHero->VisiableDot(true);
 //	dot->setPosition(hero->getPositionHero().x-100, hero->getPositionHero().y+200);
 	HandleMinimap();
-	count_bullet += dt;
 	
-	//if (count_bullet>0.4 && m_listScoutTowns.size()>0 && m_knightRed.size()>0) {
-	//	for (auto a : m_listScoutTowns) {
-	//		if (abs(a->getSprite()->getPositionX() - dragon->getSprite()->getPositionX())<200 &&
-	//			abs(a->getSprite()->getPositionY() - dragon->getSprite()->getPositionY())<200) {
-	//			a->Update(count_bullet, dragon);
-	//			dragon->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
-	//		}
-	//		/*for (auto b: m_knightRed) {
-	//			if (abs(a->getSprite()->getPositionX() - b->getSprite()->getPositionX())<200 &&
-	//				abs(a->getSprite()->getPositionY() - b->getSprite()->getPositionY())<200
-	//				) {
-	//				a->Update(count_bullet, b);
-	//				
-	//				b->getBlood()->reduceBlood(a->getDamage()->getDamageNormal());
-	//				b->MoveRed(a->getSprite()->getPosition());
-	//				if (b->getBlood()->isDie()) {
-	//					b->getSprite()->setVisible(false);
-	//					b->getSprite()->setPosition(0,-2000);
-	//				}
-	//				a->getBlood()->reduceBlood(b->getDamage()->getDamageNormal());
-	//				if (a->getBlood()->isDie()) {
-	//					a->getSprite()->setVisible(false);
-	//					a->getDotMiniMap()->getSprite()->setVisible(false);
-	//					a->getSprite()->setPosition(-2000,0);
-	//				}
-	//			}
-	//		}*/
-	//		
-	//	}
-	//	
-	//	count_bullet = 0;
-	//}
+	
+	//-----Scout Town Attack--------------
+	ScoutAttack(m_listScoutTowns, m_knightRed, m_knightRedMove, dt);
+
+	
 	//hero->setBlood(-dt);
 
 	if (hero->getBlood()->getBlood()<10 && hero->getState() == true) {
@@ -1519,6 +1491,59 @@ void GamePlayScene::KnightMoveAttack(std::vector<Knight*> red)
 	for (auto k : red)
 	{
 		k->Move(hero->GetPosition());
+	}
+}
+
+void GamePlayScene::ScoutAttack(std::vector<ScoutTown*> m_listScoutTowns, std::vector<Knight*> m_knightRed, std::vector<Knight*> m_knightRedMove, float dt)
+{
+	count_bullet += dt;
+	if (count_bullet>0.4 && !m_listScoutTowns.empty())
+	{
+		for (auto a : m_listScoutTowns)
+		{
+			if (a->GetPosition().distance(dragon->GetPosition()) <= RANGER_ATTACK_SCOUT)
+			{
+				a->Update(count_bullet, dragon);
+				dragon->SetScaleBlood(a->getDamage()->getDamageNormal() - dragon->GetAmor());
+			}
+			else 
+			{
+				bool cur = false;
+				if (!m_knightRedMove.empty())
+				{
+					
+					for (auto b : m_knightRedMove)
+					{
+						if (a->GetPosition().distance(b->GetPosition()) <= RANGER_ATTACK_SCOUT)
+						{
+							a->Update(count_bullet, b);
+
+							b->SetScaleBlood(a->getDamage()->getDamageNormal() - b->GetAmor());
+							cur = true;
+						}
+					}
+				}
+				if (!cur)
+				{
+					if (!m_knightRed.empty())
+					{
+						for (auto b : m_knightRed)
+						{
+							if (a->GetPosition().distance(b->GetPosition()) <= RANGER_ATTACK_SCOUT)
+							{
+								a->Update(count_bullet, b);
+
+								b->SetScaleBlood(a->getDamage()->getDamageNormal() - b->GetAmor());
+							}
+						}
+					}
+				}
+				
+			}
+			
+
+		}
+		count_bullet = 0;
 	}
 }
 

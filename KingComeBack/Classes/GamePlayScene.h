@@ -122,7 +122,11 @@ public:
 	//------Add Knight Red Move-----
 	void KnightMoveAttack(std::vector<Knight*> red);
 
-	//---------------------
+	//-------Scout Town Attack--------------
+	void ScoutAttack(std::vector<ScoutTown*> m_listScoutTowns, std::vector<Knight*> m_knightRed, 
+		std::vector<Knight*> m_knightRedMove, float count_bullet);
+
+	//----------------------------------
 	void handleJoystick();
 
 	void handleDragonVsScout();

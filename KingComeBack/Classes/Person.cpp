@@ -23,3 +23,13 @@ float Person::GetDame()
 {
 	return m_dame;
 }
+
+void Person::SetID(int i)
+{
+	id = i;
+}
+
+int Person::GetID()
+{
+	return id;
+}

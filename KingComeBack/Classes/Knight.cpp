@@ -294,14 +294,7 @@ void Knight::Attack(Human* human, float dt)
 		static float count = 3;
 		if (count >= 3)
 		{
-			Knight *k = (Knight*)human;
-			float dame = this->GetDame() - k->GetAmor();
-
-			k->SetScaleBlood(dame);
-			if (k->GetBlood() <= 0)
-			{
-				k->SetPositionKnight(Vec2(-1000, 0));
-			}
+			human->SetScaleBlood(this->GetDame() - human->GetAmor());
 			count = 0;
 		}
 		count += dt;

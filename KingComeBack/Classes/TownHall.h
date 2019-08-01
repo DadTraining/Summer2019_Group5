@@ -24,7 +24,6 @@ public:
 
 	void SetScaleBlood(float dame) override;
 private:
-	int id_home;
 	Sprite *loadingBarBg;
 	GLubyte hallTownOpacity;
 };

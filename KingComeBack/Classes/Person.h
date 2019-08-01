@@ -18,6 +18,8 @@ public:
 
 	void SetDame(float dame);
 	float GetDame();
+	void SetID(int i) override;
+	int GetID() override;
 protected:
 	float m_speedMovement;
 	float m_dame;

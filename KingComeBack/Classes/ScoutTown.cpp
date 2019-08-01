@@ -3,14 +3,11 @@
 ScoutTown::ScoutTown(Layer* scene, int id)
 {
 	this->Init(id);
-	//blood = new Blood(m_sprite, 400, id);
-	d = new Damage(10);
+	d = new Damage(40);
 	
 	scene->addChild(m_sprite);
 
-	//bullet = new Bullet(scene);
-
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Bullet *m_bullet1 = new Bullet(scene);
 		this->m_listBullets.push_back(m_bullet1);
@@ -30,7 +27,8 @@ void ScoutTown::Init(int id)
 	m_sprite->setOpacity(30);
 
 	MyBodyParser::getInstance()->parseJsonFile("ScoutTown.json");
-	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "ScoutTownBody", PhysicsMaterial(0, 0, 0));
+	auto physicBody = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "ScoutTownBody",
+		PhysicsMaterial(0, 0, 0));
 
 	physicBody->setGravityEnable(false);
 	physicBody->setRotationEnable(false);
@@ -95,7 +93,7 @@ void ScoutTown::Update(float dt)
 void ScoutTown::Shoot(Knight * monster)
 {
 	for (auto b : m_listBullets) {
-		if (b->getSprite()->isVisible()!=true)
+		if (b->getSprite()->isVisible() == false)
 		{
 			b->getSprite()->setVisible(true);
 			b->getSprite()->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height / 2);
@@ -109,7 +107,7 @@ void ScoutTown::Shoot(Knight * monster)
 void ScoutTown::Shoot(Dragon * monster)
 {
 	for (auto b : m_listBullets) {
-		if (b->getSprite()->isVisible() != true)
+		if (b->getSprite()->isVisible() == false)
 		{
 			b->getSprite()->setVisible(true);
 			b->getSprite()->setPosition(m_sprite->getPositionX(), m_sprite->getPositionY() + m_sprite->getContentSize().height / 2);

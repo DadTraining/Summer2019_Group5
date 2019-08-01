@@ -1228,7 +1228,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	if (type == 0) {
 		hero->getAttack(STATE_ATTACK);
 
-		if (hero->GetPosition().distance(dragon->GetPosition()) <= 100)
+		if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
 		{
 			dragon->SetScaleBlood((hero->getDamage()->getDamageNormal() - dragon->GetAmor()));
 
@@ -1240,7 +1240,8 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 			{
 				if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 					abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-					//b->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
 					break;
 				}
 			}
@@ -1249,7 +1250,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 			{
 				if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 					abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-					//	c->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+					c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
 					break;
 				}
 			}
@@ -1259,10 +1260,10 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 	if (type == 1) {
 
 		hero->skillAnimation(_layer2D, 1);
-		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 64 &&
-			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 64) {
+		if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
+			abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
 			//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
-
+			dragon->SetScaleBlood(hero->getDamage()->getDamageNormal() - dragon->GetAmor());
 			if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
 			{
 				dragon->SetScaleBlood((hero->getDamage()->getDamageSkill_1() - dragon->GetAmor()));
@@ -1274,7 +1275,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 				{
 					if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
 						abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
-						//	b->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1() - b->GetAmor());
+						b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
 						break;
 					}
 				}
@@ -1283,7 +1284,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 				{
 					if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 						abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-						//c->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+						c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
 						break;
 					}
 				}
@@ -1292,7 +1293,8 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 
 
 		}
-		if (type == 2) {
+	}
+	if (type == 2) {
 
 			hero->skillAnimation(_layer2D, 2);
 
@@ -1309,7 +1311,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 					if (hero->GetPosition().distance(b->GetPosition()) <= 200
 						)
 					{
-						//	b->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1() - b->GetAmor());
+						b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
 						break;
 					}
 				}
@@ -1318,7 +1320,7 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 				{
 					if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
 						abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-						//		c->getBlood()->reduceBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+						c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
 						break;
 					}
 				}
@@ -1326,10 +1328,8 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 
 		}
 
-	}
+
 }
-
-
 
 
 

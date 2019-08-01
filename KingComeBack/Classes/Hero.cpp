@@ -43,7 +43,7 @@ Hero::~Hero()
 void Hero::Init(int d)
 {
 	blood = new Blood(500.0,1000.0);
-	damage = new Damage(100, 150, 200);	
+	damage = new Damage(150, 250, 350);	
 
 	SetBlood(500.0f);
 	SetAmor(50.0f);

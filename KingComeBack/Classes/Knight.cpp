@@ -113,6 +113,7 @@ void Knight::Init(int id)
 	SetAmor(10);
 	SetDame(30);
 	SetBlood(200);
+	m_maxBlood = 200;
 }
 
 void Knight::Update(float dt)
@@ -265,20 +266,6 @@ void Knight::InitBlue()
 	m_sprite->setPhysicsBody(body);	
 }
 
-Blood * Knight::getBlood()
-{
-	return b;
-}
-
-Damage * Knight::getDamage()
-{
-	return d;
-}
-
-Skill * Knight::getSkill()
-{
-	return nullptr;
-}
 
 void Knight::Attack(Human* human, float dt)
 {
@@ -304,8 +291,8 @@ void Knight::Attack(Human* human, float dt)
 			m_sprite->runAction(action);
 		}
 
-		static float count = 5;
-		if (count >= 5)
+		static float count = 3;
+		if (count >= 3)
 		{
 			Knight *k = (Knight*)human;
 			float dame = this->GetDame() - k->GetAmor();

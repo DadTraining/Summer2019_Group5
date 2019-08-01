@@ -4,6 +4,7 @@ HouseDragon::HouseDragon(Layer * layer, int id)
 {
 	Init(id);
 	layer->addChild(m_sprite);
+	_layer2D = layer;
 }
 
 HouseDragon::~HouseDragon()
@@ -36,8 +37,16 @@ void HouseDragon::LoadingBuild()
 
 void HouseDragon::Update(float dt)
 {
-	/*static float count = 0.0;
-	if (count == 5.0)*/
+	static float count = 0.0;
+	if (count >= 3.0)
+	{
+		m_knight = new Knight(_layer2D, TEAM_RED);	
+		m_knight->SetPositionKnight(Vec2(m_sprite->getPosition().x,
+			m_sprite->getPosition().y - m_sprite->getContentSize().height));
+		count = 0;
+		isNewKnight = true;
+	}
+	count += dt;
 }
 
 Vec2 HouseDragon::GetPosition()
@@ -65,4 +74,19 @@ void HouseDragon::SetScaleBlood(float dame)
 void HouseDragon::SetPosition(Vec2 vec)
 {
 	m_sprite->setPosition(vec);
+}
+
+Knight* HouseDragon::GetKnight()
+{
+	return m_knight;
+}
+
+void HouseDragon::SetIsNewKnight(bool is)
+{
+	isNewKnight = is;
+}
+
+bool HouseDragon::GetIsNewKnight()
+{
+	return isNewKnight;
 }

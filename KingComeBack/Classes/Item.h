@@ -15,6 +15,7 @@ private:
 	float m_speedAttack;
 	float m_strength;
 	int m_state;
+	int m_goldItem;
 	int ID;
 	ui::Button *m_button;
 	Vec2 prePosition;
@@ -33,6 +34,8 @@ public:
 	float getArmor();
 	float getStrength();
 
+	int getGoldItem();
+	void setGoldItem(int _gold);
 	int GetState();
 	void SetState(int state);
 	Vec2 getPrePosition();

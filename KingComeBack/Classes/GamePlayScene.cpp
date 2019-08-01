@@ -38,16 +38,14 @@ bool GamePlayScene::init()
 	menuLabelStrength = nullptr;
 	//newHallTown = nullptr;
 
-
 	screenSize = Director::getInstance()->getVisibleSize();
 	sizeWall = Vec2(3.0f, 3.0f);
 
 	condinatorMiniMap = Vec2(screenSize.width * 1 / 20, screenSize.height * 7 / 10);
 
-
 	pause = DelayTime::create(20);
 	
-	this->setCameraMask((unsigned short)CameraFlag::DEFAULT, true);
+	//this->setCameraMask((unsigned short)CameraFlag::DEFAULT, true);
 	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
 	
 	// create item
@@ -511,8 +509,8 @@ void GamePlayScene::AddSpriteUI()
 
 void GamePlayScene::AddPopupHero()
 {
-	auto labelHp = Label::createWithTTF(std::to_string((int)hero->getBlood()->getBlood()), "fonts/arial.ttf", 15);
-	auto labelDamage = Label::createWithTTF(std::to_string(-(int)hero->getDamage()->getDamageNormal()), "fonts/arial.ttf", 15);
+	auto labelHp = Label::createWithTTF(std::to_string((int)hero->GetMaxBlood()), "fonts/arial.ttf", 15);
+	auto labelDamage = Label::createWithTTF(std::to_string((int)hero->getDamage()->getDamageNormal()), "fonts/arial.ttf", 15);
 	auto labelArmor = Label::createWithTTF(std::to_string((int)hero->GetAmor()), "fonts/arial.ttf", 15);
 	auto labelStrength = Label::createWithTTF(std::to_string((int)hero->getStrength()), "fonts/arial.ttf", 15);
 
@@ -772,7 +770,7 @@ void GamePlayScene::AddEventForPopupStoreHouse()
 				{
 				case cocos2d::ui::Widget::TouchEventType::BEGAN:
 				{
-					auto popup = UICustom::PopupShop::createAsConfirmDialogue(_layerUI, "", "", menuItem, menuItemShop, [&]() {
+					auto popup = UICustom::PopupShop::createAsConfirmDialogue(m_gold, "", "", menuItem, menuItemShop, [&]() {
 
 					});
 					_layer2D->addChild(popup);
@@ -800,43 +798,36 @@ void GamePlayScene::CreateItem()
 	itemHp->getButton()->retain();
 	menuItem.push_back(itemHp);
 
-	Item *itemMp = new Item(ID_MP, ID_STATE_HOME);
-	itemMp->getButton()->retain();
-	menuItem.push_back(itemMp);
+	//Item *itemMp = new Item(ID_MP, ID_STATE_HOME);
+	//itemMp->getButton()->retain();
+	//menuItem.push_back(itemMp);
 
-	Item *itemWepon = new Item(ID_WEAPON, ID_STATE_HOME);
-	itemWepon->getButton()->retain();
-	menuItem.push_back(itemWepon);
-
-	Item *itemHelmet = new Item(ID_HELMET, ID_STATE_HOME);
-	itemHelmet->getButton()->retain();
-	menuItem.push_back(itemHelmet);
-
-	Item *itemArmor = new Item(ID_ARMOR, ID_STATE_HOME);
-	itemArmor->getButton()->retain();
-	menuItem.push_back(itemArmor);
 
 	// item shop
 	Item *itemHpShop = new Item(ID_HP, ID_STATE_SHOP);
 	itemHpShop->getButton()->retain();
+	itemHpShop->getButton()->setTitleText("100$");
 	menuItemShop.push_back(itemHpShop);
-
-	Item *itemMpShop = new Item(ID_MP, ID_STATE_SHOP);
-	itemMpShop->getButton()->retain();
-	menuItemShop.push_back(itemMpShop);
 
 	Item *itemWeponShop = new Item(ID_WEAPON, ID_STATE_SHOP);
 	itemWeponShop->getButton()->retain();
+	itemWeponShop->getButton()->setTitleText("2000$");
 	menuItemShop.push_back(itemWeponShop);
 
 	Item *itemHelmetShop = new Item(ID_HELMET, ID_STATE_SHOP);
 	itemHelmetShop->getButton()->retain();
+	itemHelmetShop->getButton()->setTitleText("1000$");
 	menuItemShop.push_back(itemHelmetShop);
 
 	Item *itemArmorShop = new Item(ID_ARMOR, ID_STATE_SHOP);
 	itemArmorShop->getButton()->retain();
+	itemArmorShop->getButton()->setTitleText("700$");
 	menuItemShop.push_back(itemArmorShop);
-
+	 
+	Item *itemShieldShop = new Item(ID_SHIELD, ID_STATE_SHOP);
+	itemShieldShop->getButton()->retain();
+	itemArmorShop->getButton()->setTitleText("1500$");
+	menuItemShop.push_back(itemArmorShop);
 }
 
 void GamePlayScene::CreateKnight()
@@ -1013,12 +1004,12 @@ void GamePlayScene::update(float dt)
 		{
 			if (menuItem.at(i)->GetId() == ID_WEAPON)
 			{
-				menuLabelDamage->setString(std::to_string(-(int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame()));
+				menuLabelDamage->setString(std::to_string((int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame()));
 				menuLabelStrength->setString(std::to_string((int)hero->getStrength() + (int)menuItem.at(i)->getStrength()));
 			}
 			else if (menuItem.at(i)->GetId() == ID_HELMET)
 			{
-				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood() + (int)menuItem.at(i)->getHp()));
+				menuLabelHp->setString(std::to_string((int)hero->GetMaxBlood() + (int)menuItem.at(i)->getHp()));
 			}
 			else if (menuItem.at(i)->GetId() == ID_ARMOR)
 			{
@@ -1026,14 +1017,14 @@ void GamePlayScene::update(float dt)
 			}
 			else if (menuItem.at(i)->GetId() == ID_HELMET)
 			{
-				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood() + (int)menuItem.at(i)->getHp()));
+				menuLabelHp->setString(std::to_string((int)hero->GetMaxBlood() + (int)menuItem.at(i)->getHp()));
 			}
 		}
 		if (menuLabelHp != nullptr && menuItem.at(i)->GetState() == ID_STATE_HOME)
 		{
 			if (menuItem.at(i)->GetId() == ID_WEAPON)
 			{
-				menuLabelDamage->setString(std::to_string(-(int)hero->getDamage()->getDamageNormal()));
+				menuLabelDamage->setString(std::to_string((int)hero->getDamage()->getDamageNormal()));
 				menuLabelStrength->setString(std::to_string((int)hero->getStrength()));
 			}
 			else if (menuItem.at(i)->GetId() == ID_HELMET)
@@ -1046,7 +1037,7 @@ void GamePlayScene::update(float dt)
 			}
 			else if (menuItem.at(i)->GetId() == ID_HELMET)
 			{
-				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood()));
+				menuLabelHp->setString(std::to_string((int)hero->GetMaxBlood()));
 			}
 
 		}

@@ -28,7 +28,7 @@ Hero::Hero(Layer * _layer2D)
 	bodyA->setDynamic(true);
 	m_sprite->setPhysicsBody(bodyA);
 
-
+	m_maxBlood = 500;
 	Init(1);
 	//m_sprite->setCameraMask(2);
 	_layer2D->addChild(m_sprite,10);

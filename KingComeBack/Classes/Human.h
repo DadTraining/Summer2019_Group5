@@ -14,6 +14,8 @@ public:
 	virtual void Died() = 0;
 	virtual void Update(float dt) = 0;
 
+	float GetMaxBlood();
+	void SetMaxBlood(float _maxBlood);
 	void SetColor(int color);
 	int GetColor();
 	void SetAmor(float amor);

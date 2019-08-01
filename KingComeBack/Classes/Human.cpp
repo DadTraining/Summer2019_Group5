@@ -10,6 +10,16 @@ Human::~Human()
 
 }
 
+float Human::GetMaxBlood()
+{
+	return m_maxBlood;
+}
+
+void Human::SetMaxBlood(float _maxBlood)
+{
+	m_maxBlood = _maxBlood;
+}
+
 void Human::SetColor(int color)
 {
 	m_color = color;

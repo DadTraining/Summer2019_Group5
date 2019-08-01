@@ -106,7 +106,7 @@ void Knight::Init(int id)
 
 	//d = new Damage(50);
 
-	
+	m_sprite->setRotation(0);
 	AddBlood();
 
 	SetColor(id);

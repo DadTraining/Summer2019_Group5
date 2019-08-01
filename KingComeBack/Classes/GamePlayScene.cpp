@@ -625,16 +625,10 @@ void GamePlayScene::AddEventForPopupScoutTown()
 			copyScoutTown->setPosition(_touch->getLocation());
 		};
 
-<<<<<<< HEAD
-		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-			copyScoutTown->setVisible(false);
-=======
 	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
 		copyScoutTown->setVisible(false);
 		newScoutTown = new ScoutTown(_layer2D, TEAM_BLUE);
->>>>>>> dfc2ff358262c1fea88826fb43caba3dfe63888f
-
-			newScoutTown = new ScoutTown(_layer2D, 2);
+	
 			m_listScoutTowns.push_back(newScoutTown);
 			newScoutTown->getSprite()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
@@ -696,7 +690,6 @@ void GamePlayScene::AddEventForPopupMainHouse()
 
 void GamePlayScene::AddEventForPopupDecorateHouse()
 {
-<<<<<<< HEAD
 	if (m_gold >= 1000)
 	{
 		m_gold -= 1000;
@@ -730,36 +723,6 @@ void GamePlayScene::AddEventForPopupDecorateHouse()
 		};
 		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
 	}
-	
-=======
-	//Add house copy
-	auto copyHouseDecorate = Sprite::create("HouseDecorate.png");
-	copyHouseDecorate->setOpacity(50);
-	_layerUI->addChild(copyHouseDecorate);
-
-	//Add event touch
-	auto buildHouseListener = EventListenerTouchOneByOne::create();
-
-	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
-
-		copyHouseDecorate->setPosition(_touch->getLocation());
-		return true;
-	};
-
-	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
-		copyHouseDecorate->setPosition(_touch->getLocation());
-	};
-
-	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-		copyHouseDecorate->setVisible(false);
-		newDecorateHouse = new HouseDecorate(_layer2D, TEAM_RED);
-		newDecorateHouse->GetButton()->setPosition(_touch->getLocation()
-			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-		newDecorateHouse->GetButton()->setCameraMask(2);
-		this->getEventDispatcher()->removeEventListener(buildHouseListener);
-	};
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
->>>>>>> dfc2ff358262c1fea88826fb43caba3dfe63888f
 }
 
 void GamePlayScene::AddEventForPopupStoreHouse()
@@ -1035,13 +998,10 @@ void GamePlayScene::update(float dt)
 	//this->RemoveKnight(m_knightRed, knight);
 
 	this->MoveAttack(m_knightRed, knight);
-<<<<<<< HEAD
 	labelGold->setString(std::to_string(m_gold));
-=======
 
 	this->ChekAttackKnight(m_knightRed, knight, dt);
 
->>>>>>> dfc2ff358262c1fea88826fb43caba3dfe63888f
 	// code duoc
 	//count_dragon += dt;
 	//count_dragon_fire += dt;

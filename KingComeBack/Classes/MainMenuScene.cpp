@@ -157,7 +157,7 @@ bool MainMenuScene::init()
 	this->addChild(textName, 10);
 
 	//add button back menu
-	btnBack = ui::Button::create("Buttons/pngguru.com-id-bixpo_04.png", "Buttons/pngguru.com-id-bixpo_08.png");
+	/*btnBack = ui::Button::create("Buttons/pngguru.com-id-bixpo_04.png", "Buttons/pngguru.com-id-bixpo_08.png");
 	btnBack->setPosition(Vec2(70,70));
 	btnBack->setAnchorPoint(Point(0.5, 0.5));
 	btnBack->setScale(0.5);
@@ -166,7 +166,7 @@ bool MainMenuScene::init()
 
 		Director::getInstance()->replaceScene(MenuScene::createScene());
 	});
-	addChild(btnBack);
+	addChild(btnBack);*/
 
 	btnPlay = ui::Button::create("Buttons/play.png","Buttons/play-pro.png", "Buttons/play.png");
 

@@ -113,6 +113,7 @@ void Knight::Init(int id)
 	SetAmor(10);
 	SetDame(30);
 	SetBlood(200);
+	m_maxBlood = 200;
 }
 
 void Knight::Update(float dt)

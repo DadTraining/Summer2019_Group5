@@ -117,10 +117,14 @@ public:
 		std::vector<StoreHouse *>, std::vector<Knight *>, Hero*, Vec2);
 	void AddHouseDragon();
 
+	//------Add Knight Red Move-----
+	void KnightMoveAttack(std::vector<Knight*> red);
+
 	//---------------------
 	void handleJoystick();
 
 	void handleDragonVsScout();
+
 
 	CREATE_FUNC(GamePlayScene);
 private:
@@ -229,5 +233,9 @@ private:
 	bool m_stateReduce = false;
 	Vec2 m_vecPosition = Vec2::ZERO;
 	HouseDragon* m_houseDragon;
+
+	//--- Add Knight Red Move----
+	std::vector<Knight*> m_knightRedMove;
+	
 };
 

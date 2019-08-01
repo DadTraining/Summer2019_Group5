@@ -36,6 +36,7 @@ void Dragon::Init(int id)
 
 	SetColor(id);
 	SetBlood(1000);
+	m_maxBlood = 1000;
 	SetAmor(50);
 	SetDame(200);
 }

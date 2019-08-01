@@ -1058,6 +1058,15 @@ void GamePlayScene::update(float dt)
 			containerStoreHouse, knight, hero, m_vecPosition);
 	}
 
+	//-----Create knight red attack-----
+	m_houseDragon->Update(dt);
+	if (m_houseDragon->GetIsNewKnight())
+	{
+		m_knightRedMove.push_back(m_houseDragon->GetKnight());
+		m_houseDragon->SetIsNewKnight(false);
+	}
+
+
 	// Remove Knight Death
 	for (auto k : knight)
 	{
@@ -1435,6 +1444,14 @@ void GamePlayScene::AddHouseDragon()
 {
 	m_houseDragon = new HouseDragon(_layer2D, TEAM_RED);
 	m_houseDragon->SetPosition(mapTopRight->getPosition() + mapTopRight->getContentSize() * 8 / 9);
+}
+
+void GamePlayScene::KnightMoveAttack(std::vector<Knight*> red)
+{
+	for (auto k : red)
+	{
+		k->Move(hero->GetPosition());
+	}
 }
 
 void GamePlayScene::handleJoystick()

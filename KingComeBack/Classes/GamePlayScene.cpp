@@ -107,8 +107,8 @@ void GamePlayScene::createLayer2D()
 bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 {
 
-	mCurrentTouch.x = touch->getLocation().x;
-	mCurrentTouch.y = touch->getLocation().y;
+	//mCurrentTouch.x = touch->getLocation().x;
+	//mCurrentTouch.y = touch->getLocation().y;
 
 	tempTouch.x = (touch->getLocation().x - screenSize.width / 2);
 	tempTouch.y = (touch->getLocation().y - screenSize.height / 2);
@@ -128,7 +128,7 @@ bool GamePlayScene::OnTouchBegan(Touch * touch, Event * unused_event)
 
 	if (hero->getState()) {
 	//	hero->getBlood()->reduceBlood(-100);
-		hero->handleBloodBar();
+	//	hero->handleBloodBar();
 	}
 	
 
@@ -1396,6 +1396,7 @@ void GamePlayScene::RedurceBloodBlueTeam(std::vector<ScoutTown*> scoutTown, std:
 	{
 	
 		heo->getBlood()->reduceBlood(dame - heo->GetAmor());
+		hero->handleBloodBar();
 	}
 	m_stateReduce = false;
 }

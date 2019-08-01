@@ -507,6 +507,7 @@ void GamePlayScene::AddSpriteUI()
 
 void GamePlayScene::AddPopupHero()
 {
+
 	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"", "", menuItem, [=]() {
 
 	});
@@ -838,6 +839,16 @@ void GamePlayScene::CreateKnight()
 	//createKnight->SetColor(BLUE);
 	createKnight->getSprite()->getPhysicsBody()->setGroup(knight.size());
 	knight.push_back(createKnight);
+}
+
+void GamePlayScene::CreateAttibuteHero()
+{
+	auto labelHp = Label::createWithTTF(std::to_string(hero->getBlood()->getBlood()), "fonts/arial.ttf", 15);
+	auto labelDamage = Label::createWithTTF(std::to_string(hero->getDamage()->getDamageNormal()), "fonts/arial.ttf", 15);
+	//auto labelArmor = Label::createWithTTF(std::to_string(hero->G()), "fonts/arial.ttf", 15);
+	auto labelStrength = Label::createWithTTF(std::to_string(hero->getBlood()->getBlood()), "fonts/arial.ttf", 15);
+
+	//menuLabelAtribute
 }
 
 void GamePlayScene::CreateLayerUI()

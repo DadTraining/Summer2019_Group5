@@ -30,7 +30,7 @@ namespace IMAGEPATH {
 	const char *BACKGROUND_IMAGE_HERO = "m_PopupHero1.png";
 	const char *BACKGROUND_IMAGE_HOUSE = "PopupHouse.png";
 	const char *BACKGROUND_IMAGE_SHOP = "popup_shop.png";
-	const char *BACKGROUND_IMAGE_TOWNHALL = "UI_of_HallTown.png";
+	const char *BACKGROUND_IMAGE_TOWNHALL = "popup_create_knight.png";
 	const char *TOWN_HALL_BUTTON = "HallTown_button.png";
 	const char *TOWN_HALL_BUTTON_PRESS = "HallTown_button_press.png";
 	const char *SCOUT_TOWN_BUTTON = "ScoutTown2D_button.png";
@@ -281,7 +281,7 @@ namespace UICustom {
 
 				auto menuLabel = Menu::create(mainHouseLabelItem, hallTownLabelItem,
 					storeHouseLabelItem, scoutTownLabelItem, decorateHouseLabelItem, NULL);
-				menuLabel->setPosition(winSize.width / 1.9, winSize.height / 2.2);
+				menuLabel->setPosition(winSize.width / 1.97, winSize.height / 2.2);
 				node->addChild(menuLabel, 2);
 				menuLabel->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET * 1.2);
 
@@ -306,7 +306,7 @@ namespace UICustom {
 
 				auto menuLabelCoin = Menu::create(mainHouseLabelItemCoin, hallTownLabelItemCoin,
 					storeHouseLabelItemCoin, scoutTownLabelItemCoin, decorateHouseLabelItemCoin, NULL);
-				menuLabelCoin->setPosition(winSize.width / 2, winSize.height / 2.6);
+				menuLabelCoin->setPosition(winSize.width / 1.95, winSize.height / 2.6);
 				node->addChild(menuLabelCoin, 2);
 				menuLabelCoin->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET * 1.8);
 
@@ -379,7 +379,7 @@ namespace UICustom {
 		return create(layer, title, msg, NULL, menuItem, YesFunc);
 	}
 	PopupHero * PopupHero::create(Layer *layer, const std::string & title, const std::string & msg, cocos2d::Label * lbl, 
-		std::vector<Item *> &menuItem,const std::function<void()>& YesFunc)
+		std::vector<Item *> &menuItem, const std::function<void()>& YesFunc)
 	{
 		PopupHero *node = new (std::nothrow)PopupHero();
 		Size winSize = Director::getInstance()->getWinSize();
@@ -433,7 +433,23 @@ namespace UICustom {
 					}
 
 				}
+				auto labelHp = Label::createWithTTF("Hp :", "fonts/arial.ttf", 15);
+				auto labelDamage = Label::createWithTTF("Damage :", "fonts/arial.ttf", 15);
+				auto labelArmor = Label::createWithTTF("Armor :", "fonts/arial.ttf", 15);
+				auto labelStrength = Label::createWithTTF("Strength :", "fonts/arial.ttf", 15);
 
+				
+				auto itemLabelHp = MenuItemLabel::create(labelHp);
+				auto itemLabelDamage = MenuItemLabel::create(labelDamage);
+				auto itemLabelArmor = MenuItemLabel::create(labelArmor);
+				auto itemLabelStrength = MenuItemLabel::create(labelStrength);
+
+
+				Menu *menuLabelAtributeHero = Menu::create(itemLabelHp, itemLabelDamage,
+					itemLabelArmor, itemLabelStrength, NULL);
+				node->addChild(menuLabelAtributeHero, 1);
+				menuLabelAtributeHero->setPosition(winSize.width * 0.58, winSize.height * 0.16);
+				menuLabelAtributeHero->alignItemsVerticallyWithPadding(5);
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}
@@ -503,14 +519,11 @@ namespace UICustom {
 					YesFunc();
 					node->dismiss(true);
 				});
+				knight->setScale(0.7);
 
-				MenuItemImage *noButton = MenuItemImage::create(IMAGEPATH::CANCEL_BUTTON, IMAGEPATH::CANCEL_BUTTON_PRESSED, [node](Ref *sender) {
-					node->dismiss(true);
-				});
-
-				Menu *menu = Menu::create(knight, noButton, NULL);
+				Menu *menu = Menu::create(knight, NULL);
 				node->addChild(menu, 2);
-				menu->setPosition(winSize.width / 2, winSize.height / 2 - lbl->getContentSize().height / 2 - 75);
+				menu->setPosition(winSize.width / 2.5, winSize.height / 2.1);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
 
 				lbl->setPosition(winSize / 2);
@@ -620,7 +633,7 @@ namespace UICustom {
 				Menu *menuAddSub = Menu::create(subButton, addButton, NULL);
 				node->addChild(menuAddSub, 2);
 				//menuAddSub->setPosition(winSize.width * 0.726, winSize.height * 0.483);
-				menuAddSub->setPosition(intChoose->getContentSize().width * 4 + intChoose->getPosition().x, intChoose->getPosition().y);
+				menuAddSub->setPosition(intChoose->getContentSize().width * 5 + intChoose->getPosition().x, intChoose->getPosition().y);
 				menuAddSub->alignItemsHorizontallyWithPadding(subButton->getContentSize().width / 1.1);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);
 			}

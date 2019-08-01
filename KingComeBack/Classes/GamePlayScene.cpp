@@ -507,7 +507,7 @@ void GamePlayScene::AddSpriteUI()
 
 void GamePlayScene::AddPopupHero()
 {
-	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"hero", "", menuItem, [=]() {
+	auto popUpHero = UICustom::PopupHero::createAsConfirmDialogue(_layerUI ,"", "", menuItem, [=]() {
 
 	});
 	_layerUI->addChild(popUpHero, 1);
@@ -534,6 +534,9 @@ void GamePlayScene::AddPopupHouse()
 
 void GamePlayScene::AddEventForPopupTownHall()
 {
+	if (m_gold >= 2000)
+	{
+		m_gold -= 2000;
 		//Add house copy
 		auto copyHallTown = Sprite::create("HallTown.png");
 		copyHallTown->setOpacity(50);
@@ -558,12 +561,12 @@ void GamePlayScene::AddEventForPopupTownHall()
 			auto hallTown = new TownHall(_layer2D, 2);
 			hallTown->GetButton()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-				
+
 			//code duoc
 			auto dotHallTown = new dotMiniMap(_layerUI, 1);
 			//code duoc
 			dotHallTown->getSprite()->setPosition((hallTown->GetButton()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) +
-			condinatorMiniMap.x, (hallTown->GetButton()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
+				condinatorMiniMap.x, (hallTown->GetButton()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 			dotHallTown->VisiableDot(true);
 			hallTown->GetButton()->setCameraMask(2);
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
@@ -575,9 +578,9 @@ void GamePlayScene::AddEventForPopupTownHall()
 				{
 					auto button = dynamic_cast<ui::Button *>(sender);
 
-					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "",[&]() {
+					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [&]() {
 						auto createKnight = new Knight(_layer2D, TEAM_BLUE);
-						createKnight->SetPositionKnight(containerHallTown.at(0)->GetButton()->getPosition() - createKnight->GetConTentSize() * 2  + Vec2(rand()%(10 - 4) + 5, (rand() % (10 - 4) + 5)));
+						createKnight->SetPositionKnight(containerHallTown.at(0)->GetButton()->getPosition() - createKnight->GetConTentSize() * 2 + Vec2(rand() % (10 - 4) + 5, (rand() % (10 - 4) + 5)));
 						knight.push_back(createKnight);
 					});
 					_layer2D->addChild(popup);
@@ -589,169 +592,193 @@ void GamePlayScene::AddEventForPopupTownHall()
 					break;
 				}
 
-				});
+			});
 			this->getEventDispatcher()->removeEventListener(buildHouseListener);
 			containerHallTown.push_back(hallTown);
 		};
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+	}
+
 }
 
 void GamePlayScene::AddEventForPopupScoutTown()
 {
-	//Add house copy
-	auto copyScoutTown = Sprite::create("ScoutTown2D.png");
-	copyScoutTown->setOpacity(50);
-	_layerUI->addChild(copyScoutTown);
+	if (m_gold >= 500)
+	{
+		m_gold -= 500;
+		//Add house copy
+		auto copyScoutTown = Sprite::create("ScoutTown2D.png");
+		copyScoutTown->setOpacity(50);
+		_layerUI->addChild(copyScoutTown);
 
-	//Add event touch
-	auto buildHouseListener = EventListenerTouchOneByOne::create();
+		//Add event touch
+		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
-	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+		buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
 
-		copyScoutTown->setPosition(_touch->getLocation());
+			copyScoutTown->setPosition(_touch->getLocation());
 
-		return true;
-	};
+			return true;
+		};
 
-	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
-		copyScoutTown->setPosition(_touch->getLocation());
-	};
+		buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+			copyScoutTown->setPosition(_touch->getLocation());
+		};
 
-	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-		copyScoutTown->setVisible(false);
-		newScoutTown = new ScoutTown(_layer2D, 2);
+		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+			copyScoutTown->setVisible(false);
 
-		
-		m_listScoutTowns.push_back(newScoutTown);
-		newScoutTown->getSprite()->setPosition(_touch->getLocation()
-			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-		//code duoc
-		auto dotScoutTown = new dotMiniMap(_layerUI, 2);
-		newScoutTown->setDotMiniMap(dotScoutTown);
-		//d = dotScoutTown;
-		//code duoc
-		newScoutTown->getDotMiniMap()->getSprite()->setPosition((newScoutTown->getSprite()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) + condinatorMiniMap.x, (newScoutTown->getSprite()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
+			newScoutTown = new ScoutTown(_layer2D, 2);
+			m_listScoutTowns.push_back(newScoutTown);
+			newScoutTown->getSprite()->setPosition(_touch->getLocation()
+				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+			//code duoc
+			auto dotScoutTown = new dotMiniMap(_layerUI, 2);
+			newScoutTown->setDotMiniMap(dotScoutTown);
+			//d = dotScoutTown;
+			//code duoc
+			newScoutTown->getDotMiniMap()->getSprite()->setPosition((newScoutTown->getSprite()->getPositionX() / condinatorBigMap.x)*(m_miniMap->getContentSize().height) + condinatorMiniMap.x, (newScoutTown->getSprite()->getPositionY() / condinatorBigMap.y)*(m_miniMap->getContentSize().width) + condinatorMiniMap.y);
 
-		newScoutTown->getDotMiniMap()->getSprite()->setVisible(true);
-		//
-		newScoutTown->getSprite()->setCameraMask(2);
-		postScountTower = _touch->getLocation() + camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
-		this->getEventDispatcher()->removeEventListener(buildHouseListener);
-	};
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+			newScoutTown->getDotMiniMap()->getSprite()->setVisible(true);
+			//
+			newScoutTown->getSprite()->setCameraMask(2);
+			postScountTower = _touch->getLocation() + camera->getPosition() - Director::getInstance()->getVisibleSize() / 2;
+			this->getEventDispatcher()->removeEventListener(buildHouseListener);
+		};
+		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+
+	}
 
 }
 
 void GamePlayScene::AddEventForPopupMainHouse()
 {
-	//Add house copy
-	auto copyMainHouse = Sprite::create("HouseMain.png");
-	copyMainHouse->setOpacity(50);
-	_layerUI->addChild(copyMainHouse);
+	if (m_gold >= 5000)
+	{
+		m_gold -= 5000;
+		//Add house copy
+		auto copyMainHouse = Sprite::create("HouseMain.png");
+		copyMainHouse->setOpacity(50);
+		_layerUI->addChild(copyMainHouse);
 
-	//Add event touch
-	auto buildHouseListener = EventListenerTouchOneByOne::create();
+		//Add event touch
+		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
-	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+		buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
 
-		copyMainHouse->setPosition(_touch->getLocation());
-		return true;
-	};
+			copyMainHouse->setPosition(_touch->getLocation());
+			return true;
+		};
 
-	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
-		copyMainHouse->setPosition(_touch->getLocation());
-	};
+		buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+			copyMainHouse->setPosition(_touch->getLocation());
+		};
 
-	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-		copyMainHouse->setVisible(false);
-		newMainHouse = new MainHouse(_layer2D, 2);
-		newMainHouse->GetButton()->setPosition(_touch->getLocation()
-			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-		newMainHouse->GetButton()->setCameraMask(2);
-		this->getEventDispatcher()->removeEventListener(buildHouseListener);
-	};
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+			copyMainHouse->setVisible(false);
+
+
+			newMainHouse = new MainHouse(_layer2D, 2);
+			newMainHouse->GetButton()->setPosition(_touch->getLocation()
+				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+			newMainHouse->GetButton()->setCameraMask(2);
+			this->getEventDispatcher()->removeEventListener(buildHouseListener);
+		};
+		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+	}
 }
 
 void GamePlayScene::AddEventForPopupDecorateHouse()
 {
-	//Add house copy
-	auto copyHouseDecorate = Sprite::create("gold_mine.png");
-	copyHouseDecorate->setOpacity(50);
-	_layerUI->addChild(copyHouseDecorate);
+	if (m_gold >= 1000)
+	{
+		m_gold -= 1000;
+		//Add house copy
+		auto copyHouseDecorate = Sprite::create("gold_mine.png");
+		copyHouseDecorate->setOpacity(50);
+		_layerUI->addChild(copyHouseDecorate);
 
-	//Add event touch
-	auto buildHouseListener = EventListenerTouchOneByOne::create();
+		//Add event touch
+		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
-	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+		buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
 
-		copyHouseDecorate->setPosition(_touch->getLocation());
-		return true;
-	};
+			copyHouseDecorate->setPosition(_touch->getLocation());
+			return true;
+		};
 
-	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
-		copyHouseDecorate->setPosition(_touch->getLocation());
-	};
+		buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+			copyHouseDecorate->setPosition(_touch->getLocation());
+		};
 
-	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-		copyHouseDecorate->setVisible(false);
-		newDecorateHouse = new HouseDecorate(_layer2D, 2);
-		newDecorateHouse->GetButton()->setPosition(_touch->getLocation()
-			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-		newDecorateHouse->GetButton()->setCameraMask(2);
-		this->getEventDispatcher()->removeEventListener(buildHouseListener);
-	};
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+			copyHouseDecorate->setVisible(false);
+
+			auto decorateHouse = new HouseDecorate(_layer2D, 2);
+			decorateHouse->GetButton()->setPosition(_touch->getLocation()
+				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+			decorateHouse->GetButton()->setCameraMask(2);
+			this->getEventDispatcher()->removeEventListener(buildHouseListener);
+			containerDecorateHouse.push_back(decorateHouse);
+		};
+		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+	}
+	
 }
 
 void GamePlayScene::AddEventForPopupStoreHouse()
 {
+	if (m_gold >= 1500)
+	{
+		m_gold -= 1500;
+		//Add house copy
+		auto copyStoreHouse = Sprite::create("StoreHouse.png");
+		copyStoreHouse->setOpacity(50);
+		_layerUI->addChild(copyStoreHouse);
 
-	//Add house copy
-	auto copyStoreHouse = Sprite::create("StoreHouse.png");
-	copyStoreHouse->setOpacity(50);
-	_layerUI->addChild(copyStoreHouse);
+		//Add event touch
+		auto buildHouseListener = EventListenerTouchOneByOne::create();
 
-	//Add event touch
-	auto buildHouseListener = EventListenerTouchOneByOne::create();
+		buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
 
-	buildHouseListener->onTouchBegan = [=](Touch* _touch, Event* _event) {
+			copyStoreHouse->setPosition(_touch->getLocation());
+			return true;
+		};
 
-		copyStoreHouse->setPosition(_touch->getLocation());
-		return true;
-	};
+		buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
+			copyStoreHouse->setPosition(_touch->getLocation());
+		};
 
-	buildHouseListener->onTouchMoved = [=](Touch* _touch, Event* _event) {
-		copyStoreHouse->setPosition(_touch->getLocation());
-	};
+		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
+			copyStoreHouse->setVisible(false);
+			auto storeHouse = new StoreHouse(_layer2D, 2);
+			storeHouse->GetButton()->setPosition(_touch->getLocation()
+				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
+			storeHouse->GetButton()->setCameraMask(2);
+			storeHouse->GetButton()->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
+				switch (type)
+				{
+				case cocos2d::ui::Widget::TouchEventType::BEGAN:
+				{
+					auto popup = UICustom::PopupShop::createAsConfirmDialogue(_layerUI, "", "", menuItem, menuItemShop, [&]() {
 
-	buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-		copyStoreHouse->setVisible(false);
-		static auto storeHouse = new StoreHouse(_layer2D, 2);
-		storeHouse->GetButton()->setPosition(_touch->getLocation()
-			+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
-		storeHouse->GetButton()->setCameraMask(2);
-		storeHouse->GetButton()->addTouchEventListener([&](Ref *sender, ui::Widget::TouchEventType type) {
-			switch (type)
-			{
-			case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			{
-				auto popup = UICustom::PopupShop::createAsConfirmDialogue(_layerUI, "", "", menuItem, menuItemShop, [&]() {
-
-				});
-				_layer2D->addChild(popup);
-			}
-			break;
-			case cocos2d::ui::Widget::TouchEventType::ENDED:
+					});
+					_layer2D->addChild(popup);
+				}
 				break;
-			default:
-				break;
-			}
-		});
-		containerStoreHouse.push_back(storeHouse);
-		this->getEventDispatcher()->removeEventListener(buildHouseListener);
-	};
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+				case cocos2d::ui::Widget::TouchEventType::ENDED:
+					break;
+				default:
+					break;
+				}
+			});
+
+			containerStoreHouse.push_back(storeHouse);
+			this->getEventDispatcher()->removeEventListener(buildHouseListener);
+		};
+		this->_eventDispatcher->addEventListenerWithSceneGraphPriority(buildHouseListener, this);
+	}
+	
 }
 
 void GamePlayScene::CreateItem()
@@ -910,7 +937,7 @@ void GamePlayScene::AddGold()
 	spriteGold->setPosition(Vec2(screenSize.width / 2.5, screenSize.height - spriteGold->getContentSize().height / 2));
 	_layerUI->addChild(spriteGold, 2);
 	
-	auto labelGold = Label::createWithTTF(std::to_string(m_gold), "fonts/Marker Felt.ttf", 18);
+	labelGold = Label::createWithTTF(std::to_string(m_gold), "fonts/Marker Felt.ttf", 18);
 	labelGold->setPosition(spriteGold->getPosition().x + spriteGold->getContentSize().width, spriteGold->getPosition().y);
 	_layerUI->addChild(labelGold, 2);
 }
@@ -922,15 +949,20 @@ void GamePlayScene::update(float dt)
 	if (newScoutTown != nullptr)
 	{
 		newScoutTown->Update(dt);
-
 	}
 	if (newMainHouse != nullptr)
 	{
 		newMainHouse->Update(dt);
 	}
-	if (newDecorateHouse != nullptr)
+	if (containerDecorateHouse.size() > 0)
 	{
-		newDecorateHouse->Update(dt);
+		for (int i = 0; i < containerDecorateHouse.size(); i++)
+		{
+			if (containerDecorateHouse.at(i) != nullptr)
+			{
+				containerDecorateHouse.at(i)->Update(dt);
+			}
+		}
 	}
 	if (containerStoreHouse.size() > 0)
 	{
@@ -955,7 +987,7 @@ void GamePlayScene::update(float dt)
 
 	// Check Knight
 	this->MoveAttack(m_knightRed, knight);
-
+	labelGold->setString(std::to_string(m_gold));
 	// code duoc
 	count_dragon += dt;
 	count_dragon_fire += dt;

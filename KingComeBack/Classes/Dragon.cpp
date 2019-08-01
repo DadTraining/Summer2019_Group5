@@ -18,8 +18,8 @@ Dragon::Dragon(Layer * _layer2D)
 //	spriteBlood->setPosition(Vec2(m_sprite ->getPositionX(), m_sprite ->getPositionY()+100));
 	
 
-
-	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	MyBodyParser::getInstance()->parseJsonFile("dragon_body.json");
+	auto bodyA = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "DragonBodyPhysic", PhysicsMaterial(0, 0, 0));
 	
 	bodyA->setGravityEnable(false);
 

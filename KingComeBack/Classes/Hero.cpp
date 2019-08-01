@@ -16,8 +16,10 @@ Hero::Hero(Layer * _layer2D)
 	m_sprite->setScale(0.7);
 	m_sprite->setPosition(screenSize.width / 2, screenSize.height / 2);
 	
-	bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	//bodyA = PhysicsBody::createBox(m_sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
 	
+	MyBodyParser::getInstance()->parseJsonFile("hero_body.json");
+	auto bodyA = MyBodyParser::getInstance()->bodyFormJson(m_sprite, "HeroPhysicBody", PhysicsMaterial(0, 0, 0));
 	bodyA->setGravityEnable(false);
 
 	bodyA->setCategoryBitmask(8);

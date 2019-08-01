@@ -140,7 +140,7 @@ private:
 	std::string stringChooseKnight = "0";
 	Label *labelChooseKnight;
 	Label *labelSumKnight;
-
+	Label* labelGold;
 	Vec2 positionWeapons;
 
 	Size mapContentSize;
@@ -204,6 +204,7 @@ private:
 
 	dotMiniMap * dotHero;
 
+	std::vector<HouseDecorate *> containerDecorateHouse;
 	std::vector<TownHall *> containerHallTown;
 	std::vector<StoreHouse *> containerStoreHouse;
 	std::vector<Knight *> knight;

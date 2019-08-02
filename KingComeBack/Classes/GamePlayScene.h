@@ -57,7 +57,6 @@ public:
 
 
 	void AddMap();
-	void AddTree();
 	void AddCameraUSER1();
 	void AddCameraUSER2();
 	void AddListener();

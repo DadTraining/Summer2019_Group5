@@ -1281,9 +1281,9 @@ void GamePlayScene::update(float dt)
 
 	//-----Create knight red attack-----
 	static float c = 0;
-	if (c >= 10 && (m_knightRed.size() + m_knightRedMove.size() < 20))
+	if (c >= 10 && (m_knightRed.size() + m_knightRedMove.size() < 15))
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			Knight *k = new Knight(_layer2D, TEAM_RED);
 			int dir = rand() % (50 - 10 + 1) + 10;
@@ -1312,33 +1312,37 @@ void GamePlayScene::update(float dt)
 }
 
 void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
+	if (hero->GetPosition().distance(m_houseDragon->GetPosition()) <= 500)
+	{
+		m_houseDragon->SetScaleBlood(hero->GetDame());
+	}
 	if (type == 0) {
 		hero->getAttack(STATE_ATTACK);
-		bool c = false;
+		bool v = false;
 		if (dragon)
 		{
 			
 			if (hero->GetPosition().distance(dragon->GetPosition()) <= 100)
 			{
 				dragon->SetScaleBlood((hero->getDamage()->getDamageNormal() - dragon->GetAmor()));
-				c = true;
+				v = true;
 
 			}
 		}
-	
-		if (c == false)
+		
+		if (v == false)
 		{
-			bool v = false;
+			bool p = false;
 			for (auto b : m_knightRed)
 			{
 				if (hero->GetPosition().distance(b->GetPosition())) {
 					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
-					v = true;
+					p = true;
 					//b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
 					break;
 				}
 			}
-			if (v == false)
+			if (p == false)
 			for (auto c : m_knightRedMove)
 			{
 				if (hero->GetPosition().distance(c->GetPosition())) {

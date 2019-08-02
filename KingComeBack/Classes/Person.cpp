@@ -62,7 +62,7 @@ void Person::AddBlood(int id)
 	bl->setAnchorPoint(Vec2::ZERO);
 	//bl->setScale(0.3);
 	bl->setPosition(Vec2(x, y));
-	bl->setScaleY(0.05);
+	bl->setScaleY(0.1);
 	bl->setTag(TAG_SPRITE_BLOOD);
 
 	if (id == TEAM_BLUE)

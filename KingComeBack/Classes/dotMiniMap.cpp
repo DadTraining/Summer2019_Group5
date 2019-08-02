@@ -26,7 +26,7 @@ dotMiniMap::dotMiniMap(Layer * layerUI, int type)
 	}
 
 	Init(1);
-	layerUI->addChild(m_sprite, 1);
+	layerUI->addChild(m_sprite, 5);
 }
 
 dotMiniMap::~dotMiniMap()

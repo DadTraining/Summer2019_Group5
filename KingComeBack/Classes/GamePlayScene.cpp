@@ -1002,7 +1002,7 @@ void GamePlayScene::SubToChooseKnight()
 void GamePlayScene::AddGold()
 
 {
-	auto spriteGold = Sprite::create("item/coin.png");
+	auto spriteGold = Sprite::create("Item/coin.png");
 	spriteGold->setPosition(Vec2(screenSize.width / 2.5, screenSize.height - spriteGold->getContentSize().height / 2));
 	_layerUI->addChild(spriteGold, 2);
 	

@@ -25,19 +25,19 @@ void Item::Init(int _ID, int ID_state)
 
 	if (ID == ID_HP)
 	{
-		m_button = ui::Button::create("item/potionRed.png", "");
+		m_button = ui::Button::create("Item/potionRed.png", "");
 		m_hp = 1000;
 		m_goldItem = 100;
 		m_button->setTag(ID_TAG_HP);
 	}
 	else if (ID == ID_MP)
 	{
-		m_button = ui::Button::create("item/potionBlue.png", "");
+		m_button = ui::Button::create("Item/potionBlue.png", "");
 		m_button->setTag(ID_TAG_MP);
 	}
 	else if (ID == ID_WEAPON)
 	{
-		m_button = ui::Button::create("item/sword.png", "");
+		m_button = ui::Button::create("Item/sword.png", "");
 		m_button->setTag(ID_TAG_WEPON);
 
 		m_goldItem = 2000;
@@ -45,7 +45,7 @@ void Item::Init(int _ID, int ID_state)
 	}
 	else if (ID == ID_HELMET)
 	{
-		m_button = ui::Button::create("item/helmet.png", "");
+		m_button = ui::Button::create("Item/helmet.png", "");
 		m_button->setTag(ID_TAG_HELMET);
 
 		m_goldItem = 1000;
@@ -53,7 +53,7 @@ void Item::Init(int _ID, int ID_state)
 	}
 	else if (ID == ID_ARMOR)
 	{
-		m_button = ui::Button::create("item/armor.png", "");
+		m_button = ui::Button::create("Item/armor.png", "");
 		m_button->setTag(ID_TAG_ARMOR);
 
 		m_goldItem = 700;
@@ -61,14 +61,14 @@ void Item::Init(int _ID, int ID_state)
 	}
 	else if (ID == ID_SHIELD)
 	{
-		m_button = ui::Button::create("item/shield.png");
+		m_button = ui::Button::create("Item/shield.png");
 		m_goldItem = 1500;
 		m_armor = 100;
 		m_button->setTag(ID_TAG_SHIELD);
 	}
 	else if (ID == ID_UPG_WEAPON)
 	{
-		m_button = ui::Button::create("item/upg_sword.png", "");
+		m_button = ui::Button::create("Item/upg_sword.png", "");
 		m_button->setTag(ID_TAG_WEPON);
 
 		m_goldItem = 4000;
@@ -76,7 +76,7 @@ void Item::Init(int _ID, int ID_state)
 	}
 	else if (ID == ID_UPG_HELMET)
 	{
-		m_button = ui::Button::create("item/upg_helmet.png", "");
+		m_button = ui::Button::create("Item/upg_helmet.png", "");
 		m_button->setTag(ID_TAG_UPG_HELMET);
 
 		m_goldItem = 2000;
@@ -84,7 +84,7 @@ void Item::Init(int _ID, int ID_state)
 	}
 	else if (ID == ID_UPG_ARMOR)
 	{
-		m_button = ui::Button::create("item/upg_armor.png", "");
+		m_button = ui::Button::create("Item/upg_armor.png", "");
 		m_button->setTag(ID_TAG_UPG_ARMOR);
 
 		m_goldItem = 1500;
@@ -92,7 +92,7 @@ void Item::Init(int _ID, int ID_state)
 	}
 	else if (ID == ID_UPG_SHIELD)
 	{
-		m_button = ui::Button::create("item/upg_shield.png");
+		m_button = ui::Button::create("Item/upg_shield.png");
 		m_goldItem = 3000;
 		m_armor = 250;
 		m_button->setTag(ID_TAG_UPG_SHIELD);

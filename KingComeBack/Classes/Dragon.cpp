@@ -6,7 +6,8 @@ Dragon::Dragon(Layer * _layer2D, int id)
 {
 	screenSize = Director::getInstance()->getVisibleSize();
 	Init(id);
-	_layer2D->addChild(m_sprite,10);
+	m_sprite->setCameraMask(2);
+	_layer2D->addChild(m_sprite,2);
 	
 	AnimateStand();
 	createFire(_layer2D);

@@ -24,15 +24,6 @@ float Person::GetDame()
 	return m_dame;
 }
 
-void Person::SetID(int i)
-{
-	id = i;
-}
-
-int Person::GetID()
-{
-	return id;
-}
 int Person::checkTrueSkill_2(Vec2  v)
 {
 
@@ -61,4 +52,26 @@ int Person::checkTrueSkill_2(Vec2  v)
 	if (temp > 1.5 && v.x<0) {
 		return 0;
 	}
+}
+
+void Person::AddBlood(int id)
+{
+	auto bl = Sprite::create("Sprites/Loading/progress.png");
+	float x = m_sprite->getPosition().x;
+	float y = m_sprite->getPosition().y + m_sprite->getContentSize().height;
+	bl->setAnchorPoint(Vec2::ZERO);
+	//bl->setScale(0.3);
+	bl->setPosition(Vec2(x, y));
+	bl->setScaleY(0.05);
+	bl->setTag(TAG_SPRITE_BLOOD);
+
+	if (id == TEAM_BLUE)
+	{
+		bl->setColor(Color3B::GREEN);
+	}
+	if (id == TEAM_RED)
+	{
+		bl->setColor(Color3B::RED);
+	}
+	m_sprite->addChild(bl);
 }

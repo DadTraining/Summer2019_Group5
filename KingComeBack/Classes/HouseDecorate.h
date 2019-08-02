@@ -18,15 +18,11 @@ public:
 	void LoadingBuild() override;
 	void Update(float dt) override;
 
-	Blood* GetBlood();
-
 private:
 	float m_dame;
 	Sprite *loadingBar;
 	Sprite *loadingBarBg;
 	GLubyte decorateHouseOpacity;
-
-	Blood *blood;
 };
 
 

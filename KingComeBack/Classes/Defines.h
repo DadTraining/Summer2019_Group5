@@ -68,4 +68,9 @@
 //-----ID Human--------------
 #define ID_PERSON 0
 #define ID_HOME 1
+
+//----State Knight Blue-------
+#define KNIGHT_STATE_FIND 0
+#define KNIGHT_STATE_ATTACK 1
+
 #endif

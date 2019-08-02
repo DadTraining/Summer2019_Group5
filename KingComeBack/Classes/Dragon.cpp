@@ -10,7 +10,7 @@ Dragon::Dragon(Layer * _layer2D, int id)
 	
 	AnimateStand();
 	createFire(_layer2D);
-	AddBlood();
+	AddBlood(id);
 }
 
 Dragon::~Dragon()
@@ -187,16 +187,6 @@ Damage * Dragon::getDamage()
 	return damage;
 }
 
-void Dragon::AddBlood()
-{
-	auto bl = Sprite::create("Sprites/Loading/progress.png");
-	float x = m_sprite->getPosition().x + m_sprite->getContentSize().width / 2;
-	float y = m_sprite->getPosition().y + m_sprite->getContentSize().height;
-	bl->setPosition(Vec2(x, y));
-	bl->setScale(0.3);
-	bl->setTag(TAG_SPRITE_BLOOD);
-	m_sprite->addChild(bl);
-}
 
 // code Tuan
 void Dragon::SetDirect(Vec2 vec)

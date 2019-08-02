@@ -18,7 +18,6 @@ public:
 
 	Animation* createAnimation(std::string frefixName, int pFrame, int delay);
 
-	void handleBloodBar();
 	
 	void createFire(Layer * _layer2D);
 
@@ -26,12 +25,10 @@ public:
 
 	void dragonFire(int direct);
 
-	void updatePositionloodBar();
 
 	Damage * getDamage();
 
 	// Code Tuan
-	void AddBlood();
 	void SetDirect(Vec2 vec);
 	void AnimateStand();
 	Animate* ActionDragon(std::string name, int begin, int end);
@@ -49,13 +46,11 @@ private:
 	Vec2 origin;
 	int direct=0;
 
-//	Blood * blood;
-	Sprite * spriteBlood, *fire;
-
 	Damage * damage;
 
 	// code tuan
 	Vec2 m_direct;
 	int m_currentDirect;
 	float m_distance;
+	Sprite *fire;
 };

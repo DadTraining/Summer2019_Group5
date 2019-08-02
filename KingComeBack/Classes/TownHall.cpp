@@ -30,15 +30,7 @@ void TownHall::Init(int id)
 	physicBody->setCategoryBitmask(4);
 	physicBody->setCollisionBitmask(125);
 
-	// Add Blood
-	auto blood = Sprite::create("loadingBarHouse.png");
-	float x = m_button->getPosition().x + m_button->getContentSize().width / 4;
-	float y = m_button->getPosition().y + m_button->getContentSize().height;
-	blood->setPosition(Vec2(x, y));
-	blood->setTag(TAG_BLOOD);
-	blood->setColor(Color3B::GREEN);
-	m_button->addChild(blood);
-
+	AddBlood(id);
 	SetColor(id);
 	SetAmor(id);
 	float bl = BLOOD_HOUSE;

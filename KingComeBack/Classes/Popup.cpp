@@ -400,7 +400,7 @@ namespace UICustom {
 			auto labelDamage = Label::createWithTTF("Damage :", "fonts/arial.ttf", 15);
 			auto labelArmor = Label::createWithTTF("Armor :", "fonts/arial.ttf", 15);
 			auto labelStrength = Label::createWithTTF("Strength :", "fonts/arial.ttf", 15);
-
+			labelStrength->setVisible(false);
 
 			auto itemLabelHp = MenuItemLabel::create(labelHp);
 			auto itemLabelDamage = MenuItemLabel::create(labelDamage);
@@ -414,6 +414,7 @@ namespace UICustom {
 			menuLabelAtributeHero->alignItemsVerticallyWithPadding(5);
 
 			// Atribute hero
+			_menuLabelStrength->setVisible(false);
 			auto menuLabelAtributeOfHero = Menu::create(_menuLabelHp,
 				_menuLabelDamage, _menuLabelArmor, _menuLabelStrength, NULL);
 			node->addChild(menuLabelAtributeOfHero, 1);

@@ -103,7 +103,7 @@ public:
 	//knight Attack
 	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
-	void ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, Dragon*, float dt);
+	void ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, Dragon* dra, float dt);
 	void ReduceBloodKnight(Knight* red, Knight* blue);
 	void RemoveKnightRed(Knight* red);
 	void RemoveKnightBlue(Knight* blue);

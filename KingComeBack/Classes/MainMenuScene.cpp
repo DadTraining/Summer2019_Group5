@@ -43,7 +43,7 @@ bool MainMenuScene::init()
 	this->addChild(logo, 2);
 
 	//add label for hero 
-	lbHero = Label::createWithTTF("General marksmanship is a general type with the ability to fight fights and normal battles", "Fonts/arial.ttf", 20);
+	lbHero = Label::createWithTTF("General marksmanship is a general type with the ability to fight fights and normal battles", "fonts/arial.ttf", 20);
 	lbHero->setPosition(Vec2(visibleSize.width / 2, 6 * visibleSize.height / 7));
 	lbHero->setVisible(false);
 	this->addChild(lbHero, 5);
@@ -101,7 +101,7 @@ bool MainMenuScene::init()
 	this->addChild(itemWitch, 10);
 
 	//add label for lbWitch 
-	lbWitch = Label::createWithTTF("Power generals with the ability to often dominate", "Fonts/arial.ttf", 20);
+	lbWitch = Label::createWithTTF("Power generals with the ability to often dominate", "fonts/arial.ttf", 20);
 	lbWitch->setPosition(Vec2(visibleSize.width / 2, 6 * visibleSize.height / 7));
 	lbWitch->setVisible(false);
 	this->addChild(lbWitch, 6);
@@ -133,13 +133,13 @@ bool MainMenuScene::init()
 	this->addChild(itemStrength, 10);
 
 	//add label for lbStrength 
-	lbStrength = Label::createWithTTF("Power generals with the ability to often dominate", "Fonts/arial.ttf", 20);
+	lbStrength = Label::createWithTTF("Power generals with the ability to often dominate", "fonts/arial.ttf", 20);
 	lbStrength->setPosition(Vec2(visibleSize.width / 2, 6 * visibleSize.height / 7));
 	lbStrength->setVisible(false);
 	this->addChild(lbStrength, 7);
 	
 	//add text file input name
-	textName = ui::TextField::create("Enter Your Name", "Fonts/arial.ttf", 30);
+	textName = ui::TextField::create("Enter Your Name", "fonts/arial.ttf", 30);
 	textName->setPasswordEnabled(false);
 	textName->setTouchEnabled(true);
 	textName->setMaxLengthEnabled(true);
@@ -168,10 +168,10 @@ bool MainMenuScene::init()
 	});
 	addChild(btnBack);*/
 
-	btnPlay = ui::Button::create("Buttons/play.png","Buttons/play-pro.png", "Buttons/play.png");
+	btnPlay = ui::Button::create("Buttons/play.png","Buttons/play_pro.png", "Buttons/play.png");
 
 	btnPlay->setTitleText(" Play ");
-	btnPlay->setTitleFontName("Fonts/arial.ttf");
+	btnPlay->setTitleFontName("fonts/arial.ttf");
 	btnPlay->setTitleFontSize(18);
 	btnPlay->setScale(1, 2);
 	btnPlay->setPosition(Vec2(visibleSize.width / 2, textName->getPosition().y-textName->getContentSize().height*2));

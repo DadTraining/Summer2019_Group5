@@ -24,7 +24,7 @@ bool SettingScene::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	
 	//ad title
-	auto title = Label::createWithTTF("SETTING GAME", "Fonts/arial.ttf", 60);
+	auto title = Label::createWithTTF("SETTING GAME", "fonts/arial.ttf", 60);
 	title->setPosition(visibleSize.width / 2, 3 * visibleSize.height / 4);
 	addChild(title);
 	
@@ -49,12 +49,12 @@ bool SettingScene::init()
 	addChild(cbMusic);
 
 	//add label music
-	auto cbMusicTitle = Label::createWithTTF("Music", "Fonts/arial.ttf", 30);
+	auto cbMusicTitle = Label::createWithTTF("Music", "fonts/arial.ttf", 30);
 	cbMusicTitle->setPosition(cbMusic->getPosition() + Vec2(100, 0));
 	addChild(cbMusicTitle);
 
 	//add checkbox sound
-	cbSound = ui::CheckBox::create("Sprites/Checkbox/checkbox_normal.png", "Sprites/Checkbox/checkbox_pressed.png", "/Sprites/Checkbox/checkbox_checked.png", "/Sprites/Checkbox/checkbox_normal_disable.png", "/Sprites/Checkbox/checkbox_checked_disable.png");
+	cbSound = ui::CheckBox::create("Sprites/Checkbox/checkbox_normal.png", "Sprites/Checkbox/checkbox_pressed.png", "Sprites/Checkbox/checkbox_checked.png", "Sprites/Checkbox/checkbox_normal_disable.png", "Sprites/Checkbox/checkbox_checked_disable.png");
 	cbSound->setScale(0.5f);
 	cbSound->setAnchorPoint(Vec2(0, 0.5));
 	cbSound->setSelected(GameSetting::getIntance()->isEnableSound());
@@ -73,12 +73,12 @@ bool SettingScene::init()
 	addChild(cbSound);
 
 	//add label sound
-	auto cbSoundcTitle = Label::createWithTTF("Sound", "Fonts/arial.ttf", 30);
+	auto cbSoundcTitle = Label::createWithTTF("Sound", "fonts/arial.ttf", 30);
 	cbSoundcTitle->setPosition(cbSound->getPosition() + Vec2(100, 0));
 	addChild(cbSoundcTitle);
 
 	//add label volume
-	auto volumeTitle = Label::createWithTTF("Volume", "Fonts/arial.ttf", 30);
+	auto volumeTitle = Label::createWithTTF("Volume", "fonts/arial.ttf", 30);
 	volumeTitle->setAnchorPoint(Vec2(0, 0.5));
 	volumeTitle->setPosition(cbMusic->getPosition().x, cbSound->getPosition().y - 64);
 	addChild(volumeTitle);
@@ -87,7 +87,7 @@ bool SettingScene::init()
 	slVolume = ui::Slider::create();
 	slVolume->setAnchorPoint(Vec2(0, 0.5));
 	slVolume->loadBarTexture("Sprites/Loading/slider_bar_bg.png");
-	slVolume->loadSlidBallTextures("Sprites/Loading/slider_ball_normal.png", "Sprites/Loading/slider_ball_pressed.png", "/Sprites/Loading/slider_ball_disable.png");
+	slVolume->loadSlidBallTextures("Sprites/Loading/slider_ball_normal.png", "Sprites/Loading/slider_ball_pressed.png", "Sprites/Loading/slider_ball_disable.png");
 	slVolume->loadProgressBarTexture("Sprites/Loading/slider_bar_pressed.png");
 	slVolume->setPosition(Vec2(cbMusic->getPosition().x, volumeTitle->getPosition().y- volumeTitle->getContentSize().height*2));
 	slVolume->setPercent(GameSetting::getIntance()->getVolume());
@@ -123,7 +123,7 @@ bool SettingScene::init()
 	addChild(paricleEffect);
 
 	//add button back menu
-	auto btnBack = ui::Button::create("Buttons/pngguru.com-id-bixpo_04.png", "Buttons/pngguru.com-id-bixpo_08.png");
+	auto btnBack = ui::Button::create("Buttons/back.png", "Buttons/back_press.png");
 	btnBack->setPosition(Vec2(70, 70));
 	btnBack->setScale(0.5);
 	btnBack->addClickEventListener([](Ref* event) {

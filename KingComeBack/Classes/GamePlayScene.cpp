@@ -1006,7 +1006,7 @@ void GamePlayScene::AddGold()
 	spriteGold->setPosition(Vec2(screenSize.width / 2.5, screenSize.height - spriteGold->getContentSize().height / 2));
 	_layerUI->addChild(spriteGold, 2);
 	
-	labelGold = Label::createWithTTF(std::to_string(m_gold), "fonts/Marker Felt.ttf", 18);
+	labelGold = Label::createWithTTF(std::to_string(m_gold), "fonts/MarkerFelt.ttf", 18);
 	labelGold->setPosition(spriteGold->getPosition().x + spriteGold->getContentSize().width, spriteGold->getPosition().y);
 	_layerUI->addChild(labelGold, 2);
 }
@@ -1106,6 +1106,13 @@ void GamePlayScene::update(float dt)
 	}	
 	for (int i = 0; i < menuItem.size(); i++)
 	{
+		if (menuItem.at(i)->GetId() == ID_HP)
+		{
+			if (menuItem.at(i)->GetState() == ID_STATE_EQUIPMENT);
+			{
+				hero->getBlood()->setBlood(menuItem.at(i)->getHp());
+			}
+		}
 		if (menuLabelHp != nullptr && menuItem.at(i)->GetState() == ID_STATE_EQUIPMENT)
 		{
 			if (menuItem.at(i)->GetId() == ID_WEAPON)
@@ -1305,108 +1312,112 @@ void GamePlayScene::update(float dt)
 }
 
 void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
-	//if (type == 0) {
-	//	hero->getAttack(STATE_ATTACK);
+	if (type == 0) {
+		hero->getAttack(STATE_ATTACK);
+		bool c = false;
+		if (dragon)
+		{
+			
+			if (hero->GetPosition().distance(dragon->GetPosition()) <= 100)
+			{
+				dragon->SetScaleBlood((hero->getDamage()->getDamageNormal() - dragon->GetAmor()));
+				c = true;
 
-	//	if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
-	//	{
-	//		dragon->SetScaleBlood((hero->getDamage()->getDamageNormal() - dragon->GetAmor()));
+			}
+		}
+	
+		if (c == false)
+		{
+			bool v = false;
+			for (auto b : m_knightRed)
+			{
+				if (hero->GetPosition().distance(b->GetPosition())) {
+					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					v = true;
+					//b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+					break;
+				}
+			}
+			if (v == false)
+			for (auto c : m_knightRedMove)
+			{
+				if (hero->GetPosition().distance(c->GetPosition())) {
+					c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+					break;
+				}
+			}
+		}
 
-	//	}
+	}
+	if (type == 1) {
 
-	//	else
-	//	{
-	//		for (auto b : m_knightRed)
-	//		{
-	//			if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
-	//				abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-	//				b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
-	//				b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
-	//				break;
-	//			}
-	//		}
+		hero->skillAnimation(_layer2D, 1);
+		bool c = false;
+		if (dragon)
+		{
+			if (hero->GetPosition().distance(dragon->GetPosition()) <= 400) {
+				//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
+				dragon->SetScaleBlood(hero->getDamage()->getDamageNormal() - dragon->GetAmor());
+				if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
+				{
+					dragon->SetScaleBlood((hero->getDamage()->getDamageSkill_1() - dragon->GetAmor()));
 
-	//		for (auto c : m_knightRedMove)
-	//		{
-	//			if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
-	//				abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-	//				c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
-	//				break;
-	//			}
-	//		}
-	//	}
+				}
+		}
+		
+			
+			/*	
+				for (auto b : m_knightRed)
+				{
+					if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
+						abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
+						b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+						
+						break;
+					}
+				}
+		
+				for (auto c : m_knightRedMove)
+				{
+					if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
+						abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
+						c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+						break;
+					}
+				}*/
+		}
+	}
+	if (type == 2) {
 
-	//}
-	//if (type == 1) {
-
-	//	hero->skillAnimation(_layer2D, 1);
-	//	if (abs(dragon->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
-	//		abs(dragon->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-	//		//dragon->getBlood()->reduceBlood(hero->getDamage()->getDamageSkill_1());
-	//		dragon->SetScaleBlood(hero->getDamage()->getDamageNormal() - dragon->GetAmor());
-	//		if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
-	//		{
-	//			dragon->SetScaleBlood((hero->getDamage()->getDamageSkill_1() - dragon->GetAmor()));
-
-	//		}
-	//		else
-	//		{
-	//			for (auto b : m_knightRed)
-	//			{
-	//				if (abs(b->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 200 &&
-	//					abs(b->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 200) {
-	//					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
-	//					break;
-	//				}
-	//			}
-
-	//			for (auto c : m_knightRedMove)
-	//			{
-	//				if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
-	//					abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-	//					c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
-	//					break;
-	//				}
-	//			}
-
-	//		}
+		hero->skillAnimation(_layer2D, 2);
+		if (dragon)
+		{
+			if (hero->GetPosition().distance(dragon->GetPosition()) <= 200)
+			{
+				dragon->SetScaleBlood((hero->getDamage()->getDamageSkill_2() - dragon->GetAmor()));
+			}
+		}
 
 
-	//	}
-	//}
-	//if (type == 2) {
+		for (auto b : m_knightRed)
+		{
+			if (hero->GetPosition().distance(b->GetPosition()) <= 200)
+			{
+				b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
+				break;
+			}
+		}
 
-	//		hero->skillAnimation(_layer2D, 2);
+		for (auto c : m_knightRedMove)
+		{
+			if (hero->GetPosition().distance(c->GetPosition()) <= 200) {
+				c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
+				break;
+			}
+		}
 
-	//		if (hero->GetPosition().distance(dragon->GetPosition()) <= 200
-	//			&& hero->getDirect() - hero->checkTrueSkill_2(Vec2(dragon->getSprite()->getPosition().x, dragon->getSprite()->getPosition().y)) <= 2)
-	//		{
-	//			dragon->SetScaleBlood((hero->getDamage()->getDamageSkill_2() - dragon->GetAmor()));
-
-	//		}
-	//		else
-	//		{
-	//			for (auto b : m_knightRed)
-	//			{
-	//				if (hero->GetPosition().distance(b->GetPosition()) <= 200
-	//					)
-	//				{
-	//					b->SetScaleBlood(hero->getDamage()->getDamageNormal() - b->GetAmor());
-	//					break;
-	//				}
-	//			}
-
-	//			for (auto c : m_knightRedMove)
-	//			{
-	//				if (abs(c->getSprite()->getPositionX() - hero->getSprite()->getPositionX()) < 100 &&
-	//					abs(c->getSprite()->getPositionY() - hero->getSprite()->getPositionY()) < 100) {
-	//					c->SetScaleBlood(hero->getDamage()->getDamageNormal() - c->GetAmor());
-	//					break;
-	//				}
-	//			}
-	//		}
-
-	//	}
+	}
+		
 }
 
 void GamePlayScene::miniMap()

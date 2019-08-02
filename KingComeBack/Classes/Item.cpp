@@ -196,6 +196,10 @@ void Item::retain()
 
 void Item::ItemIsClick(int id_equip)
 {
+	if (id_equip == ID_HP)
+	{
+		m_state = ID_STATE_EQUIPMENT;
+	}
 	if (id_equip == ID_WEAPON)
 	{
 		if (m_state == ID_STATE_HOME)

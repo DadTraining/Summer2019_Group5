@@ -50,7 +50,7 @@ bool LoadingScene::init()
 	this->addChild(loadingBar, 1);
 
 	// add loading press
-	loadingPress = Sprite::create("Sprites/Loading/progress.png");
+	loadingPress = Sprite::create("Sprites/Loading/progress1.png");
 	loadingPress->setAnchorPoint(Vec2(0, 0.5));
 	loadingPress->setPosition(visibleSize.width / 2 - loadingPress->getContentSize().width / 2 -loadingPress->getContentSize().width,  visibleSize.height / 7);
 		this -> addChild(loadingPress, 1);

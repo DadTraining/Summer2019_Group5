@@ -104,7 +104,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto scene = LogoScene::createScene();
 
 
-
     // run 
     director->runWithScene(scene);
 

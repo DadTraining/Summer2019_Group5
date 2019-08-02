@@ -1239,7 +1239,7 @@ void GamePlayScene::update(float dt)
 		hero->getBlood()->setBlood(1000);
 		hero->handleBloodBar();
 	
-		hero->getSprite()->setPosition(200,200);
+		hero->getSprite()->setPosition(512,256);
 		hero->getAttack(1);
 		hero->setState(true);
 	}

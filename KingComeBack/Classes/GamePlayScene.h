@@ -57,6 +57,7 @@ public:
 
 
 	void AddMap();
+	void AddTree();
 	void AddCameraUSER1();
 	void AddCameraUSER2();
 	void AddListener();
@@ -93,8 +94,6 @@ public:
 
 	void heroAttack(int, int);
 
-	void createButton_Skill_1();
-	void createButton_Skill_2();
 
 	void miniMap();
 	
@@ -109,6 +108,7 @@ public:
 	void ReduceBloodKnight(Knight* red, Knight* blue);
 	void RemoveKnightRed(Knight* red);
 	void RemoveKnightBlue(Knight* blue);
+	void RemoveKnightRedMove(Knight * k);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
 	//-- Dragon --

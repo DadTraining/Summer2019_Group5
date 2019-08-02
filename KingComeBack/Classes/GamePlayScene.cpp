@@ -45,7 +45,6 @@ bool GamePlayScene::init()
 
 	pause = DelayTime::create(20);
 	
-	//this->setCameraMask((unsigned short)CameraFlag::DEFAULT, true);
 	this->setCameraMask((unsigned short)CameraFlag::USER1, true);
 	
 	// create item
@@ -57,6 +56,7 @@ bool GamePlayScene::init()
 	//add map
 	this->AddMap();
 
+	//this->AddTree();
 	//code duoc
 	hero = new Hero(_layer2D);
 
@@ -68,7 +68,6 @@ bool GamePlayScene::init()
 
 	// add camera
 	this->AddCameraUSER1();
-
 
 	//Add listener
 	this->AddListener();
@@ -90,12 +89,12 @@ bool GamePlayScene::init()
 //	createButton_Skill_1();
 //	createButton_Skill_2();
 
+
 	miniMap();
 
 	this->AddButtonPopUpHero();
 
 	this->AddButtonPopUpHouse();
-
 
 	this->scheduleUpdate();
 
@@ -200,18 +199,54 @@ bool GamePlayScene::onContactPreSolve(PhysicsContact & contact, PhysicsContactPr
 void GamePlayScene::AddMap()
 {
 	map = TMXTiledMap::create("map.tmx");
+	auto mapPhysicLayer = map->getLayer("Water");
 	map->setAnchorPoint(Vec2(0, 0));
 	map->setPosition(this->getPosition());
+	Size layerSize = mapPhysicLayer->getLayerSize();
+	for (int i = 0; i < layerSize.width; i++)
+	{
+		for (int j = 0; j < layerSize.height; j++)
+		{
+			auto tileSet = mapPhysicLayer->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
+				auto physics = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				physics->setCategoryBitmask(1);
+				physics->setCollisionBitmask(60);
+				physics->setDynamic(false);
+				tileSet->setPhysicsBody(physics);
+				tileSet->setCameraMask(2);
+			}
+		}
+	}
 	_layer2D->addChild(map);
 
 	//get contensize big map
-	condinatorBigMap = Vec2(2*map->getContentSize().height, 2*map->getContentSize().width);
-	log("condinatorBigMap %f %f", map->getContentSize().height, map->getContentSize().width);
-	
+
+
+
 	// Map top
 	mapTop = TMXTiledMap::create("mapTop.tmx");
+	auto mapTopPhysicLayer = mapTop->getLayer("water");
 	mapTop->setAnchorPoint(Vec2(0, 0));
-	mapTop->setPositionY(map->getContentSize().height);
+	mapTop->setPositionY(mapTop->getContentSize().height);
+	Size layerSizeTop = mapTopPhysicLayer->getLayerSize();
+	for (int i = 0; i < layerSizeTop.width; i++)
+	{
+		for (int j = 0; j < layerSizeTop.height; j++)
+		{
+			auto tileSet = mapTopPhysicLayer->getTileAt(Vec2(i, j));
+			if (tileSet != NULL)
+			{
+				auto physics = PhysicsBody::createBox(tileSet->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+				physics->setCategoryBitmask(1);
+				physics->setCollisionBitmask(60);
+				physics->setDynamic(false);
+				tileSet->setPhysicsBody(physics);
+				tileSet->setCameraMask(2);
+			}
+		} 
+	}
 	_layer2D->addChild(mapTop);
 
 	//Map right
@@ -284,6 +319,28 @@ void GamePlayScene::AddMap()
 	nodeDown->setPhysicsBody(physicDown);
 	nodeDown->setPosition(map->getContentSize().width / 2, map->getPosition().y + 5);
 	_layer2D->addChild(nodeDown);
+}
+
+void GamePlayScene::AddTree()
+{
+	const int numberSprite = 5;
+
+	auto gameSprite = Sprite::create("tree1/tree1_00.png");
+	gameSprite->setPosition(screenSize / 2);
+	_layer2D->addChild(gameSprite, 2);
+
+	Vector<SpriteFrame*> animFrames;
+
+	animFrames.reserve(numberSprite);
+
+	animFrames.pushBack(SpriteFrame::create("tree1/tree1_01.png", Rect(0, 0, gameSprite->getContentSize().width, gameSprite->getContentSize().height)));
+	animFrames.pushBack(SpriteFrame::create("tree1/tree1_02.png", Rect(0, 0, gameSprite->getContentSize().width, gameSprite->getContentSize().height)));
+	animFrames.pushBack(SpriteFrame::create("tree1/tree1_03.png", Rect(0, 0, gameSprite->getContentSize().width, gameSprite->getContentSize().height)));
+
+	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
+	Animate* animate = Animate::create(animation);
+
+	gameSprite->runAction(RepeatForever::create(animate));
 }
 
 void GamePlayScene::AddCameraUSER1()
@@ -547,6 +604,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 		m_gold -= 2000;
 		//Add house copy
 		auto copyHallTown = Sprite::create("HallTown.png");
+		//copyHallTown->setPosition(screenSize / 2);
 		copyHallTown->setOpacity(50);
 		_layerUI->addChild(copyHallTown);
 		//Add event touch
@@ -562,8 +620,7 @@ void GamePlayScene::AddEventForPopupTownHall()
 		};
 
 		buildHouseListener->onTouchEnded = [=](Touch* _touch, Event* _event) {
-			copyHallTown->setVisible(false);
-
+			copyHallTown->removeFromParentAndCleanup(true);
 			auto hallTown = new TownHall(_layer2D, TEAM_BLUE);
 			hallTown->GetButton()->setPosition(_touch->getLocation()
 				+ camera->getPosition() - Director::getInstance()->getVisibleSize() / 2);
@@ -584,10 +641,14 @@ void GamePlayScene::AddEventForPopupTownHall()
 				{
 					auto button = dynamic_cast<ui::Button *>(sender);
 
-					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("Town hall", "", [&]() {
-						auto createKnight = new Knight(_layer2D, TEAM_BLUE);
-						createKnight->SetPositionKnight(containerHallTown.at(0)->GetButton()->getPosition() - createKnight->GetConTentSize() * 2 + Vec2(rand() % (10 - 4) + 5, (rand() % (10 - 4) + 5)));
-						knight.push_back(createKnight);
+					auto popup = UICustom::PopupTownHall::createAsConfirmDialogue("", "", [&]() {
+						if (knight.size() <= 20 && m_gold >= 1000)
+						{
+							m_gold -= 1000;
+							auto createKnight = new Knight(_layer2D, TEAM_BLUE);
+							createKnight->SetPositionKnight(containerHallTown.at(0)->GetButton()->getPosition() - createKnight->GetConTentSize() * 2 + Vec2(rand() % (10 - 4) + 5, (rand() % (10 - 4) + 5)));
+							knight.push_back(createKnight);
+						}
 					});
 					_layer2D->addChild(popup);
 				}
@@ -669,6 +730,7 @@ void GamePlayScene::AddEventForPopupMainHouse()
 		m_gold -= 5000;
 		//Add house copy
 		auto copyMainHouse = Sprite::create("HouseMain.png");
+		copyMainHouse->setPosition(screenSize / 2);
 		copyMainHouse->setOpacity(50);
 		_layerUI->addChild(copyMainHouse);
 
@@ -826,8 +888,29 @@ void GamePlayScene::CreateItem()
 	 
 	Item *itemShieldShop = new Item(ID_SHIELD, ID_STATE_SHOP);
 	itemShieldShop->getButton()->retain();
-	itemArmorShop->getButton()->setTitleText("1500$");
-	menuItemShop.push_back(itemArmorShop);
+	itemShieldShop->getButton()->setTitleText("1500$");
+	menuItemShop.push_back(itemShieldShop);
+
+	// upg item
+	Item *itemUpgWeponShop = new Item(ID_UPG_WEAPON, ID_STATE_SHOP);
+	itemUpgWeponShop->getButton()->retain();
+	itemUpgWeponShop->getButton()->setTitleText("4000$");
+	menuItemShop.push_back(itemUpgWeponShop);
+
+	Item *itemUpgHelmetShop = new Item(ID_UPG_HELMET, ID_STATE_SHOP);
+	itemUpgHelmetShop->getButton()->retain();
+	itemUpgHelmetShop->getButton()->setTitleText("2000$");
+	menuItemShop.push_back(itemUpgHelmetShop);
+
+	Item *itemUpgArmorShop = new Item(ID_UPG_ARMOR, ID_STATE_SHOP);
+	itemUpgArmorShop->getButton()->retain();
+	itemUpgArmorShop->getButton()->setTitleText("1500$");
+	menuItemShop.push_back(itemUpgArmorShop);
+
+	Item *itemUpgShieldShop = new Item(ID_UPG_SHIELD, ID_STATE_SHOP);
+	itemUpgShieldShop->getButton()->retain();
+	itemUpgShieldShop->getButton()->setTitleText("3000$");
+	menuItemShop.push_back(itemUpgShieldShop);
 }
 
 void GamePlayScene::CreateKnight()
@@ -1006,38 +1089,80 @@ void GamePlayScene::update(float dt)
 			{
 				menuLabelDamage->setString(std::to_string((int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame()));
 				menuLabelStrength->setString(std::to_string((int)hero->getStrength() + (int)menuItem.at(i)->getStrength()));
+				
+				hero->SetDame((int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame());
+				hero->setStrength((int)hero->getStrength() + (int)menuItem.at(i)->getStrength());
 			}
 			else if (menuItem.at(i)->GetId() == ID_HELMET)
 			{
 				menuLabelHp->setString(std::to_string((int)hero->GetMaxBlood() + (int)menuItem.at(i)->getHp()));
+
+				hero->SetMaxBlood((int)hero->GetMaxBlood() + (int)menuItem.at(i)->getHp());
 			}
 			else if (menuItem.at(i)->GetId() == ID_ARMOR)
 			{
 				menuLabelArmor->setString(std::to_string((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor()));
+				hero->SetAmor((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor());
 			}
-			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			else if (menuItem.at(i)->GetId() == ID_SHIELD)
+			{
+				menuLabelArmor->setString(std::to_string((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor()));
+				hero->SetAmor((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor());
+			}
+			else if (menuItem.at(i)->GetId() == ID_UPG_WEAPON)
+			{
+				menuLabelDamage->setString(std::to_string((int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame()));
+				menuLabelStrength->setString(std::to_string((int)hero->getStrength() + (int)menuItem.at(i)->getStrength()));
+
+				hero->SetDame((int)hero->getDamage()->getDamageNormal() + (int)menuItem.at(i)->getDame());
+				hero->setStrength((int)hero->getStrength() + (int)menuItem.at(i)->getStrength());
+			}
+			else if (menuItem.at(i)->GetId() == ID_UPG_HELMET)
 			{
 				menuLabelHp->setString(std::to_string((int)hero->GetMaxBlood() + (int)menuItem.at(i)->getHp()));
+
+				hero->SetMaxBlood((int)hero->GetMaxBlood() + (int)menuItem.at(i)->getHp());
+			}
+			else if (menuItem.at(i)->GetId() == ID_UPG_ARMOR)
+			{
+				menuLabelArmor->setString(std::to_string((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor()));
+
+				hero->SetAmor((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor());
+			}
+			else if (menuItem.at(i)->GetId() == ID_UPG_SHIELD)
+			{
+				menuLabelArmor->setString(std::to_string((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor()));
+
+				hero->SetAmor((int)hero->GetAmor() + (int)menuItem.at(i)->getArmor());
 			}
 		}
 		if (menuLabelHp != nullptr && menuItem.at(i)->GetState() == ID_STATE_HOME)
 		{
-			if (menuItem.at(i)->GetId() == ID_WEAPON)
+			if (menuItem.at(i)->GetId() == ID_WEAPON || menuItem.at(i)->GetId() == ID_UPG_WEAPON)
 			{
 				menuLabelDamage->setString(std::to_string((int)hero->getDamage()->getDamageNormal()));
 				menuLabelStrength->setString(std::to_string((int)hero->getStrength()));
+
+				hero->SetDame((int)hero->getDamage()->getDamageNormal());
+				hero->setStrength((int)hero->getStrength());
 			}
-			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			else if (menuItem.at(i)->GetId() == ID_HELMET || menuItem.at(i)->GetId() == ID_UPG_HELMET)
 			{
 				menuLabelHp->setString(std::to_string((int)hero->getBlood()->getBlood()));
+
+				hero->SetMaxBlood((int)hero->GetMaxBlood());
 			}
-			else if (menuItem.at(i)->GetId() == ID_ARMOR)
+			else if (menuItem.at(i)->GetId() == ID_ARMOR || menuItem.at(i)->GetId() == ID_UPG_ARMOR)
 			{
 				menuLabelArmor->setString(std::to_string((int)hero->GetAmor()));
+				hero->SetAmor((int)hero->GetAmor());
+
 			}
-			else if (menuItem.at(i)->GetId() == ID_HELMET)
+			else if (menuItem.at(i)->GetId() == ID_SHIELD || menuItem.at(i)->GetId() == ID_UPG_SHIELD)
 			{
-				menuLabelHp->setString(std::to_string((int)hero->GetMaxBlood()));
+				menuLabelHp->setString(std::to_string((int)hero->GetAmor()));
+				hero->SetAmor((int)hero->GetAmor());
+
 			}
 
 		}
@@ -1301,9 +1426,6 @@ void GamePlayScene::heroAttack(int STATE_ATTACK, int type) {
 
 }
 
-
-
-
 void GamePlayScene::miniMap()
 {
 
@@ -1460,8 +1582,6 @@ void GamePlayScene::RemoveKnightRedMove(Knight * k)
 	}
 }
 
-
-
 void GamePlayScene::RemoveKnightRed(Knight* red)
 {
 	if (!m_knightRed.empty())
@@ -1600,6 +1720,26 @@ void GamePlayScene::AddHouseDragon()
 {
 	m_houseDragon = new HouseDragon(_layer2D, TEAM_RED);
 	m_houseDragon->SetPosition(mapTopRight->getPosition() + mapTopRight->getContentSize() * 8 / 9);
+
+	auto houseKnightRed = Sprite::create("KnightHouse.png");
+	houseKnightRed->setPosition(m_houseDragon->GetPosition().x - houseKnightRed->getContentSize().width * 1.5, m_houseDragon->GetPosition().y);
+	auto physicKnightRed = PhysicsBody::createBox(houseKnightRed->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	physicKnightRed->setGravityEnable(false);
+	physicKnightRed->setRotationEnable(false);
+	physicKnightRed->setCategoryBitmask(4);
+	physicKnightRed->setCollisionBitmask(125);
+	houseKnightRed->setPhysicsBody(physicKnightRed);
+	_layer2D->addChild(houseKnightRed);
+
+	auto houseKnightRed2 = Sprite::create("KnightHouse.png");
+	houseKnightRed2->setPosition(m_houseDragon->GetPosition().x, m_houseDragon->GetPosition().y - houseKnightRed->getContentSize().height * 1.5);
+	auto physicKnightRed2 = PhysicsBody::createBox(houseKnightRed->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	physicKnightRed2->setGravityEnable(false);
+	physicKnightRed2->setRotationEnable(false);
+	physicKnightRed2->setCategoryBitmask(4);
+	physicKnightRed2->setCollisionBitmask(125);
+	houseKnightRed2->setPhysicsBody(physicKnightRed2);
+	_layer2D->addChild(houseKnightRed2);
 }
 
 void GamePlayScene::KnightMoveAttack(std::vector<Knight*> red)

@@ -555,11 +555,22 @@ namespace UICustom {
 					node->dismiss(true);
 				});
 				knight->setScale(0.7);
+				auto labelCoin = Label::createWithTTF("1000", "fonts/arial.ttf", 20);
+				labelCoin->setColor(Color3B::YELLOW);
+				auto menuLabel = MenuItemLabel::create(labelCoin);
+				auto spriteCoin = Sprite::create("item/coin.png");
+				auto menuCoin = MenuItemSprite::create(spriteCoin, NULL);
 
 				Menu *menu = Menu::create(knight, NULL);
 				node->addChild(menu, 2);
-				menu->setPosition(winSize.width / 2.36, winSize.height / 2.1);
+				menu->setPosition(winSize.width / 2.27, winSize.height / 2.1);
+				Menu *menuGold = Menu::create(menuCoin, menuLabel, NULL);
+				menuGold->setPosition(winSize.width / 1.8, winSize.height / 2.1);
+
+				node->addChild(menuGold, 2);
 				menu->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 2);
+				menuGold->alignItemsHorizontallyWithPadding(FONT::LABEL_OFFSET / 5);
+
 
 				lbl->setPosition(winSize / 2);
 				CONFIRM_DIALOGUE_SIZE_OFFSET = Size(CONFIRM_DIALOGUE_SIZE_OFFSET.width, 300);

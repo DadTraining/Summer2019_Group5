@@ -23,7 +23,7 @@ private:
 	Vec2 direct;
 	float m_distance;
 	int count_repeat;
-
+	int m_goldBuyKnight;
 	Blood *b;
 
 	Damage *d;
@@ -52,6 +52,8 @@ public:
 	int GetCurrentDirect();
 	void SetLastDirect(int vec);
 	int GetLastDirect();
+	int GetGoldKnight();
+	void SetGoldKnight(int _gold);
 
 	void SetSelected(bool isSelected);
 

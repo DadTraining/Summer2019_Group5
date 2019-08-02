@@ -55,6 +55,16 @@ int Knight::GetLastDirect()
 	return m_lastDirect;
 }
 
+int Knight::GetGoldKnight()
+{
+	return m_goldBuyKnight;
+}
+
+void Knight::SetGoldKnight(int _gold)
+{
+	m_goldBuyKnight = _gold;
+}
+
 Animate* Knight::ActionKnight(std::string actionName)
 {
 	Vector<SpriteFrame*> animateFrames;

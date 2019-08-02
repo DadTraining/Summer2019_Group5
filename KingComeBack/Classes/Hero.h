@@ -26,7 +26,6 @@ public:
 	
 
 	void moveR(int, int, int);
-	
 
 	int getDirect();
 	void setDirect(int);

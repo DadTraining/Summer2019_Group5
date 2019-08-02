@@ -19,13 +19,3 @@ ui::Button * Home::GetButton()
 {
 	return m_button;
 }
-
-void Home::SetID(int i)
-{
-	id = i;
-}
-
-int Home::GetID()
-{
-	return id;
-}

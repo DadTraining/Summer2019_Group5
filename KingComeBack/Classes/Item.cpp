@@ -29,7 +29,6 @@ void Item::Init(int _ID, int ID_state)
 		m_hp = 1000;
 		m_goldItem = 100;
 		m_button->setTag(ID_TAG_HP);
-
 	}
 	else if (ID == ID_MP)
 	{
@@ -66,6 +65,37 @@ void Item::Init(int _ID, int ID_state)
 		m_goldItem = 1500;
 		m_armor = 100;
 		m_button->setTag(ID_TAG_SHIELD);
+	}
+	else if (ID == ID_UPG_WEAPON)
+	{
+		m_button = ui::Button::create("item/upg_sword.png", "");
+		m_button->setTag(ID_TAG_WEPON);
+
+		m_goldItem = 4000;
+		m_dame = 250;
+	}
+	else if (ID == ID_UPG_HELMET)
+	{
+		m_button = ui::Button::create("item/upg_helmet.png", "");
+		m_button->setTag(ID_TAG_UPG_HELMET);
+
+		m_goldItem = 2000;
+		m_hp = 1500;
+	}
+	else if (ID == ID_UPG_ARMOR)
+	{
+		m_button = ui::Button::create("item/upg_armor.png", "");
+		m_button->setTag(ID_TAG_UPG_ARMOR);
+
+		m_goldItem = 1500;
+		m_armor = 100;
+	}
+	else if (ID == ID_UPG_SHIELD)
+	{
+		m_button = ui::Button::create("item/upg_shield.png");
+		m_goldItem = 3000;
+		m_armor = 250;
+		m_button->setTag(ID_TAG_UPG_SHIELD);
 	}
 	if (ID == ID_ARMOR || ID == ID_WEAPON || ID == ID_HELMET)
 	{
@@ -210,7 +240,60 @@ void Item::ItemIsClick(int id_equip)
 	{
 		if (m_state == ID_STATE_HOME)
 		{
-			m_button->setPosition(Vec2(screenSize.width / 1.58, screenSize.height / 1.6));
+			m_button->setPosition(Vec2(screenSize.width / 1.51, screenSize.height / 1.72));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	else if (id_equip == ID_UPG_WEAPON)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.785, screenSize.height / 1.735));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	else if (id_equip == ID_UPG_HELMET)
+	{
+
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.642, screenSize.height / 1.39));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	else if (id_equip == ID_UPG_ARMOR)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.63, screenSize.height / 1.6));
+			m_state = ID_STATE_EQUIPMENT;
+		}
+		else if (m_state == ID_STATE_EQUIPMENT)
+		{
+			m_button->setPosition(prePosition);
+			m_state = ID_STATE_HOME;
+		}
+	}
+	else if (id_equip == ID_UPG_SHIELD)
+	{
+		if (m_state == ID_STATE_HOME)
+		{
+			m_button->setPosition(Vec2(screenSize.width / 1.51, screenSize.height / 1.72));
 			m_state = ID_STATE_EQUIPMENT;
 		}
 		else if (m_state == ID_STATE_EQUIPMENT)

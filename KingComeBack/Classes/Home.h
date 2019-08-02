@@ -18,8 +18,6 @@ public:
 	void SetButton(ui::Button *_button);
 	ui::Button *GetButton();
 
-	void SetID(int i) override;
-	int GetID() override;
 protected :
 	ui::Button *m_button;
 };

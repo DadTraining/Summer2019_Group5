@@ -41,9 +41,13 @@
 #define ID_HP 7
 #define ID_MP 8
 #define ID_WEAPON 9
-#define ID_HELMET	10
+#define ID_HELMET 10
 #define ID_ARMOR 11
 #define ID_SHIELD 12
+#define ID_UPG_WEAPON 13
+#define ID_UPG_HELMET 14
+#define ID_UPG_ARMOR 15
+#define ID_UPG_SHIELD 16
 
 // Tag Item
 #define ID_TAG_HP 0
@@ -52,7 +56,10 @@
 #define ID_TAG_HELMET 3
 #define ID_TAG_ARMOR 4
 #define ID_TAG_SHIELD 5
-
+#define ID_TAG_UPG_WEAPON 6
+#define ID_TAG_UPG_HELMET 7
+#define ID_TAG_UPG_ARMOR 8
+#define ID_TAG_UPG_SHIELD 9
 //----Amor House------
 #define TAG_BLOOD 0
 #define AMOR_HOUSE 20

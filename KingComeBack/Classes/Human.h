@@ -27,10 +27,14 @@ public:
 	
 	bool IsDie();
 	virtual Vec2 GetPosition();
+
+	virtual void AddBlood(int id);
+
 protected:
 	float m_blood;
 	float m_amor;
 	int m_color;
 	float m_maxBlood;
+
 };
 

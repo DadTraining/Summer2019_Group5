@@ -27,4 +27,5 @@ public:
 	Knight* GetKnight();
 	void SetIsNewKnight(bool);
 	bool GetIsNewKnight();
+	void AddBlood();
 };

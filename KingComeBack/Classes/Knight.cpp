@@ -117,8 +117,8 @@ void Knight::Init(int id)
 	//d = new Damage(50);
 
 	m_sprite->setRotation(0);
-	AddBlood();
 
+	AddBlood(id);
 	SetColor(id);
 	SetAmor(10);
 	SetDame(30);
@@ -183,22 +183,6 @@ void Knight::Died()
 	m_sprite->runAction(action);
 	//m_sprite->setVisible(false);
 	//m_sprite->removeFromParentAndCleanup(true);
-}
-
-void Knight::AddBlood()
-{
-	auto blood_bg = Sprite::create("Sprites/Loading/loading.png");
-	blood_bg->setPositionY(m_sprite->getContentSize().height + 10);
-	blood_bg->setPositionX(m_sprite->getContentSize().width / 2);
-	blood_bg->setScale(0.3);
-
-	auto blood = Sprite::create("Sprites/Loading/progress.png");
-	blood->setPosition(blood_bg->getPosition());
-	blood->setScale(0.3);
-	blood->setTag(TAG_BLOOD);
-
-	m_sprite->addChild(blood_bg, 100);
-	m_sprite->addChild(blood, 101);
 }
 
 void Knight::InitRed()

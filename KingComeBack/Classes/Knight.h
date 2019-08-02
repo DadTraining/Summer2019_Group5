@@ -37,7 +37,6 @@ public:
 	void Update(float dt) override;
 	void Move(Vec2 vec) override;
 	void Died() override;
-	void AddBlood();
 
 	void Attack(Human*, float) override;
 	void StopAllAction();

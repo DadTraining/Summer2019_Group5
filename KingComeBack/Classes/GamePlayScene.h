@@ -81,7 +81,6 @@ public:
 
 	void CreateItem();
 	void CreateKnight();
-	void CreateAttibuteHero();
 
 	void CreateLayerUI();
 	void CreateChooseKnight();
@@ -104,11 +103,12 @@ public:
 	//knight Attack
 	Vec2 CheckRangerAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 	void MoveAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
-	void ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, float dt);
+	void ChekAttackKnight(std::vector<Knight*> red, std::vector<Knight*> blue, Dragon*, float dt);
 	void ReduceBloodKnight(Knight* red, Knight* blue);
 	void RemoveKnightRed(Knight* red);
 	void RemoveKnightBlue(Knight* blue);
-	void RemoveKnightRedMove(Knight * k);
+
+	void RemoveKnightRedMove(Knight* k);
 	//bool CheckAttack(std::vector<Knight*> red, std::vector<Knight*> blue);
 
 	//-- Dragon --
@@ -120,7 +120,13 @@ public:
 	void AddHouseDragon();
 
 	//------Add Knight Red Move-----
-	void KnightMoveAttack(std::vector<Knight*> red);
+	Human* KnightRedMoveCheck(std::vector<ScoutTown*>, std::vector<TownHall*>, std::vector<StoreHouse *>,
+		std::vector<Knight *>, Hero*);
+	void KnightRedMoveAttack(float dt);
+	void KnightRedMoveAttackHuman(Human *hm, float dt);
+
+	//-------Knight Blue Attack-------
+	void KnightBlueCheckAttack(Dragon * dra, std::vector<Knight*> red, std::vector<Knight*> redMove, float dt);
 
 	//-------Scout Town Attack--------------
 	void ScoutAttack(std::vector<ScoutTown*> m_listScoutTowns, std::vector<Knight*> m_knightRed, 
@@ -208,9 +214,10 @@ private:
 	void handleDragonVsHero();
 	
 
-	// Knight
+	//-------Knight-------------------
 	std::vector<Knight*> m_knightRed;
-	bool m_checkKnight = false;
+	bool m_checkKnight = KNIGHT_STATE_FIND;
+	Human * m_humanKnigthBlueAttack;
 	
 	// Atribute of hero
 	MenuItemLabel *menuLabelHp;
@@ -249,6 +256,7 @@ private:
 
 	//--- Add Knight Red Move----
 	std::vector<Knight*> m_knightRedMove;
-	
+	bool m_stateKnightRedMove = DRAGON_STATE_FIND;
+	Human *m_humanKnightRedAttack = nullptr;
 };
 

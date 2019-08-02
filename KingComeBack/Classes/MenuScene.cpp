@@ -66,6 +66,10 @@ bool MenuScene::init()
 		{
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
+		case ui::Widget::TouchEventType::MOVED:
+			break;
+		case ui::Widget::TouchEventType::CANCELED:
+			break;
 		case ui::Widget::TouchEventType::ENDED:
 			if (GameSetting::getIntance()->isEnableSound())
 			{

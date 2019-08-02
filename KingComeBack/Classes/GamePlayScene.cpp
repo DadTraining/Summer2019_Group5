@@ -926,10 +926,6 @@ void GamePlayScene::CreateKnight()
 	knight.push_back(createKnight);
 }
 
-void GamePlayScene::CreateAttibuteHero()
-{
-
-}
 
 void GamePlayScene::CreateLayerUI()
 

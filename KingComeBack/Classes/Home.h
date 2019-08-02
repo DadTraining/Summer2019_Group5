@@ -18,6 +18,9 @@ public:
 	void SetButton(ui::Button *_button);
 	ui::Button *GetButton();
 
+
+	void AddBlood(int id) override;
+
 protected :
 	ui::Button *m_button;
 };

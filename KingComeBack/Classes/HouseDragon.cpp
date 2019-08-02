@@ -25,6 +25,9 @@ void HouseDragon::Init(int id)
 
 	SetColor(id);
 	SetAmor(60);
+	AddBlood();
+	float bl = BLOOD_HOUSE;
+	SetBlood(bl);
 }
 
 void HouseDragon::Died()
@@ -41,8 +44,9 @@ void HouseDragon::Update(float dt)
 	if (count >= 3.0)
 	{
 		m_knight = new Knight(_layer2D, TEAM_RED);	
-		m_knight->SetPositionKnight(Vec2(m_sprite->getPosition().x,
-			m_sprite->getPosition().y - m_sprite->getContentSize().height));
+		int dir = rand() % (100 + 1 - 50) + 50;
+		m_knight->SetPositionKnight(Vec2(m_sprite->getPosition().x + dir,
+			m_sprite->getPosition().y - m_sprite->getContentSize().height + dir));
 		count = 0;
 		isNewKnight = true;
 	}
@@ -89,4 +93,15 @@ void HouseDragon::SetIsNewKnight(bool is)
 bool HouseDragon::GetIsNewKnight()
 {
 	return isNewKnight;
+}
+
+void HouseDragon::AddBlood()
+{
+	auto blood = Sprite::create("loadingBarHouse.png");
+	float x = m_sprite->getPosition().x + m_sprite->getContentSize().width / 4;
+	float y = m_sprite->getPosition().y + m_sprite->getContentSize().height;
+	blood->setPosition(Vec2(x, y));
+	blood->setTag(TAG_BLOOD);
+	blood->setColor(Color3B::RED);
+	m_sprite->addChild(blood);
 }

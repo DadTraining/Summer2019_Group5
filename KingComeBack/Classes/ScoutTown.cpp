@@ -161,6 +161,7 @@ void ScoutTown::AddBlood()
 	float x = m_sprite->getPosition().x + m_sprite->getContentSize().width / 4;
 	float y = m_sprite->getPosition().y + m_sprite->getContentSize().height;
 	blood->setPosition(Vec2(x, y));
+	blood->setScaleY(0.05);
 	blood->setTag(TAG_BLOOD);
 	blood->setColor(Color3B::GREEN);
 	m_sprite->addChild(blood);

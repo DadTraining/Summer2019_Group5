@@ -20,6 +20,7 @@ public:
 	float GetDame();
 
 	int checkTrueSkill_2( Vec2  v);
+	void AddBlood(int id) override;
 protected:
 	float m_speedMovement;
 	float m_dame;

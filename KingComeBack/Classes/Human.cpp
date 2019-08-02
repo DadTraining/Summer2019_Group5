@@ -84,3 +84,25 @@ Vec2 Human::GetPosition()
 	return m_sprite->getPosition();
 }
 
+void Human::AddBlood(int id)
+{
+	auto bl = Sprite::create("Sprites/Loading/progress.png");
+	float x = m_sprite->getPosition().x;
+	float y = m_sprite->getPosition().y + m_sprite->getContentSize().height;
+	bl->setAnchorPoint(Vec2::ZERO);
+	//bl->setScale(0.3);
+	bl->setPosition(Vec2(x, y));	
+	bl->setScaleY(0.05);
+	bl->setTag(TAG_SPRITE_BLOOD);
+
+	if (id == TEAM_BLUE)
+	{
+		bl->setColor(Color3B::GREEN);
+	}
+	if (id == TEAM_RED)
+	{
+		bl->setColor(Color3B::RED);
+	}
+	m_sprite->addChild(bl);
+}
+
